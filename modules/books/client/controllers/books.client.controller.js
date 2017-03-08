@@ -26,8 +26,7 @@
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
       if (nextChapNumber <= vm.book.numberOfChapters) {
-        $state.go('books.view', {
-          abbrev: $stateParams.abbrev,
+        $state.go('bible.view', {
           chapter: nextChapNumber
         });
       }
@@ -36,8 +35,7 @@
     function prevChap() {
       var prevChapNumber = parseInt($stateParams.chapter, 0) - 1;
       if (prevChapNumber > 0) {
-        $state.go('books.view', {
-          abbrev: $stateParams.abbrev,
+        $state.go('bible.view', {
           chapter: prevChapNumber
         });
       }

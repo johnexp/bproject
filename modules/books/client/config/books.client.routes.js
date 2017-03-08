@@ -9,13 +9,13 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
-      .state('books', {
+      .state('bible', {
         abstract: true,
         parent: 'home',
-        url: 'books',
+        url: 'bible',
         template: '<ui-view/>'
       })
-      .state('books.list', {
+      .state('bible.list', {
         url: '',
         templateUrl: '/modules/books/client/views/list-books.client.view.html',
         controller: 'BooksListController',
@@ -28,7 +28,7 @@
           pageTitle: 'Books List'
         }
       })
-      .state('books.create', {
+      .state('bible.create', {
         url: '/create',
         templateUrl: '/modules/books/client/views/form-book.client.view.html',
         controller: 'BooksController',
@@ -41,7 +41,7 @@
           pageTitle: 'Books Create'
         }
       })
-      .state('books.edit', {
+      .state('bible.edit', {
         url: '/:bookId/edit',
         templateUrl: '/modules/books/client/views/form-book.client.view.html',
         controller: 'BooksController',
@@ -54,7 +54,7 @@
           pageTitle: 'Edit Book {{ bookResolve.name }}'
         }
       })
-      .state('books.view', {
+      .state('bible.view', {
         url: '/:version/:abbrev/:chapter',
         templateUrl: '/modules/books/client/views/view-book.client.view.html',
         controller: 'BooksController',

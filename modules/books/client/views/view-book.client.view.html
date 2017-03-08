@@ -1,98 +1,29 @@
-<md-button ng-click="vm.prevChap()" ng-disabled="vm.chapter == 1">
-  <md-icon class="md-accent" md-font-set="material-icons">navigate_before</md-icon>
-  <md-tooltip><span>Capítulo Anterior</span></md-tooltip>
-</md-button>
-<h6>{{vm.book.book + ' - ' + vm.book.chapters[0].number}}</h6>
-<md-button ng-click="vm.nextChap()" ng-disabled="vm.chapter == vm.book.numberOfChapters">
-  <md-icon class="md-accent" md-font-set="material-icons">navigate_next</md-icon>
-  <md-tooltip><span>Próximo Capítulo</span></md-tooltip>
-</md-button>
-<md-content>
-  <md-list class="md-dense" flex>
-    <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null">
-      <div class="md-list-item-text" layout="column">
-        <p class="verse">
-          <sup>{{$index + 1}}</sup>
-          {{ verse }}
-        </p>
-      </div>
-    </md-list-item>
-  </md-list>
-</md-content>
-<!--<section>-->
-  <!--<md-card layout="column">-->
-    <!--<md-toolbar layout="row" class="md-primary">-->
-      <!--<div class="md-toolbar-tools">-->
-        <!--<h2 class="md-title" ng-bind="vm.book.name"></h2>-->
-        <!--<div flex></div>-->
-        <!--<div>-->
-          <!--<md-fab-speed-dial md-open="false" md-direction="left" hide-xs class="md-scale">-->
-            <!--<md-fab-trigger>-->
-              <!--<md-button class="md-fab md-primary md-hue-3" ng-class="vm.$mdMedia('sm') || vm.$mdMedia('xs') ? 'md-mini' : ''" aria-label="actions">-->
-                <!--<md-icon md-font-set="material-icons">more_vert</md-icon>-->
-                <!--<md-tooltip><span translate>Actions</span></md-tooltip>-->
-              <!--</md-button>-->
-            <!--</md-fab-trigger>-->
-            <!--<md-fab-actions>-->
-              <!--<md-button class="md-fab md-mini md-primary md-hue-2" ui-sref="books.list">-->
-                <!--<md-icon class="md-accent" md-font-set="material-icons">list</md-icon>-->
-                <!--<md-tooltip><span translate>List</span></md-tooltip>-->
-              <!--</md-button>-->
-              <!--<md-button class="md-fab md-mini md-accent" ui-sref="books.edit({ bookId: vm.book._id })">-->
-                <!--<md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>-->
-                <!--<md-tooltip><span translate>Edit</span></md-tooltip>-->
-              <!--</md-button>-->
-              <!--<md-button class="md-fab md-mini md-warn" ng-click="vm.remove($event)">-->
-                <!--<md-icon md-font-set="material-icons">delete</md-icon>-->
-                <!--<md-tooltip><span translate>Delete</span></md-tooltip>-->
-              <!--</md-button>-->
-            <!--</md-fab-actions>-->
-          <!--</md-fab-speed-dial>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</md-toolbar>-->
-    <!--<md-divider></md-divider>-->
-    <!--<md-list class="md-dense" layout-padding flex>-->
-      <!--<md-list-item class="md-list-item-text" layout="row" layout-xs="column" layout-align-xs="center start" layout-padding>-->
-        <!--<p class="md-subhead" flex="30" flex-xs="100" translate>Name</p>-->
-        <!--<p class="md-caption" ng-bind="vm.book.name"></p>-->
-      <!--</md-list-item>-->
-      <!--<md-list-item class="md-list-item-text" layout="row" layout-xs="column" layout-align-xs="center start" layout-padding>-->
-        <!--<p class="md-subhead" flex="30" translate>Active</p>-->
-        <!--<p class="md-caption" ng-bind="vm.book.active | translate"></p>-->
-      <!--</md-list-item>-->
-      <!--<md-divider></md-divider>-->
-      <!--<md-list-item class="md-list-item-text md-no-proxy" layout="row" layout-xs="column" layout-align-xs="center start" layout-padding layout-align="none start">-->
-        <!--<p class="md-subhead" flex="30" translate>History</p>-->
-        <!--<md-content layout="column">-->
-          <!--<md-table-container>-->
-            <!--<table md-table>-->
-              <!--<thead md-head md-order="vm.historyPagination.sort">-->
-              <!--<tr md-row>-->
-                <!--<th md-column md-order-by="user.displayName"><span translate>User</span></th>-->
-                <!--<th md-column md-order-by="date"><span translate>Date</span></th>-->
-                <!--<th md-column md-order-by="action"><span translate>Action</span></th>-->
-              <!--</tr>-->
-              <!--</thead>-->
-              <!--<tbody md-body>-->
-              <!--<tr md-row ng-repeat="modified in vm.book.modified | orderBy: vm.historyPagination.sort | limitTo: vm.historyPagination.limit: (vm.historyPagination.page - 1) * vm.historyPagination.limit">-->
-                <!--<td md-cell><md-button class="md-primary" ui-sref="admin.user({ userId: modified.user._id })">{{modified.user.displayName}}</md-button></td>-->
-                <!--<td md-cell>{{modified.date | date: "dd/MM/yyyy HH:mm:ss"}}</td>-->
-                <!--<td md-cell>{{modified.action | translate}}</td>-->
-              <!--</tr>-->
-              <!--</tbody>-->
-            <!--</table>-->
-            <!--<table md-table ng-if="!vm.book.modified || vm.book.modified.length == 0">-->
-              <!--<tbody md-body>-->
-              <!--<tr md-row>-->
-                <!--<td md-cell class="no-records-cell" layout="row" layout-align="center center"><h2 class="md-subheader" translate>No records</h2></td>-->
-              <!--</tr>-->
-              <!--</tbody>-->
-            <!--</table>-->
-          <!--</md-table-container>-->
-          <!--<md-table-pagination md-limit="vm.historyPagination.limit" md-limit-options="vm.historyPagination.limitOptions" md-label="{{vm.historyPagination.label | translate}}" md-page="vm.historyPagination.page" md-total="{{vm.book.modified.length}}" md-page-select></md-table-pagination>-->
-        <!--</md-content>-->
-      <!--</md-list-item>-->
-    <!--</md-list>-->
-  <!--</md-card>-->
-<!--</section>-->
+<div flex layout="column" layout-fill>
+  <md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+      <md-button ng-click="vm.prevChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == 1">
+        <md-icon class="md-accent" md-font-set="material-icons">navigate_before</md-icon>
+        <md-tooltip><span>Capítulo Anterior</span></md-tooltip>
+      </md-button>
+      <h6 flex md-truncate>{{vm.book.book + ' - ' + vm.book.chapters[0].number}}</h6>
+      <md-button ng-click="vm.nextChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == vm.book.numberOfChapters">
+        <md-icon class="md-accent" md-font-set="material-icons">navigate_next</md-icon>
+        <md-tooltip><span>Próximo Capítulo</span></md-tooltip>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <div flex layout="row">
+    <md-content flex>
+      <md-list class="md-dense" flex>
+        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null">
+          <div class="md-list-item-text" layout="column">
+            <p class="verse">
+              <sup>{{$index + 1}}</sup>
+              {{ verse }}
+            </p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </div>
+</div>
