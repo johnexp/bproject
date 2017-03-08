@@ -1,0 +1,74 @@
+{
+  "character-types": {
+    "title": "Tipos de Personagens",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "mission-types": {
+    "title": "Tipos de Missão",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "missions": {
+    "title": "Missões",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "adventures": {
+    "title": "Aventuras",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "item-types": {
+    "title": "Tipos de Item",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "ranks": {
+    "title": "Ranks",
+    "list": "Listar",
+    "create": "Cadastrar"
+  },
+  "create one": "criar um",
+  "Create": "Criar",
+  "Update": "Atualizar",
+  "Deleted User": "Usuário removido",
+  "Posted on": "Postado em",
+  "by": "por",
+  "U": "Atualizado",
+  "C": "Criado",
+  "D": "Excluído",
+  "A": "Ativado",
+  "I": "Inativado",
+  "User": "Usuário",
+  "Date": "Data",
+  "Action": "Ação",
+  "Actions": "Ações",
+  "History": "Histórico",
+  "Cancel": "Cancelar",
+  "Search": "Pesquisar",
+  "Clear": "Limpar",
+  "Active": "Ativo",
+  "All": "Todos",
+  "Yes": "Sim",
+  "No": "Não",
+  "View": "Ver",
+  "Edit": "Editar",
+  "Delete": "Excluir",
+  "List": "Listar",
+  "true": "Sim",
+  "false": "Não",
+  "confirm_deletion": "Deseja remover o registro?",
+  "delete_item": "Remover Item",
+  "No records": "Nenhum registro disponvível",
+  "confirm_inactivation": "Deseja mudar o estado de ativação do registro?",
+  "inactivate_item": "Mudar Estado de Ativação",
+  "Inactivate": "Inativar",
+  "Activate": "Ativar",
+  "Filter": "Filtrar",
+  "Item successfully inactivated": "Registro inativado com sucesso!",
+  "Item successfully deleted": "Registro removido com sucesso!",
+  "Some fields were not filled correctly": "Alguns campos não foram corretamente preenchidos",
+  "Your request could not be completed! Please contact your system administrator.": "Sua requisição não pode ser completada! Por favor contacte o administrador do sistema.",
+  "{ page: \"Page:\", rowsPerPage: \"Rows per page:\", of: \"of\" }": "{ page: 'Página:', rowsPerPage: 'Linhas por página:', of: 'de' }"
+}

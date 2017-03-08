@@ -1,0 +1,97 @@
+<section layout="column" layout-padding>
+  <div layout="row">
+    <h2 class="md-title" translate>Tests</h2>
+    <div flex></div>
+    <list-action-bar module-name="tests"></list-action-bar>
+  </div>
+  <md-divider></md-divider>
+  <h3 class="md-subheader" translate>Filter</h3>
+  <form name="vm.form.testFilter" form-on-change="vm.filter()">
+    <div layout="row" layout-xs="column" layout-margin>
+      <md-input-container flex>
+        <label translate>Name</label>
+        <md-icon md-font-set="material-icons">person</md-icon>
+        <input name="name" type="text" ng-model="vm.testFilter.name">
+      </md-input-container>
+      <md-input-container flex>
+        <label translate>Active</label>
+        <md-icon md-font-set="material-icons">check</md-icon>
+        <md-select ng-model="vm.testFilter.active" ng-change="vm.filter()">
+          <md-option ng-value="" translate>All</md-option>
+          <md-option ng-value="true" translate>Yes</md-option>
+          <md-option ng-value="false" translate>No</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+  </form>
+  <md-divider></md-divider>
+  <md-table-container>
+    <table md-table>
+      <thead md-head md-order="vm.pagination.sort">
+      <tr md-row>
+        <th md-column md-order-by="name">{{ 'Name' | translate }}</th>
+        <th md-column>{{ 'Actions' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr md-row ng-repeat="test in vm.tests | orderBy: vm.pagination.sort | limitTo: vm.pagination.limit: (vm.pagination.page - 1) * vm.pagination.limit">
+        <td md-cell>{{ test.name }}</td>
+        <td md-cell layout="row">
+          <div class="show-gt-sm hide-xs hide-sm">
+            <md-button ui-sref="tests.view({ testId: test._id })" class="md-icon-button">
+              <md-icon class="md-primary" md-font-set="material-icons">remove_red_eye</md-icon>
+              <md-tooltip>{{ 'View' | translate }}</md-tooltip>
+            </md-button>
+            <md-button ui-sref="tests.edit({ testId: test._id })" class="md-icon-button">
+              <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>
+              <md-tooltip>{{ 'Edit' | translate }}</md-tooltip>
+            </md-button>
+            <md-button ng-click="vm.changeState($event, test)" class="md-icon-button">
+              <md-icon ng-if="test.active === true" class="md-warn" md-font-set="material-icons">remove_circle</md-icon>
+              <md-icon ng-if="test.active === false" class="md-accent md-hue-2" md-font-set="material-icons">check_circle</md-icon>
+              <md-tooltip>{{ test.active === true ? 'Inactivate' : 'Activate' | translate }}</md-tooltip>
+            </md-button>
+          </div>
+          <div class="hide-gt-sm">
+            <md-menu>
+              <md-button ng-click="$mdMenu.open()" class="md-icon-button">
+                <md-icon md-font-set="material-icons">more_vert</md-icon>
+                <md-tooltip><span translate>Actions</span></md-tooltip>
+              </md-button>
+              <md-menu-content>
+                <md-menu-item>
+                  <md-button ui-sref="tests.view({ testId: test._id })">
+                    <md-icon class="md-primary" md-font-set="material-icons">remove_red_eye</md-icon>
+                    {{ 'View' | translate }}
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ui-sref="tests.edit({ testId: test._id })">
+                    <md-icon class="md-accent" md-font-set="material-icons">edit</md-icon>
+                    {{ 'Edit' | translate }}
+                  </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="vm.changeState($event, test)">
+                    <md-icon ng-if="test.active === true" class="md-warn" md-font-set="material-icons">remove_circle</md-icon>
+                    <md-icon ng-if="test.active === false" class="md-accent md-hue-2" md-font-set="material-icons">check_circle</md-icon>
+                    {{ test.active === true ? 'Inactivate' : 'Activate' | translate }}
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <table md-table ng-if="!vm.tests || vm.tests.length == 0">
+      <tbody md-body>
+      <tr md-row>
+        <td md-cell class="no-records-cell" layout="row" layout-align="center center"><h2 class="md-subheader" translate>No records</h2></td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="vm.pagination.limit" md-limit-options="vm.pagination.limitOptions" md-label="{{vm.pagination.label | translate}}" md-page="vm.pagination.page" md-total="{{vm.tests.length}}" md-page-select></md-table-pagination>
+</section>

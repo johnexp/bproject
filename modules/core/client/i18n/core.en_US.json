@@ -1,0 +1,75 @@
+{
+  "character-types": {
+    "title": "Character types",
+    "list": "List",
+    "create": "Create"
+  },
+  "mission-types": {
+    "title": "Mission types",
+    "list": "List",
+    "create": "Create"
+  },
+  "missions": {
+    "title": "Missions",
+    "list": "List",
+    "create": "Create"
+  },
+  "adventures": {
+    "title": "Adventures",
+    "list": "List",
+    "create": "Create"
+  },
+  "item-types": {
+    "title": "Item types",
+    "list": "List",
+    "create": "Create"
+  },
+  "ranks": {
+    "title": "Ranks",
+    "list": "List",
+    "create": "Create"
+  },
+  "create_one": "create one",
+  "Create": "Create",
+  "Update": "Update",
+  "Deleted User": "Deleted User",
+  "Posted on": "Posted on",
+  "by": "by",
+  "U": "Updated",
+  "C": "Created",
+  "D": "Deleted",
+  "A": "Activated",
+  "I": "Inactivated",
+  "User": "User",
+  "Date": "Date",
+  "Action": "Action",
+  "Actions": "Actions",
+  "History": "History",
+  "Cancel": "Cancel",
+  "Search": "Search",
+  "Clear": "Clear",
+  "Active": "Active",
+  "All": "All",
+  "Yes": "Yes",
+  "No": "No",
+  "View": "View",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "List": "List",
+  "true": "Yes",
+  "false": "No",
+  "confirm_deletion": "Are you sure to delete this item?",
+  "delete_item": "Delete Item",
+  "No records": "No records",
+  "confirm_inactivation": "Are you sure to change item activation state?",
+  "inactivate_item": "Change Activation State",
+  "Inactivate": "Inactivate",
+  "Activate": "Activate",
+  "Filter": "Filter",
+  "Item successfully inactivated": "Item successfully inactivated",
+  "Item successfully deleted": "Item successfully deleted",
+  "Item successfully saved": "Item successfully saved",
+  "Some fields were not filled correctly": "Some fields were not filled correctly",
+  "Your request could not be completed! Please contact your system administrator.": "Your request could not be completed! Please contact your system administrator.",
+  "{ page: \"Page:\", rowsPerPage: \"Rows per page:\", of: \"of\" }": "{ page: 'Page:', rowsPerPage: 'Rows per page:', of: 'of' }"
+}

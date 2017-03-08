@@ -1,0 +1,15 @@
+<!-- NOT USED BECAUSE DONT WORK WITH MD-TOOLBAR -->
+{{!< layout}}
+
+{{#contentFor 'content'}}
+  <div layout="column" layout-fill>
+    <md-toolbar ng-include="'/modules/core/client/views/header.client.view.html'" class="md-whiteframe-z2"></md-toolbar>
+    <!-- Area menu e conteúdo -->
+    <div flex layout="row">
+      <menu-app layout="column"></menu-app>
+      <md-content flex>
+        <md-content ui-view></md-content>
+      </md-content>
+    </div>
+  </div>
+{{/contentFor}}

@@ -1,0 +1,15 @@
+md-toast.md-info-toast-theme > div.md-toast-content {
+	background-color: #5e8eb7;
+}
+md-toast.md-warning-toast-theme > div.md-toast-content {
+	background-color: #b79b37;
+}
+md-toast.md-error-toast-theme > div.md-toast-content {
+	background-color: #b34440;
+}
+md-toast.md-success-toast-theme > div.md-toast-content {
+	background-color: #67a058;
+}
+md-toast > div.md-toast-content md-icon {
+	color: rgba(255, 255, 255, 0.64);
+}

@@ -1,0 +1,40 @@
+{
+  "text": {
+    "modelProps": {
+      "type": "String",
+      "uppercase": false,
+      "lowercase": false,
+      "trim": true,
+      "required": "[true, 'Why no book?']"
+    },
+    "viewProps": {
+      "name": "text",
+      "displayName": "Text",
+      "fieldType": "text",
+      "required": true,
+      "requiredMessage": "'This is not a valid Text!'",
+      "mainField": true
+    }
+  },
+  "date": {
+    "modelProps": {
+      "type": "Date",
+      "default": "Date.now",
+      "max": "new Date('October 13, 2017 11:13:00')",
+      "min": "Date.now"
+    },
+    "viewProps": {
+      "name": "date",
+      "displayName": "Date",
+      "fieldType": "date",
+      "validMessage": "Invalid Date",
+      "mindate": "03/03/2017",
+      "maxdate": "10/03/2017",
+      "required": true,
+      "requiredMessage": "Required",
+      "mindateMessage": "Date is too early!",
+      "maxdateMessage": "Date is too late!",
+      "datepickerOpts": "md-open-on-focus"
+    }
+  }
+}

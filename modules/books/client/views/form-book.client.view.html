@@ -1,0 +1,29 @@
+<md-content layout="column" layout-padding>
+  <div layout="column">
+    <h2 class="md-title" translate>{{vm.book._id ? 'Edit Book' : 'New Book'}}</h2>
+    <md-divider></md-divider>
+  </div>
+  <form name="vm.form.bookForm" layout="column" ng-submit="vm.save(vm.form.bookForm.$valid)" novalidate>
+    <div layout-gt-sm="row" layout-wrap>
+      <md-input-container flex>
+        <label translate>Name</label>
+        <md-icon md-font-set="material-icons">person</md-icon>
+        <input name="name" type="text" ng-model="vm.book.name" id="name" required>
+        <div ng-messages="vm.form.bookForm.name.$error">
+          <p ng-message="required" translate>Book name is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div layout="row" layout-align="center center">
+      <md-button type="button" class="md-warn" go-back-btn>
+        <md-icon md-font-set="material-icons">cancel</md-icon>
+        {{'Cancel' | translate}}
+      </md-button>
+      <md-button type="submit" class="md-primary md-raised">
+        <md-icon md-font-set="material-icons">save</md-icon>
+        {{vm.book._id ? 'Update' : 'Create' | translate}}
+      </md-button>
+    </div>
+  </form>
+</md-content>
+

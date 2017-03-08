@@ -1,0 +1,14 @@
+<md-toast md-theme="{{ toast.theme }}" ng-class="{'md-capsule': toast.capsule}">
+  <div class="md-toast-content">
+    <md-icon class="icone30 ng-scope material-icons md-light" md-font-set="material-icons">{{ toast.themeIcon }}</md-icon>
+    <span class="md-toast-text" role="alert" aria-relevant="all" aria-atomic="true">
+            {{ toast.textContent }}
+        </span>
+    <md-button class="md-action" ng-if="toast.action" ng-click="toast.resolve()" ng-class="highlightClasses">
+      {{ toast.action }}
+    </md-button>
+    <md-button>
+      <md-icon class="icone24 ng-scope material-icons md-light" md-font-set="material-icons" ng-click="closeToast()">close</md-icon>
+    </md-button>
+  </div>
+</md-toast>
