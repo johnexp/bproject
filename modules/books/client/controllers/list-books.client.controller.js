@@ -22,7 +22,7 @@
         if (option === true) {
           vm.bookService.$remove({ bookId: book._id }, function () {
             vm.allBooks = vm.bookService.getListResource().getAll();
-            vm.books = vm.allBooks
+            vm.books = vm.allBooks;
           }, function (res) {
             Toast.genericErrorMessage();
             $log.error(res.data.message);

@@ -55,7 +55,7 @@
         }
       })
       .state('books.view', {
-        url: '/:abbrev/:chapter',
+        url: '/:version/:abbrev/:chapter',
         templateUrl: '/modules/books/client/views/view-book.client.view.html',
         controller: 'BooksController',
         controllerAs: 'vm',
@@ -73,7 +73,9 @@
 
   function getBook($stateParams, BooksService) {
     return BooksService.get({
-      abbrev: $stateParams.abbrev
+      version: $stateParams.version,
+      abbrev: $stateParams.abbrev,
+      chapter: $stateParams.chapter
     }).$promise;
   }
 

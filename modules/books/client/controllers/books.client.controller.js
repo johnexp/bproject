@@ -25,7 +25,7 @@
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
-      if (nextChapNumber <= vm.book.chapters.length) {
+      if (nextChapNumber <= vm.book.numberOfChapters) {
         $state.go('books.view', {
           abbrev: $stateParams.abbrev,
           chapter: nextChapNumber

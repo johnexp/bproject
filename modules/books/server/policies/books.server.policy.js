@@ -18,7 +18,7 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/book',
       permissions: '*'
     }, {
-      resources: '/api/book/:abbrev',
+      resources: '/api/book/:version/:abbrev/:chapter',
       permissions: '*'
     }, {
       resources: '/api/books',
@@ -33,7 +33,7 @@ exports.invokeRolesPolicies = function () {
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/book/:abbrev',
+      resources: '/api/book/:version/:abbrev/:chapter',
       permissions: ['get']
     }]
   }]);

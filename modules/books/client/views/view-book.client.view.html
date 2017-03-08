@@ -2,13 +2,14 @@
   <md-icon class="md-accent" md-font-set="material-icons">navigate_before</md-icon>
   <md-tooltip><span>Capítulo Anterior</span></md-tooltip>
 </md-button>
-<md-button ng-click="vm.nextChap()" ng-disabled="vm.chapter == vm.book.chapters.length">
+<h6>{{vm.book.book + ' - ' + vm.book.chapters[0].number}}</h6>
+<md-button ng-click="vm.nextChap()" ng-disabled="vm.chapter == vm.book.numberOfChapters">
   <md-icon class="md-accent" md-font-set="material-icons">navigate_next</md-icon>
   <md-tooltip><span>Próximo Capítulo</span></md-tooltip>
 </md-button>
 <md-content>
   <md-list class="md-dense" flex>
-    <md-list-item ng-repeat="verse in vm.book.chapters[vm.chapter - 1].verses track by $index" ng-click="null">
+    <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null">
       <div class="md-list-item-text" layout="column">
         <p class="verse">
           <sup>{{$index + 1}}</sup>

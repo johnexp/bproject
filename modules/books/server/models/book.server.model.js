@@ -24,6 +24,17 @@ var BookSchema = new Schema({
     trim: true,
     lowercase: true
   },
+  version: {
+    type: String,
+    default: '',
+    required: 'Please fill Bible version',
+    trim: true,
+    lowercase: true
+  },
+  numberOfChapters: {
+    type: Number,
+    required: 'Please fill Book number of chapters'
+  },
   chapters: {
     type: [Schema.Types.Mixed]
   }

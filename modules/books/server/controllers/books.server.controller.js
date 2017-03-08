@@ -12,12 +12,16 @@ var path = require('path'),
 /**
  * Create a Book
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   var book = new Book(req.body);
   book.user = req.user;
-  book.modified.push({ 'date': Date.now(), 'user': req.user, 'action': 'C' });
+  book.modified.push({
+    'date': Date.now(),
+    'user': req.user,
+    'action': 'C'
+  });
 
-  book.save(function(err) {
+  book.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -31,7 +35,7 @@ exports.create = function(req, res) {
 /**
  * Show the current Book
  */
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // convert mongoose document to JSON
   var book = req.book ? req.book.toJSON() : {};
 
@@ -45,13 +49,17 @@ exports.read = function(req, res) {
 /**
  * Update a Book
  */
-exports.update = function(req, res) {
+exports.update = function (req, res) {
   var book = req.book;
 
   book = _.extend(book, req.body);
-  book.modified.push({ 'date': Date.now(), 'user': req.user, 'action': 'U' });
+  book.modified.push({
+    'date': Date.now(),
+    'user': req.user,
+    'action': 'U'
+  });
 
-  book.save(function(err) {
+  book.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -65,13 +73,17 @@ exports.update = function(req, res) {
 /**
  * Change activation state of a Book
  */
-exports.changeState = function(req, res) {
+exports.changeState = function (req, res) {
   var book = req.book;
   book.active = !book.active;
   var state = book.active ? 'A' : 'I';
-  book.modified.push({ 'date': Date.now(), 'user': req.user, 'action': state });
+  book.modified.push({
+    'date': Date.now(),
+    'user': req.user,
+    'action': state
+  });
 
-  book.save(function(err) {
+  book.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -85,7 +97,7 @@ exports.changeState = function(req, res) {
 /**
  * List of Books
  */
-exports.list = function(req, res) {
+exports.list = function (req, res) {
   var objFilter = {};
   if (req.params.hasOwnProperty('active')) {
     objFilter.active = req.params.active;
@@ -98,7 +110,7 @@ exports.list = function(req, res) {
       path: 'user',
       select: 'displayName'
     }])
-    .exec(function(err, books) {
+    .exec(function (err, books) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -112,13 +124,17 @@ exports.list = function(req, res) {
 /**
  * Filter Books
  */
-exports.filter = function(req, res) {
+exports.filter = function (req, res) {
   if (req.body.hasOwnProperty('queryCount') && req.body.queryCount === true) {
     return count(req.body, res);
   }
   var filter = req.body.hasOwnProperty('filter') ? req.body.filter : {};
   var paramsLength = Object.keys(filter).length;
-  var pagination = req.body.hasOwnProperty('pagination') ? req.body.pagination : { sort: '', offset: 0, limit: 10 };
+  var pagination = req.body.hasOwnProperty('pagination') ? req.body.pagination : {
+    sort: '',
+    offset: 0,
+    limit: 10
+  };
   for (var i = 0; i < paramsLength; i++) {
     var key = Object.keys(filter)[i];
     if (typeof filter[key] === 'string' || filter[key] instanceof String) {
@@ -133,7 +149,7 @@ exports.filter = function(req, res) {
       path: 'user',
       select: 'displayName'
     }])
-    .exec(function(err, books) {
+    .exec(function (err, books) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -156,7 +172,7 @@ function count(body, res) {
       filter[key] = new RegExp(filter[key], 'i');
     }
   }
-  Book.count(filter).exec(function(err, count) {
+  Book.count(filter).exec(function (err, count) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -170,8 +186,17 @@ function count(body, res) {
 /**
  * Book middleware
  */
-exports.bookByAbbrev = function(req, res, next, abbrev) {
-  Book.findOne({ 'abbrev': abbrev })
+exports.bookByAbbrev = function (req, res, next) {
+  Book.findOne({
+    'chapters.number': req.params.chapter,
+    'version': req.params.version,
+    'abbrev': req.params.abbrev
+  }, {
+    'chapters.$': 1,
+    'version': 1,
+    'book': 1,
+    'numberOfChapters': 1
+  })
     .exec(function (err, book) {
       if (err) {
         return next(err);
@@ -188,7 +213,7 @@ exports.bookByAbbrev = function(req, res, next, abbrev) {
 /**
  * Get available values of a enum
  */
-exports.getEnumValue = function(req, res, next, field) {
+exports.getEnumValue = function (req, res, next, field) {
   try {
     var enumValues = Book.schema.path(field).enumValues;
     res.jsonp(enumValues);
