@@ -50,10 +50,10 @@
     function changeBook(abbrev) {
       toggleBooksList();
       // $timeout(function () {
-        $state.go('bible.view', {
-          abbrev: abbrev,
-          chapter: 1
-        });
+      $state.go('bible.view', {
+        abbrev: abbrev,
+        chapter: 1
+      });
       // }, 500);
     }
 

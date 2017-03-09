@@ -1,22 +1,26 @@
-<md-bottom-sheet class="md-list md-has-header" layout="row">
-  <div flex>
-    <md-subheader ng-cloak>Antigo Testamento</md-subheader>
-    <md-list ng-cloak>
-      <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm">
-        <md-button ng-click="vm.changeBook(book.abbrev)" md-autofocus="$index == 2" class="md-list-item-content">
-          <span class="md-inline-list-icon-label">{{ book.name }}</span>
-        </md-button>
-      </md-list-item>
-    </md-list>
+<div id="books-list">
+  <div ng-cloak layout="row" layout-padding>
+    <md-input-container class="no-error-field" flex>
+      <label>Filtrar</label>
+      <input ng-model="vm.bookSearchTerm">
+    </md-input-container>
   </div>
-  <div flex>
-    <md-subheader ng-cloak>Novo Testamento</md-subheader>
-    <md-list ng-cloak>
-      <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm">
-        <md-button ng-click="vm.changeBook(book.abbrev)" md-autofocus="$index == 2" class="md-list-item-content">
-          <span class="md-inline-list-icon-label">{{ book.name }}</span>
-        </md-button>
-      </md-list-item>
-    </md-list>
+  <div layout="row">
+    <div flex>
+      <md-subheader ng-cloak>Antigo Testamento</md-subheader>
+      <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+        <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+          {{ book.name }}
+        </md-list-item>
+      </md-list>
+    </div>
+    <div flex>
+      <md-subheader ng-cloak>Novo Testamento</md-subheader>
+      <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+        <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+          {{ book.name }}
+        </md-list-item>
+      </md-list>
+    </div>
   </div>
-</md-bottom-sheet>
+</div>
