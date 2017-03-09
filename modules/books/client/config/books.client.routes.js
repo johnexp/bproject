@@ -72,6 +72,8 @@
   getBook.$inject = ['$stateParams', 'BooksService'];
 
   function getBook($stateParams, BooksService) {
+    $stateParams.abbrev = $stateParams.abbrev || 'gn';
+    $stateParams.chapter = $stateParams.chapter || 1;
     return BooksService.get({
       version: $stateParams.version,
       abbrev: $stateParams.abbrev,

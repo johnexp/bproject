@@ -20,21 +20,21 @@
     // Add the dropdown list item
     menuService.addSubMenuItem('sidebar', 'bible', {
       title: 'Almeida Atualizada',
-      state: 'bible.view({"version": "aa", "abbrev": "gn", "chapter": "1"})',
+      state: 'bible.view({"version": "aa"})',
       roles: ['user', 'admin', 'guest']
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('sidebar', 'bible', {
       title: 'Almeida Corrigida Fiel',
-      state: 'bible.view({"version": "acf", "abbrev": "gn", "chapter": "1"})',
+      state: 'bible.view({"version": "acf"})',
       roles: ['user', 'admin', 'guest']
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('sidebar', 'bible', {
       title: 'Nova Versão Internacional',
-      state: 'bible.view({"version": "nvi", "abbrev": "gn", "chapter": "1"})',
+      state: 'bible.view({"version": "nvi"})',
       roles: ['user', 'admin', 'guest']
     });
   }

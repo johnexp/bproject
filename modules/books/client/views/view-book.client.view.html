@@ -1,11 +1,49 @@
-<div flex layout="column" layout-fill>
+<div flex layout="column" layout-fill ng-class="vm.showBooksList ? 'show-books-list' : ''">
+  <div id="books-list">
+    <div ng-cloak layout="row" layout-padding>
+      <md-input-container class="no-error-field" flex>
+        <label>Filtrar</label>
+        <input ng-model="vm.bookSearchTerm">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <div flex>
+        <md-subheader ng-cloak>Antigo Testamento</md-subheader>
+        <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+          <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+            {{ book.name }}
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex>
+        <md-subheader ng-cloak>Novo Testamento</md-subheader>
+        <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+          <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+            {{ book.name }}
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+  </div>
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-button ng-click="vm.prevChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == 1">
         <md-icon class="md-accent" md-font-set="material-icons">navigate_before</md-icon>
         <md-tooltip><span>Capítulo Anterior</span></md-tooltip>
       </md-button>
-      <h6 flex md-truncate>{{vm.book.book + ' - ' + vm.book.chapters[0].number}}</h6>
+      <md-button class="md-primary md-raised" ng-click="vm.toggleBooksList()">{{vm.book.book}}</md-button>
+      <div flex></div>
+      <!--<md-input-container flex md-truncate>-->
+        <!--<label>Livros</label>-->
+        <!--<md-select ng-model="vm.abbrev" md-on-close="clearBookSearchTerm()" ng-change="vm.changeBook()" data-md-container-class="select-search-select-header">-->
+          <!--<md-select-header class="select-search-header">-->
+            <!--<input ng-model="vm.bookSearchTerm" type="search" placeholder="Digite para pesquisar" class="select-header-searchbox md-text">-->
+          <!--</md-select-header>-->
+          <!--<md-optgroup label="Livros">-->
+            <!--<md-option ng-value="book.abbrev" ng-repeat="book in vm.bookList | filter: vm.bookSearchTerm">{{book.name}}</md-option>-->
+          <!--</md-optgroup>-->
+        <!--</md-select>-->
+      <!--</md-input-container>-->
       <md-button ng-click="vm.nextChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == vm.book.numberOfChapters">
         <md-icon class="md-accent" md-font-set="material-icons">navigate_next</md-icon>
         <md-tooltip><span>Próximo Capítulo</span></md-tooltip>
