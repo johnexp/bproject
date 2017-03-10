@@ -1,6 +1,15 @@
+.verse {
+	margin: 0;
+	padding: 0px 5px;
+}
+
 .verse sup {
 	font-weight: bold;
 	padding-right: 5px;
+}
+
+md-list-item.selected {
+	background-color: rgba(158, 158, 158, 0.4);
 }
 
 .select-search-select-header {}
@@ -38,11 +47,11 @@
 	margin-top: 50px;
 }
 
-.show-books-list #books-list, .show-chapters-list #chapters-list  {
+.show-books-list #books-list, .show-chapters-list #chapters-list, .show-verses-list #verses-list  {
 	height: 100%;
 }
 
-#books-list, #chapters-list {
+#books-list, #chapters-list, #verses-list {
 	max-height: 100%;
 	height: 0%;
 	overflow: auto;

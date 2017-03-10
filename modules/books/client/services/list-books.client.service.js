@@ -286,10 +286,6 @@
       };
     }
 
-    function getChaptersByAbbrev(abbrev) {
-      return new Array(chaptersAmmount[abbrev]);
-    }
-
     var chaptersAmmount = {
       'gn': 50,
       'ex': 40,
@@ -358,6 +354,10 @@
       'jd': 1,
       'ap': 22
     };
+
+    function getChaptersByAbbrev(abbrev) {
+      return new Array(chaptersAmmount[abbrev]);
+    }
 
     return ListBooksService;
   }

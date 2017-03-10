@@ -7,7 +7,7 @@
     </div>
     <md-menu-bar class="topbar">
       <md-menu ng-repeat="menuItem in vm.menu.items" ng-if="menuItem.shouldRender(vm.authentication.user)">
-        <button ng-click="$mdOpenMenu()" ui-sref-if="!vm.stateIsAbstract(menuItem.state)" ui-sref-val="{{menuItem.state}}({{menuItem.params}})">
+        <button ng-click="$mdMenu.open()" ui-sref-if="!vm.stateIsAbstract(menuItem.state)" ui-sref-val="{{menuItem.state}}({{menuItem.params}})">
           {{menuItem.title}}
         </button>
         <md-menu-content ng-show="menuItem.items.length > 0">
@@ -21,7 +21,7 @@
     <div flex></div>
     <md-menu-bar class="topbar">
       <md-menu>
-        <button ng-click="$mdOpenMenu()">
+        <button ng-click="$mdMenu.open()">
           Lang
           <md-icon md-font-set="material-icons">expand_more</md-icon>
         </button>
@@ -35,15 +35,15 @@
         </md-menu-content>
       </md-menu>
       <md-menu ng-hide="vm.authentication.user">
-        <button ng-click="$mdOpenMenu()" ui-sref="authentication.signup">Sign Up</button>
+        <button ng-click="$mdMenu.open()" ui-sref="authentication.signup">Sign Up</button>
         <md-menu-content ng-hide="true"></md-menu-content>
       </md-menu>
       <md-menu ng-hide="vm.authentication.user">
-        <button ng-click="$mdOpenMenu()" ui-sref="authentication.signin">Sign In</button>
+        <button ng-click="$mdMenu.open()" ui-sref="authentication.signin">Sign In</button>
         <md-menu-content ng-hide="true"></md-menu-content>
       </md-menu>
       <md-menu ng-show="vm.authentication.user">
-        <button ng-click="$mdOpenMenu()">
+        <button ng-click="$mdMenu.open()">
           {{vm.authentication.user.displayName}}
           <md-icon md-font-set="material-icons">expand_more</md-icon>
         </button>

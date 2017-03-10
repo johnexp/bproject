@@ -11,63 +11,63 @@
       <div flex>
         <md-subheader ng-cloak>Antigo Testamento</md-subheader>
         <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
-          <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
-            {{ book.name }}
+          <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book)" flex="50">
+            {{book.name}}
           </md-list-item>
         </md-list>
       </div>
       <div flex>
         <md-subheader ng-cloak>Novo Testamento</md-subheader>
         <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
-          <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
-            {{ book.name }}
+          <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book)" flex="50">
+            {{book.name}}
           </md-list-item>
         </md-list>
       </div>
     </div>
   </div>
   <div id="chapters-list">
-    <div ng-cloak layout="row" layout-padding>
-      <md-input-container class="no-error-field" flex>
-        <label>Filtrar</label>
-        <input ng-model="vm.chaptersSearchTerm">
-      </md-input-container>
-    </div>
     <div layout="column">
-        <md-subheader ng-cloak>Antigo Testamento</md-subheader>
-        <div layout="row" layout-wrap>
-          <div flex="20">
-            <md-button ng-repeat="chapter in vm.chaptersAmmount track by $index" ng-click="vm.selectChapter($index + 1)">{{ $index + 1 }}</md-button>
-          </div>
+      <md-subheader ng-cloak>{{vm.selectedBook.name}}</md-subheader>
+      <div layout="row" layout-wrap>
+        <div ng-repeat="chapter in vm.chaptersAmmount track by $index">
+          <md-button class="md-primary" ng-click="vm.selectChapter($index + 1)">{{$index + 1}}</md-button>
         </div>
-        <!--<md-list ng-cloak layout="row" class="md-dense" layout-wrap>-->
-          <!--<md-list-item >-->
-            <!---->
-          <!--</md-list-item>-->
-        <!--</md-list>-->
+      </div>
+    </div>
+  </div>
+  <div id="verses-list">
+    <div layout="column">
+      <md-subheader ng-cloak>{{vm.selectedBook.name}} > {{vm.chapter}}</md-subheader>
+      <div layout="row" layout-wrap>
+        <div ng-repeat="verse in vm.versesAmmount track by $index">
+          <md-button class="md-primary" ng-click="vm.selectVerse($index + 1)">{{$index + 1}}</md-button>
+        </div>
+      </div>
     </div>
   </div>
 
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
-      <md-button ng-click="vm.prevChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == 1">
+      <md-button ng-click="vm.prevChap()" class="md-fab md-mini md-accent" ng-disabled="vm.chapter == 1">
         <md-icon class="md-accent" md-font-set="material-icons">navigate_before</md-icon>
         <md-tooltip><span>Capítulo Anterior</span></md-tooltip>
       </md-button>
-      <md-button class="md-primary md-raised" ng-click="vm.toggleBooksList()">{{vm.book.book}}</md-button>
       <div flex></div>
-      <!--<md-input-container flex md-truncate>-->
-        <!--<label>Livros</label>-->
-        <!--<md-select ng-model="vm.abbrev" md-on-close="clearBookSearchTerm()" ng-change="vm.changeBook()" data-md-container-class="select-search-select-header">-->
-          <!--<md-select-header class="select-search-header">-->
-            <!--<input ng-model="vm.bookSearchTerm" type="search" placeholder="Digite para pesquisar" class="select-header-searchbox md-text">-->
-          <!--</md-select-header>-->
-          <!--<md-optgroup label="Livros">-->
-            <!--<md-option ng-value="book.abbrev" ng-repeat="book in vm.bookList | filter: vm.bookSearchTerm">{{book.name}}</md-option>-->
-          <!--</md-optgroup>-->
-        <!--</md-select>-->
-      <!--</md-input-container>-->
-      <md-button ng-click="vm.nextChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == vm.book.numberOfChapters">
+      <md-button class="md-primary md-raised" ng-click="vm.toggleBooksList()">
+        {{vm.isListOpen() ? 'Livro' : vm.book.book}}
+        <md-tooltip><span>Selecionar Livro</span></md-tooltip>
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="vm.toggleChaptersList()">
+        {{vm.isListOpen() ? 'Capítulo' : 'Cap: ' + vm.chapter}}
+        <md-tooltip><span>Selecionar Capítulo</span></md-tooltip>
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="vm.toggleVersesList()">
+        {{vm.isListOpen() ? 'Versículo' : 'Ver: ' + vm.verse}}
+        <md-tooltip><span>Selecionar Versículo</span></md-tooltip>
+      </md-button>
+      <div flex></div>
+      <md-button ng-click="vm.nextChap()" class="md-fab md-mini md-accent" ng-disabled="vm.chapter == vm.book.numberOfChapters">
         <md-icon class="md-accent" md-font-set="material-icons">navigate_next</md-icon>
         <md-tooltip><span>Próximo Capítulo</span></md-tooltip>
       </md-button>
@@ -76,11 +76,11 @@
   <div flex layout="row">
     <md-content flex>
       <md-list class="md-dense" flex>
-        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null">
+        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null" ng-class="vm.selectedVerse == $index + 1 ? 'selected' : ''">
           <div class="md-list-item-text" layout="column">
             <p class="verse">
               <sup>{{$index + 1}}</sup>
-              {{ verse }}
+              {{verse}}
             </p>
           </div>
         </md-list-item>
