@@ -38,11 +38,11 @@
 	margin-top: 50px;
 }
 
-.show-books-list #books-list {
+.show-books-list #books-list, .show-chapters-list #chapters-list  {
 	height: 100%;
 }
 
-#books-list {
+#books-list, #chapters-list {
 	max-height: 100%;
 	height: 0%;
 	overflow: auto;

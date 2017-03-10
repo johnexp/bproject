@@ -1,5 +1,53 @@
-<div flex layout="column" layout-fill ng-class="vm.showBooksList ? 'show-books-list' : ''">
-  <ng-include src="'/modules/books/client/views/list-books.client.tmpl.html'"></ng-include>
+<div flex layout="column" layout-fill ng-class="vm.showSelectionClass">
+  <!--<ng-include src="'/modules/books/client/views/list-books.client.tmpl.html'"></ng-include>-->
+  <div id="books-list">
+    <div ng-cloak layout="row" layout-padding>
+      <md-input-container class="no-error-field" flex>
+        <label>Filtrar</label>
+        <input ng-model="vm.bookSearchTerm">
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <div flex>
+        <md-subheader ng-cloak>Antigo Testamento</md-subheader>
+        <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+          <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
+            {{ book.name }}
+          </md-list-item>
+        </md-list>
+      </div>
+      <div flex>
+        <md-subheader ng-cloak>Novo Testamento</md-subheader>
+        <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+          <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
+            {{ book.name }}
+          </md-list-item>
+        </md-list>
+      </div>
+    </div>
+  </div>
+  <div id="chapters-list">
+    <div ng-cloak layout="row" layout-padding>
+      <md-input-container class="no-error-field" flex>
+        <label>Filtrar</label>
+        <input ng-model="vm.chaptersSearchTerm">
+      </md-input-container>
+    </div>
+    <div layout="column">
+        <md-subheader ng-cloak>Antigo Testamento</md-subheader>
+        <div layout="row" layout-wrap>
+          <div flex="20">
+            <md-button ng-repeat="chapter in vm.chaptersAmmount track by $index" ng-click="vm.selectChapter($index + 1)">{{ $index + 1 }}</md-button>
+          </div>
+        </div>
+        <!--<md-list ng-cloak layout="row" class="md-dense" layout-wrap>-->
+          <!--<md-list-item >-->
+            <!---->
+          <!--</md-list-item>-->
+        <!--</md-list>-->
+    </div>
+  </div>
+
   <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
       <md-button ng-click="vm.prevChap()" class="md-fab md-mini md-primary" ng-disabled="vm.chapter == 1">

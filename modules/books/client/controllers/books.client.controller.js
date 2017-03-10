@@ -20,11 +20,16 @@
     vm.nextChap = nextChap;
     vm.prevChap = prevChap;
     vm.bookList = ListBooksService.getBooks();
+    vm.chaptersAmmount = ListBooksService.getChaptersByAbbrev(vm.abbrev);
     vm.bookSearchTerm;
     vm.clearSearchTerm = clearSearchTerm;
-    vm.changeBook = changeBook;
+    vm.selectBook = selectBook;
+    vm.selectedBook = vm.abbrev;
     vm.toggleBooksList = toggleBooksList;
+    vm.selectChapter = selectChapter;
     vm.showBooksList = false;
+    vm.showChaptersList = false;
+    vm.chaptersAmmount = new Array(vm.book.numberOfChapters);
 
     $translatePartialLoader.addPart('books');
     $translate.refresh();
@@ -47,13 +52,17 @@
       }
     }
 
-    function changeBook(abbrev) {
-      toggleBooksList();
+    function selectBook(abbrev) {
+      vm.selectedBook = abbrev;
+      vm.chaptersAmmount = ListBooksService.getChaptersByAbbrev(abbrev);
+      vm.showChaptersList = true;
+      vm.showSelectionClass = 'show-chapters-list';
+      // toggleBooksList();
       // $timeout(function () {
-      $state.go('bible.view', {
-        abbrev: abbrev,
-        chapter: 1
-      });
+      // $state.go('bible.view', {
+      //   abbrev: abbrev,
+      //   chapter: 1
+      // });
       // }, 500);
     }
 
@@ -63,6 +72,11 @@
 
     function toggleBooksList() {
       vm.showBooksList = !vm.showBooksList;
+      vm.showSelectionClass = vm.showBooksList ? 'show-books-list' : '';
+    }
+
+    function selectChapter() {
+
     }
 
     angular.element(document.getElementsByClassName('select-header-searchbox')).on('keydown', function(ev) {

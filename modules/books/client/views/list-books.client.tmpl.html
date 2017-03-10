@@ -9,7 +9,7 @@
     <div flex>
       <md-subheader ng-cloak>Antigo Testamento</md-subheader>
       <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
-        <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+        <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
           {{ book.name }}
         </md-list-item>
       </md-list>
@@ -17,8 +17,26 @@
     <div flex>
       <md-subheader ng-cloak>Novo Testamento</md-subheader>
       <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
-        <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.changeBook(book.abbrev)" flex="50">
+        <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book.abbrev)" flex="50">
           {{ book.name }}
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+</div>
+<div id="chapters-list">
+  <div ng-cloak layout="row" layout-padding>
+    <md-input-container class="no-error-field" flex>
+      <label>Filtrar</label>
+      <input ng-model="vm.chaptersSearchTerm">
+    </md-input-container>
+  </div>
+  <div layout="row">
+    <div flex>
+      <md-subheader ng-cloak>Antigo Testamento</md-subheader>
+      <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
+        <md-list-item ng-repeat="chapter in vm.chaptersAmmount" ng-click="vm.selectChapter(chapter)" flex="50">
+          {{ chapter }}
         </md-list-item>
       </md-list>
     </div>
