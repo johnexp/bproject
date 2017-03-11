@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout'];
+  BooksController.$inject = ['Authentication', 'bookResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location'];
 
-  function BooksController (Authentication, book, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout) {
+  function BooksController (Authentication, book, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -24,7 +24,8 @@
     vm.versesAmmount = new Array(vm.book.chapters[0].verses.length);
     vm.bookSearchTerm = '';
     vm.selectedBook = { abbrev: vm.abbrev, name: vm.book.book };
-    vm.selectedVerse = null;
+    vm.selectedVerses = [];
+    vm.highlightedVerse = null;
     vm.toggleBooksList = toggleBooksList;
     vm.toggleChaptersList = toggleChaptersList;
     vm.toggleVersesList = toggleVersesList;
@@ -35,6 +36,8 @@
     vm.showChaptersList = false;
     vm.showVersesList = false;
     vm.isListOpen = isListOpen;
+    vm.highlightVerse = highlightVerse;
+    vm.getVerseClass = getVerseClass;
 
     $translatePartialLoader.addPart('books');
     $translate.refresh();
@@ -88,7 +91,7 @@
       vm.showBooksList = false;
       vm.showChaptersList = false;
       vm.showVersesList = !vm.showVersesList;
-      vm.showSelectionClass = vm.showVersesList ? 'show-verses-list' : '';
+      vm.showSelectionClass = vm.showVersesList ? 'show-verses-number-list' : '';
       if (!vm.showVersesList) {
         resetSelectedBook();
       }
@@ -109,12 +112,55 @@
     }
 
     function selectVerse(verse) {
-      vm.selectedVerse = verse;
+      if (!findVerse(verse)) {
+        vm.selectedVerses.push(verse);
+      } else {
+        var index = findVerseIndex(verse);
+        vm.selectedVerses.splice(index, 1);
+      }
+    }
+
+    function highlightVerse(verse) {
       vm.showSelectionClass = '';
+      vm.highlightedVerse = verse;
+      vm.showVersesList = false;
+      goToVerse(verse);
+    }
+
+    function findVerse(verseToFind) {
+      return vm.selectedVerses.find(function (verse) {
+        return verse === verseToFind;
+      });
+    }
+
+    function findVerseIndex(verseToFind) {
+      return vm.selectedVerses.findIndex(function (verse) {
+        return verse === verseToFind;
+      });
     }
 
     function isListOpen() {
       return vm.showBooksList || vm.showChaptersList;
+    }
+
+    function goToVerse(verse) {
+      var newHash = 'verse-' + verse;
+      if ($location.hash() !== newHash) {
+        $location.hash('verse-' + verse);
+      } else {
+        $anchorScroll();
+      }
+    }
+
+    function getVerseClass(verse) {
+      var verseClass = '';
+      if (vm.highlightedVerse === verse) {
+        verseClass = 'highlighted';
+      }
+      if (findVerse(verse)) {
+        verseClass = 'selected';
+      }
+      return verseClass;
     }
 
     angular.element(document.getElementsByClassName('select-header-searchbox')).on('keydown', function(ev) {

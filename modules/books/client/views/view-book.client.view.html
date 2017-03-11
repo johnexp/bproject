@@ -36,12 +36,12 @@
       </div>
     </div>
   </div>
-  <div id="verses-list">
+  <div id="verses-number-list">
     <div layout="column">
       <md-subheader ng-cloak>{{vm.selectedBook.name}} > {{vm.chapter}}</md-subheader>
       <div layout="row" layout-wrap>
         <div ng-repeat="verse in vm.versesAmmount track by $index">
-          <md-button class="md-primary" ng-click="vm.selectVerse($index + 1)">{{$index + 1}}</md-button>
+          <md-button class="md-primary" ng-click="vm.highlightVerse($index + 1)">{{$index + 1}}</md-button>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
         <md-tooltip><span>Selecionar Capítulo</span></md-tooltip>
       </md-button>
       <md-button class="md-primary md-raised" ng-click="vm.toggleVersesList()">
-        {{vm.isListOpen() ? 'Versículo' : 'Ver: ' + vm.verse}}
+        {{vm.isListOpen() ? 'Versículo' : (vm.highlightedVerse ? 'Ver: ' + vm.highlightedVerse : 'Ver')}}
         <md-tooltip><span>Selecionar Versículo</span></md-tooltip>
       </md-button>
       <div flex></div>
@@ -74,9 +74,9 @@
     </div>
   </md-toolbar>
   <div flex layout="row">
-    <md-content flex>
+    <md-content flex id="verses-list">
       <md-list class="md-dense" flex>
-        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" ng-click="null" ng-class="vm.selectedVerse == $index + 1 ? 'selected' : ''">
+        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink ng-click="vm.selectVerse($index + 1)" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
           <div class="md-list-item-text" layout="column">
             <p class="verse">
               <sup>{{$index + 1}}</sup>
@@ -87,4 +87,9 @@
       </md-list>
     </md-content>
   </div>
+  <md-toolbar class="md-hue-3" id="verse-toolbar" ng-class="vm.selectedVerses.length > 0 ? 'show-verse-toolbar' : ''">
+    <div class="md-toolbar-tools">
+      <span>{{vm.selectedVerses.length}} versículos selecionados</span>
+    </div>
+  </md-toolbar>
 </div>
