@@ -16,7 +16,7 @@ md-list.md-dense md-list-item .md-list-item-text p.verse {
 }
 
 md-list.md-dense md-list-item .md-list-item-text {
-	height: 48px;
+	min-height: 45px;
 	width: 100%;
 	outline: none;
 }

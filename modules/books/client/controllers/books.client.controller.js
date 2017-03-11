@@ -38,6 +38,7 @@
     vm.isListOpen = isListOpen;
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
+    vm.markers = {};
 
     $translatePartialLoader.addPart('books');
     $translate.refresh();
@@ -163,9 +164,25 @@
       return verseClass;
     }
 
-    angular.element(document.getElementsByClassName('select-header-searchbox')).on('keydown', function(ev) {
-      ev.stopPropagation();
-    });
+    function setVersesMark() {
+      var markers = {};
+      [].markers.forEach(function (marker) {
+        marker.verses.forEach(function (verse) {
+          markers[verse] = marker.color;
+        });
+      });
+      vm.markers = markers;
+    }
+
+    function markVerse(verse, color) {
+      [].markers.forEach(function (marker) {
+        if (marker.color === color) {
+          if (marker.verses.indexOf(verse) === -1) {
+            marker.verses.push(verse);
+          }
+        }
+      });
+    }
 
   }
 }());
