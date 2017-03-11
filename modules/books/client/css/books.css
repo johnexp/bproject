@@ -1,5 +1,4 @@
 .verse {
-	margin: 0;
 	padding: 0px 5px;
 }
 
@@ -10,6 +9,16 @@
 
 #verses-list {
 	margin-bottom: 50px;
+}
+
+md-list.md-dense md-list-item .md-list-item-text p.verse {
+	font-size: .85em;
+}
+
+md-list.md-dense md-list-item .md-list-item-text {
+	height: 48px;
+	width: 100%;
+	outline: none;
 }
 
 md-list-item.highlighted {
