@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Book = mongoose.model('Book'),
+  UserMeta = mongoose.model('UserMeta'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -222,4 +223,63 @@ exports.getEnumValue = function (req, res, next, field) {
       message: 'The field "' + field + '" is not a valid enum.'
     });
   }
+};
+
+/**
+ * Create a User Meta
+ */
+exports.create = function (req, res) {
+  var userMeta = new UserMeta(req.body);
+  userMeta.user = req.user;
+
+  userMeta.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(userMeta);
+    }
+  });
+};
+
+/**
+ * Update a User Meta
+ */
+exports.update = function (req, res) {
+  var userMeta = req.userMeta;
+
+  userMeta.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.jsonp(userMeta);
+    }
+  });
+};
+
+/**
+ * User Meta middleware
+ */
+exports.userMetaByChapter = function (req, res, next) {
+  console.log('AQUIIIIIIIIIIIIIIII');
+  UserMeta.findOne({
+    'user': req.user,
+    'version': { $or: [{ $eq: null }, { $eq: req.params.version }] },
+    'book': req.params.abbrev,
+    'chapter': req.params.chapter
+  })
+    .exec(function (err, userMeta) {
+      if (err) {
+        return next(err);
+      } else if (!userMeta) {
+        return res.status(404).send({
+          message: 'No Nothing with that identifier has been found'
+        });
+      }
+      req.userMeta = userMeta;
+      return res.jsonp(userMeta);
+    });
 };

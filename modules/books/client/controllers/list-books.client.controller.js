@@ -5,9 +5,12 @@
     .module('books')
     .controller('BooksListController', BooksListController);
 
-  BooksListController.$inject = ['$mdBottomSheet'];
+  BooksListController.$inject = ['UserMetaService', '$stateParams', 'userMetaResolve'];
 
-  function BooksListController($mdBottomSheet) {
+  function BooksListController(UserMetaService, $stateParams, userMeta) {
     var vm = this;
+
+    vm.userMeta = userMeta;
+    console.log(vm.userMeta);
   }
 }());

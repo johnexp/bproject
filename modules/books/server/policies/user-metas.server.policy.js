@@ -15,13 +15,13 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/user-meta/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/test/:version/:abbrev/:chapter',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/user-meta/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/test/:version/:abbrev/:chapter',
       permissions: '*'
     }]
   }]);
@@ -34,7 +34,7 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an Book is being processed and the current user created it then allow any manipulation
-  if (req.book && req.user && req.book.user && req.book.user.id === req.user.id) {
+  if (req.userMeta && req.user && req.userMeta.user && req.userMeta.user.id === req.user.id) {
     return next();
   }
 

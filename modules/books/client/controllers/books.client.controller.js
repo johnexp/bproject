@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location'];
 
-  function BooksController (Authentication, book, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location) {
+  function BooksController (Authentication, book, userMeta, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -39,7 +39,7 @@
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
     vm.markers = {};
-
+    console.log(userMeta);
     $translatePartialLoader.addPart('books');
     $translate.refresh();
 

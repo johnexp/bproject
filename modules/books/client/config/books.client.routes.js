@@ -60,7 +60,8 @@
         controller: 'BooksController',
         controllerAs: 'vm',
         resolve: {
-          bookResolve: getBook
+          bookResolve: getBook,
+          userMetaResolve: getUserMeta
         },
         data: {
           roles: ['user', 'admin', 'guest'],
@@ -75,6 +76,18 @@
     $stateParams.abbrev = $stateParams.abbrev || 'gn';
     $stateParams.chapter = $stateParams.chapter || 1;
     return BooksService.get({
+      version: $stateParams.version,
+      abbrev: $stateParams.abbrev,
+      chapter: $stateParams.chapter
+    }).$promise;
+  }
+
+  getUserMeta.$inject = ['$stateParams', 'UserMetaService'];
+
+  function getUserMeta($stateParams, UserMetaService) {
+    $stateParams.abbrev = $stateParams.abbrev || 'gn';
+    $stateParams.chapter = $stateParams.chapter || 1;
+    return UserMetaService.get({
       version: $stateParams.version,
       abbrev: $stateParams.abbrev,
       chapter: $stateParams.chapter

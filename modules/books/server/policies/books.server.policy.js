@@ -15,19 +15,7 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/book',
-      permissions: '*'
-    }, {
       resources: '/api/book/:version/:abbrev/:chapter',
-      permissions: '*'
-    }, {
-      resources: '/api/books',
-      permissions: '*'
-    }, {
-      resources: '/api/books/:active',
-      permissions: '*'
-    }, {
-      resources: '/api/books/enum/:field',
       permissions: '*'
     }]
   }, {
