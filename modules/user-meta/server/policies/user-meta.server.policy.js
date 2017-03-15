@@ -9,31 +9,31 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke User Metas Permissions
+ * Invoke User meta Permissions
  */
 exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/user-meta/test/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/:version/:abbrev/:chapter',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/user-meta/test/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/:version/:abbrev/:chapter',
       permissions: '*'
     }]
   }]);
 };
 
 /**
- * Check If User Meta Policy Allows
+ * Check If User meta Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an Book is being processed and the current user created it then allow any manipulation
+  // If an User metum is being processed and the current user created it then allow any manipulation
   if (req.userMeta && req.user && req.userMeta.user && req.userMeta.user.id === req.user.id) {
     return next();
   }

@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * User Meta Schema
+ * User meta Schema
  */
 var UserMetaSchema = new Schema({
   user: {
