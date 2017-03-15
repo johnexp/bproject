@@ -90,6 +90,7 @@
   <md-toolbar class="md-hue-3" id="verse-toolbar" ng-class="vm.selectedVerses.length > 0 ? 'show-verse-toolbar' : ''">
     <div class="md-toolbar-tools">
       <span>{{vm.selectedVerses.length}} versículos selecionados</span>
+      <md-button ng-click="vm.markVerses('yellow')">Mark</md-button>
     </div>
   </md-toolbar>
 </div>

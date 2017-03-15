@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast', '$log'];
 
-  function BooksController (Authentication, book, userMeta, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location) {
+  function BooksController (Authentication, book, userMeta, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast, $log) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -38,8 +38,10 @@
     vm.isListOpen = isListOpen;
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
+    vm.markVerses = markVerses;
+    vm.userMeta = userMeta;
     vm.markers = {};
-    console.log(userMeta);
+
     $translatePartialLoader.addPart('books');
     $translate.refresh();
 
@@ -166,7 +168,7 @@
 
     function setVersesMark() {
       var markers = {};
-      [].markers.forEach(function (marker) {
+      vm.userMeta.markers.forEach(function (marker) {
         marker.verses.forEach(function (verse) {
           markers[verse] = marker.color;
         });
@@ -174,14 +176,40 @@
       vm.markers = markers;
     }
 
-    function markVerse(verse, color) {
-      [].markers.forEach(function (marker) {
-        if (marker.color === color) {
-          if (marker.verses.indexOf(verse) === -1) {
-            marker.verses.push(verse);
+    function markVerses(color) {
+      var mustCreate = true;
+      if (vm.userMeta.markers.length > 0) {
+        vm.userMeta.markers.forEach(function (marker) {
+          if (marker.color === color) {
+            addSelectedVersesToMarker(marker);
+            mustCreate = false;
+            return;
           }
+        });
+      }
+      if (mustCreate) {
+        vm.userMeta.markers.push({ color: color, verses: vm.selectedVerses });
+      }
+      saveUserMeta();
+    }
+
+    function addSelectedVersesToMarker(marker) {
+      vm.selectedVerses.forEach(function (verse) {
+        if (marker.verses.indexOf(verse) === -1) {
+          marker.verses.push(verse);
         }
       });
+    }
+
+    function saveUserMeta() {
+      vm.userMeta.createOrUpdate()
+        .then(null)
+        .catch(onError);
+
+      function onError(res) {
+        Toast.genericErrorMessage();
+        $log.error(res.data.message);
+      }
     }
 
   }

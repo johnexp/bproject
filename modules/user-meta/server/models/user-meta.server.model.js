@@ -16,11 +16,6 @@ var UserMetaSchema = new Schema({
     required: true,
     index: true
   },
-  version: {
-    type: String,
-    lowercase: true,
-    required: false
-  },
   book: {
     type: String,
     lowercase: true,

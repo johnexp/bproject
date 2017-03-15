@@ -15,13 +15,13 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/user-meta/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/:book/:chapter',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/user-meta/:version/:abbrev/:chapter',
+      resources: '/api/user-meta/:book/:chapter',
       permissions: '*'
     }]
   }]);

@@ -15,13 +15,17 @@ var path = require('path'),
 exports.userMetaByChapter = function (req, res, next) {
   UserMeta.findOne({
     'user': req.user,
-    $or: [{ 'version': null }, { 'version': req.params.version }],
-    'book': req.params.abbrev,
+    'book': req.params.book,
     'chapter': req.params.chapter
   })
     .exec(function (err, userMeta) {
       if (err) {
         return next(err);
+      } else if (!userMeta) {
+        userMeta = new UserMeta();
+        userMeta._id = null;
+        userMeta.book = req.params.book;
+        userMeta.chapter = req.params.chapter;
       }
       req.userMeta = userMeta;
       return res.jsonp(userMeta);
@@ -52,6 +56,7 @@ exports.create = function (req, res) {
 exports.update = function (req, res) {
   var userMeta = req.userMeta;
 
+  userMeta = _.extend(userMeta, req.body);
   userMeta.save(function (err) {
     if (err) {
       return res.status(400).send({

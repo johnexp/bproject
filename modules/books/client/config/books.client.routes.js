@@ -88,8 +88,7 @@
     $stateParams.abbrev = $stateParams.abbrev || 'gn';
     $stateParams.chapter = $stateParams.chapter || 1;
     return UserMetaService.get({
-      version: $stateParams.version,
-      abbrev: $stateParams.abbrev,
+      book: $stateParams.abbrev,
       chapter: $stateParams.chapter
     }).$promise;
   }
