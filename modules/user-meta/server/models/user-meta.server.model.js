@@ -29,6 +29,7 @@ var UserMetaSchema = new Schema({
     index: true
   },
   markers: [{
+    _id: false,
     color: {
       type: String,
       default: 'yellow',
@@ -42,6 +43,7 @@ var UserMetaSchema = new Schema({
     }]
   }],
   notes: [{
+    _id: false,
     note: {
       type: String,
       required: true,
@@ -54,6 +56,7 @@ var UserMetaSchema = new Schema({
     }]
   }],
   refs: [{
+    _id: false,
     refs: [{
       type: String,
       required: true,
@@ -67,6 +70,7 @@ var UserMetaSchema = new Schema({
     }]
   }],
   tags: [{
+    _id: false,
     tags: [{
       type: String,
       required: true,

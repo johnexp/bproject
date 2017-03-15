@@ -163,9 +163,11 @@
       if (findVerse(verse)) {
         verseClass = 'selected';
       }
+      verseClass += ' ' + vm.markers[verse];
       return verseClass;
     }
 
+    setVersesMark();
     function setVersesMark() {
       var markers = {};
       vm.userMeta.markers.forEach(function (marker) {
@@ -203,8 +205,13 @@
 
     function saveUserMeta() {
       vm.userMeta.createOrUpdate()
-        .then(null)
+        .then(onSuccess)
         .catch(onError);
+
+      function onSuccess(userMeta) {
+        vm.userMeta = userMeta;
+        setVersesMark();
+      }
 
       function onError(res) {
         Toast.genericErrorMessage();

@@ -76,9 +76,9 @@
   <div flex layout="row">
     <md-content flex id="verses-list">
       <md-list class="md-dense" flex>
-        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
+        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink class="verse" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
           <div class="md-list-item-text" layout="column" ng-click="vm.selectVerse($index + 1)" >
-            <p class="verse">
+            <p>
               <sup>{{$index + 1}}</sup>
               {{verse}}
             </p>

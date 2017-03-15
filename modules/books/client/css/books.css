@@ -1,17 +1,21 @@
-.verse {
+.verse p {
 	padding: 0px 5px;
 }
 
-.verse sup {
+.verse p sup {
 	font-weight: bold;
 	padding-right: 5px;
+}
+
+.verse.yellow p {
+	background-color: yellow;
 }
 
 #verses-list {
 	margin-bottom: 50px;
 }
 
-md-list.md-dense md-list-item .md-list-item-text p.verse {
+md-list.md-dense md-list-item .md-list-item-text .verse p {
 	font-size: .85em;
 }
 

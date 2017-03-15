@@ -6,9 +6,9 @@
     .module('user-meta')
     .factory('UserMetaService', UserMetaService);
 
-  UserMetaService.$inject = ['$resource'];
+  UserMetaService.$inject = ['$resource', '$log'];
 
-  function UserMetaService($resource) {
+  function UserMetaService($resource, $log) {
     var UserMeta = $resource('/api/user-meta/:book/:chapter', {
       book: '@book',
       chapter: '@chapter'
@@ -51,6 +51,11 @@
         // Handle error internally
         handleError(error);
       }
+    }
+
+    function handleError(error) {
+      // Log error
+      $log.error(error);
     }
   }
 }());

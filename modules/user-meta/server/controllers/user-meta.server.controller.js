@@ -54,9 +54,9 @@ exports.create = function (req, res) {
  * Update a User Meta
  */
 exports.update = function (req, res) {
-  var userMeta = req.userMeta;
+  var userMeta = new UserMeta(req.body, { versionKey: '_updatedUserMeta' });
+  userMeta.isNew = false;
 
-  userMeta = _.extend(userMeta, req.body);
   userMeta.save(function (err) {
     if (err) {
       return res.status(400).send({
