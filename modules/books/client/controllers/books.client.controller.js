@@ -39,6 +39,7 @@
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
     vm.markVerses = markVerses;
+    vm.selectAllVerses = selectAllVerses;
     vm.userMeta = userMeta;
     vm.markers = {};
 
@@ -167,6 +168,13 @@
       return verseClass;
     }
 
+    function selectAllVerses() {
+      vm.selectedVerses = [];
+      for (var i = 1; i <= vm.book.chapters[0].verses.length; i++) {
+        vm.selectedVerses.push(i);
+      }
+    }
+
     setVersesMark();
     function setVersesMark() {
       var markers = {};
@@ -181,13 +189,17 @@
     function markVerses(color) {
       var mustCreate = true;
       if (vm.userMeta.markers.length > 0) {
-        vm.userMeta.markers.forEach(function (marker) {
-          if (marker.color === color) {
-            addSelectedVersesToMarker(marker);
+        for (var i = 0; i < vm.userMeta.markers.length; i++) {
+          if (vm.userMeta.markers[i].color === color) {
+            addSelectedVersesToMarker(vm.userMeta.markers[i]);
             mustCreate = false;
-            return;
+          } else {
+            removeAlreadyMarked(vm.userMeta.markers[i]);
           }
-        });
+          if (vm.userMeta.markers[i].verses.length === 0) {
+            vm.userMeta.markers.splice(i, 1);
+          }
+        }
       }
       if (mustCreate) {
         vm.userMeta.markers.push({ color: color, verses: vm.selectedVerses });
@@ -196,11 +208,20 @@
     }
 
     function addSelectedVersesToMarker(marker) {
-      vm.selectedVerses.forEach(function (verse) {
-        if (marker.verses.indexOf(verse) === -1) {
-          marker.verses.push(verse);
+      for (var i = 0; i < vm.selectedVerses.length; i++) {
+        if (marker.verses.indexOf(vm.selectedVerses[i]) === -1) {
+          marker.verses.push(vm.selectedVerses[i]);
         }
-      });
+      }
+    }
+
+    function removeAlreadyMarked(marker) {
+      for (var i = 0; i < vm.selectedVerses.length; i++) {
+        var verseIndex = marker.verses.indexOf(vm.selectedVerses[i]);
+        if (verseIndex !== -1) {
+          marker.verses.splice(verseIndex, 1);
+        }
+      }
     }
 
     function saveUserMeta() {
@@ -213,9 +234,8 @@
         setVersesMark();
       }
 
-      function onError(res) {
+      function onError() {
         Toast.genericErrorMessage();
-        $log.error(res.data.message);
       }
     }
 

@@ -1,5 +1,7 @@
 .verse p {
-	padding: 0px 5px;
+	padding: 5px 10px;
+	margin: 8px 0px;
+	font-size: 1em;
 }
 
 .verse p sup {
@@ -7,8 +9,56 @@
 	padding-right: 5px;
 }
 
-.verse.yellow p {
-	background-color: yellow;
+.verse.yellow p, .color-button.yellow {
+	background-color: #F6F66E;
+}
+.md-button.color-button.yellow:hover {
+	background-color: rgba(246, 246, 110, .8);
+}
+
+.verse.red p, .color-button.red {
+	background-color: rgba(208, 85, 85, 1);
+	color: #FFFFFF;
+}
+.md-button.color-button.red:hover {
+	background-color: rgba(208, 85, 85, .8);
+}
+
+.verse.purple p, .color-button.purple {
+	background-color: rgba(145, 109, 167, 1);
+	color: #FFFFFF;
+}
+.md-button.color-button.purple:hover {
+	background-color: rgba(145, 109, 167, .8);
+}
+
+.verse.blue p, .color-button.blue {
+	background-color: rgba(191, 218, 241, 1);
+}
+.md-button.color-button.blue:hover {
+	background-color: rgba(191, 218, 241, .8);
+}
+
+.verse.green p, .color-button.green {
+	background-color: rgba(91, 154, 142, 1);
+	color: #FFFFFF;
+}
+.md-button.color-button.green:hover {
+	background-color: rgba(91, 154, 142, .8);
+}
+
+.verse.pink p, .color-button.pink {
+	background-color: rgba(241, 192, 237, 1);
+}
+.md-button.color-button.pink:hover {
+	background-color: rgba(241, 192, 237, .8);
+}
+
+.verse.orange p, .color-button.orange {
+	background-color: rgba(236, 176, 124, 1);
+}
+.md-button.color-button.orange:hover {
+	background-color: rgba(236, 176, 124, .8);
 }
 
 #verses-list {

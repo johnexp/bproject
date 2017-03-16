@@ -34,7 +34,7 @@ var UserMetaSchema = new Schema({
       type: String,
       default: 'yellow',
       required: true,
-      enum: ['yellow', 'blue', 'purple']
+      enum: ['yellow', 'red', 'purple', 'blue', 'green', 'pink', 'orange']
     },
     verses: [{
       type: Number,

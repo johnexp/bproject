@@ -89,8 +89,36 @@
   </div>
   <md-toolbar class="md-hue-3" id="verse-toolbar" ng-class="vm.selectedVerses.length > 0 ? 'show-verse-toolbar' : ''">
     <div class="md-toolbar-tools">
-      <span>{{vm.selectedVerses.length}} versículos selecionados</span>
-      <md-button ng-click="vm.markVerses('yellow')">Mark</md-button>
+      <span>({{vm.selectedVerses.length}})</span>
+      <md-button class="md-icon-button" ng-click="vm.selectAllVerses()">
+        <md-icon md-font-set="material-icons">check_box</md-icon>
+        <md-tooltip md-direction="top">Selecionar Todos</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button" ng-click="vm.selectedVerses = []">
+        <md-icon md-font-set="material-icons">check_box_outline_blank</md-icon>
+        <md-tooltip md-direction="top">Deselecionar Todos</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
+        <md-tooltip md-direction="top">Amarelo</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
+        <md-tooltip md-direction="top">Vermelho</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
+        <md-tooltip md-direction="top">Roxo</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
+        <md-tooltip md-direction="top">Azul</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
+        <md-tooltip md-direction="top">Verde</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
+        <md-tooltip md-direction="top">Rosa</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
+        <md-tooltip md-direction="top">Alaranjado</md-tooltip>
+      </md-button>
     </div>
   </md-toolbar>
 </div>

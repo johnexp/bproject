@@ -22,10 +22,10 @@ exports.userMetaByChapter = function (req, res, next) {
       if (err) {
         return next(err);
       } else if (!userMeta) {
-        userMeta = new UserMeta();
-        userMeta._id = null;
+        userMeta = {};
         userMeta.book = req.params.book;
         userMeta.chapter = req.params.chapter;
+        userMeta.markers = [];
       }
       req.userMeta = userMeta;
       return res.jsonp(userMeta);
@@ -39,7 +39,7 @@ exports.create = function (req, res) {
   var userMeta = new UserMeta(req.body);
   userMeta.user = req.user;
 
-  userMeta.save(function (err) {
+  UserMeta.create(userMeta, function (err, userMeta) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
