@@ -74,7 +74,7 @@
     </div>
   </md-toolbar>
   <div flex layout="row">
-    <md-content flex id="verses-list">
+    <md-content flex id="verses-list" ng-init="vm.setVersesMark()">
       <md-list class="md-dense" flex>
         <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink class="verse" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
           <div class="md-list-item-text" layout="column" ng-click="vm.selectVerse($index + 1)" >
@@ -97,6 +97,9 @@
       <md-button class="md-icon-button" ng-click="vm.selectedVerses = []">
         <md-icon md-font-set="material-icons">check_box_outline_blank</md-icon>
         <md-tooltip md-direction="top">Deselecionar Todos</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button white" ng-click="vm.unmarkVerses()">
+        <md-tooltip md-direction="top">Desmarcar</md-tooltip>
       </md-button>
       <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
         <md-tooltip md-direction="top">Amarelo</md-tooltip>

@@ -26,6 +26,9 @@ exports.userMetaByChapter = function (req, res, next) {
         userMeta.book = req.params.book;
         userMeta.chapter = req.params.chapter;
         userMeta.markers = [];
+        userMeta.tags = [];
+        userMeta.notes = [];
+        userMeta.refs = [];
       }
       req.userMeta = userMeta;
       return res.jsonp(userMeta);

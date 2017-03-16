@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$translatePartialLoader', '$translate', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast', '$log'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
 
-  function BooksController (Authentication, book, userMeta, $translatePartialLoader, $translate, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast, $log) {
+  function BooksController (Authentication, book, userMeta, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -39,12 +39,11 @@
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
     vm.markVerses = markVerses;
+    vm.unmarkVerses = unmarkVerses;
     vm.selectAllVerses = selectAllVerses;
     vm.userMeta = userMeta;
     vm.markers = {};
-
-    $translatePartialLoader.addPart('books');
-    $translate.refresh();
+    vm.setVersesMark = setVersesMark;
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -175,30 +174,36 @@
       }
     }
 
-    setVersesMark();
     function setVersesMark() {
       var markers = {};
-      vm.userMeta.markers.forEach(function (marker) {
-        marker.verses.forEach(function (verse) {
-          markers[verse] = marker.color;
-        });
-      });
+      for (var i = 0; i < vm.userMeta.markers.length; i++) {
+        for (var j = 0; j < vm.userMeta.markers[i].verses.length; j++) {
+          markers[vm.userMeta.markers[i].verses[j]] = vm.userMeta.markers[i].color;
+        }
+      }
       vm.markers = markers;
+    }
+
+    function unmarkVerses() {
+      for (var i = 0; i < vm.selectedVerses.length; i++) {
+        for (var j = 0; j < vm.userMeta.markers.length; j++) {
+          var verseIndex = vm.userMeta.markers[j].verses.indexOf(vm.selectedVerses[i]);
+          if (verseIndex !== -1) {
+            vm.userMeta.markers[j].verses.splice(verseIndex, 1);
+          }
+        }
+      }
+      saveUserMeta();
     }
 
     function markVerses(color) {
       var mustCreate = true;
-      if (vm.userMeta.markers.length > 0) {
-        for (var i = 0; i < vm.userMeta.markers.length; i++) {
-          if (vm.userMeta.markers[i].color === color) {
-            addSelectedVersesToMarker(vm.userMeta.markers[i]);
-            mustCreate = false;
-          } else {
-            removeAlreadyMarked(vm.userMeta.markers[i]);
-          }
-          if (vm.userMeta.markers[i].verses.length === 0) {
-            vm.userMeta.markers.splice(i, 1);
-          }
+      for (var i = 0; i < vm.userMeta.markers.length; i++) {
+        if (vm.userMeta.markers[i].color === color) {
+          addSelectedVersesToMarker(vm.userMeta.markers[i]);
+          mustCreate = false;
+        } else {
+          removeAlreadyMarked(vm.userMeta.markers[i]);
         }
       }
       if (mustCreate) {
@@ -224,7 +229,17 @@
       }
     }
 
+    function clearEmptyDocuments() {
+      var markersLength = vm.userMeta.markers.length;
+      for (var i = markersLength - 1; i >= 0; i--) {
+        if (vm.userMeta.markers[i].verses.length === 0) {
+          vm.userMeta.markers.splice(i, 1);
+        }
+      }
+    }
+
     function saveUserMeta() {
+      clearEmptyDocuments();
       vm.userMeta.createOrUpdate()
         .then(onSuccess)
         .catch(onError);

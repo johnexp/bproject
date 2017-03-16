@@ -9,8 +9,15 @@
 	padding-right: 5px;
 }
 
+.verse.white p, .color-button.white {
+	background-color: rgba(255, 255, 255, 1);
+}
+.md-button.color-button.white:hover {
+	background-color: rgba(255, 255, 255, .8);
+}
+
 .verse.yellow p, .color-button.yellow {
-	background-color: #F6F66E;
+	background-color: rgba(246, 246, 110, 1);
 }
 .md-button.color-button.yellow:hover {
 	background-color: rgba(246, 246, 110, .8);
