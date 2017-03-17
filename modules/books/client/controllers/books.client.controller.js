@@ -6,15 +6,14 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$mdMedia', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$mdDialog', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
 
-  function BooksController (Authentication, book, userMeta, $mdMedia, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
+  function BooksController (Authentication, book, userMeta, $mdDialog, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.book = book;
     vm.form = {};
-    vm.$mdMedia = $mdMedia;
     vm.chapter = $stateParams.chapter;
     vm.abbrev = $stateParams.abbrev;
     vm.nextChap = nextChap;
@@ -43,7 +42,11 @@
     vm.selectAllVerses = selectAllVerses;
     vm.userMeta = userMeta;
     vm.markers = {};
-    vm.setVersesMark = setVersesMark;
+    vm.notes = {};
+    vm.setVersesUserMeta = setVersesUserMeta;
+    vm.showNoteDialog = showNoteDialog;
+    vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
+    vm.noteToRemove = null;
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -115,7 +118,7 @@
     }
 
     function selectVerse(verse) {
-      if (!findVerse(verse)) {
+      if (!findSelectedVerse(verse)) {
         vm.selectedVerses.push(verse);
       } else {
         var index = findVerseIndex(verse);
@@ -130,7 +133,7 @@
       goToVerse(verse);
     }
 
-    function findVerse(verseToFind) {
+    function findSelectedVerse(verseToFind) {
       return vm.selectedVerses.find(function (verse) {
         return verse === verseToFind;
       });
@@ -160,10 +163,15 @@
       if (vm.highlightedVerse === verse) {
         verseClass = 'highlighted';
       }
-      if (findVerse(verse)) {
+      if (findSelectedVerse(verse)) {
         verseClass = 'selected';
       }
-      verseClass += ' ' + vm.markers[verse];
+      if (vm.markers[verse]) {
+        verseClass += ' ' + vm.markers[verse];
+      }
+      if (vm.notes[verse]) {
+        verseClass += ' has-note';
+      }
       return verseClass;
     }
 
@@ -174,6 +182,11 @@
       }
     }
 
+    function setVersesUserMeta() {
+      setVersesMark();
+      setVersesNotes();
+    }
+
     function setVersesMark() {
       var markers = {};
       for (var i = 0; i < vm.userMeta.markers.length; i++) {
@@ -182,6 +195,19 @@
         }
       }
       vm.markers = markers;
+    }
+
+    function setVersesNotes() {
+      var notes = {};
+      for (var i = 0; i < vm.userMeta.notes.length; i++) {
+        for (var j = 0; j < vm.userMeta.notes[i].verses.length; j++) {
+          if (!angular.isArray(notes[vm.userMeta.notes[i].verses[j]])) {
+            notes[vm.userMeta.notes[i].verses[j]] = [];
+          }
+          notes[vm.userMeta.notes[i].verses[j]].push(vm.userMeta.notes[i]);
+        }
+      }
+      vm.notes = notes;
     }
 
     function unmarkVerses() {
@@ -229,6 +255,56 @@
       }
     }
 
+    function showNoteDialog(ev, currentNote) {
+      $mdDialog.show({
+        controller: 'VerseNoteController as vm',
+        templateUrl: '/modules/user-meta/client/view/verse-note.client.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false,
+        locals: { currentNote: currentNote }
+      })
+        .then(function(versesNote) {
+          if (versesNote && versesNote.note) {
+            addVersesNote(versesNote);
+          }
+        });
+    }
+
+    function showConfirmRemoveVerseNote(ev, noteToRemove) {
+      vm.noteToRemove = noteToRemove;
+      var confirm = $mdDialog.confirm()
+        .title('Comfirmar Remoção')
+        .textContent('Deseja remover a nota do verso?')
+        .ariaLabel('Comfirmar Remoção')
+        .targetEvent(ev)
+        .ok('Sim')
+        .cancel('Não');
+      $mdDialog.show(confirm).then(function() {
+        removeVerseNote(vm.noteToRemove._id);
+      }, function () {
+        vm.noteToRemove = null;
+      });
+    }
+
+    function addVersesNote(versesNote) {
+      if (!versesNote._id) {
+        vm.userMeta.notes.push({ note: versesNote.note, verses: vm.selectedVerses });
+      }
+      saveUserMeta();
+    }
+
+    function removeVerseNote(verseNoteId) {
+      for (var i = 0; i < vm.userMeta.notes.length; i++) {
+        if (vm.userMeta.notes[i]._id === verseNoteId) {
+          vm.userMeta.notes.splice(i, 1);
+          vm.noteToRemove = null;
+          saveUserMeta();
+          return;
+        }
+      }
+    }
+
     function clearEmptyDocuments() {
       var markersLength = vm.userMeta.markers.length;
       for (var i = markersLength - 1; i >= 0; i--) {
@@ -246,13 +322,13 @@
 
       function onSuccess(userMeta) {
         vm.userMeta = userMeta;
-        setVersesMark();
+        setVersesUserMeta();
       }
 
       function onError() {
         Toast.genericErrorMessage();
       }
     }
-
   }
+
 }());

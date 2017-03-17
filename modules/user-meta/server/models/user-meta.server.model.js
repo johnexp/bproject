@@ -43,7 +43,6 @@ var UserMetaSchema = new Schema({
     }]
   }],
   notes: [{
-    _id: false,
     note: {
       type: String,
       required: true,

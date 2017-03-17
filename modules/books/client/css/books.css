@@ -1,29 +1,78 @@
-.verse p {
+.verse p.verse-text {
 	padding: 5px 10px;
 	margin: 8px 0px;
 	font-size: 1em;
 }
 
-.verse p sup {
+.verse p.verse-text sup {
 	font-weight: bold;
 	padding-right: 5px;
 }
 
-.verse.white p, .color-button.white {
+.notes-preview {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 54px;
+	z-index: 70;
+	width: 350px;
+	max-height: 350px;
+}
+
+.notes-preview md-card-content {
+	max-height: 260px;
+	overflow: auto;
+}
+
+.notes-preview p {
+	padding-left: 10px;
+	margin: 0 0 10px;
+}
+
+.notes-preview span {
+	color: #969696;
+	line-height: 35px;
+}
+
+.notes-preview md-divider {
+	position: relative;
+}
+
+.verse .pre-verse:hover .notes-preview, .notes-preview:hover {
+	display: block;
+}
+
+.verse .pre-verse {
+	width: 50px;
+	height: 100%;
+	display: inline-block;
+}
+
+.verse .pre-verse > .note-button {
+	display: none;
+	width: 40px;
+	margin: 0;
+}
+
+.verse.has-note .pre-verse > .note-button {
+	display: inline-block;
+}
+
+.verse.white p.verse-text, .color-button.white {
 	background-color: rgba(255, 255, 255, 1);
 }
 .md-button.color-button.white:hover {
 	background-color: rgba(255, 255, 255, .8);
 }
 
-.verse.yellow p, .color-button.yellow {
+.verse.yellow p.verse-text, .color-button.yellow {
 	background-color: rgba(246, 246, 110, 1);
 }
 .md-button.color-button.yellow:hover {
 	background-color: rgba(246, 246, 110, .8);
 }
 
-.verse.red p, .color-button.red {
+.verse.red p.verse-text, .color-button.red {
 	background-color: rgba(208, 85, 85, 1);
 	color: #FFFFFF;
 }
@@ -31,7 +80,7 @@
 	background-color: rgba(208, 85, 85, .8);
 }
 
-.verse.purple p, .color-button.purple {
+.verse.purple p.verse-text, .color-button.purple {
 	background-color: rgba(145, 109, 167, 1);
 	color: #FFFFFF;
 }
@@ -39,14 +88,14 @@
 	background-color: rgba(145, 109, 167, .8);
 }
 
-.verse.blue p, .color-button.blue {
+.verse.blue p.verse-text, .color-button.blue {
 	background-color: rgba(191, 218, 241, 1);
 }
 .md-button.color-button.blue:hover {
 	background-color: rgba(191, 218, 241, .8);
 }
 
-.verse.green p, .color-button.green {
+.verse.green p.verse-text, .color-button.green {
 	background-color: rgba(91, 154, 142, 1);
 	color: #FFFFFF;
 }
@@ -54,14 +103,14 @@
 	background-color: rgba(91, 154, 142, .8);
 }
 
-.verse.pink p, .color-button.pink {
+.verse.pink p.verse-text, .color-button.pink {
 	background-color: rgba(241, 192, 237, 1);
 }
 .md-button.color-button.pink:hover {
 	background-color: rgba(241, 192, 237, .8);
 }
 
-.verse.orange p, .color-button.orange {
+.verse.orange p.verse-text, .color-button.orange {
 	background-color: rgba(236, 176, 124, 1);
 }
 .md-button.color-button.orange:hover {

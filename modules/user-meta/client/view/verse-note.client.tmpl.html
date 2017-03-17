@@ -1,0 +1,35 @@
+<md-dialog aria-label="Adicionar Nota" class="note-dialog">
+  <form ng-cloak name="versesNote" ng-submit="vm.saveNote()" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Adicionar Nota</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.hide()">
+          <md-icon md-font-set="material-icons" aria-label="Fechar Janela">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container class="md-block">
+          <label>Nota</label>
+          <textarea ng-model="vm.versesNote.note" name="note" md-maxlength="250" minlength="2" rows="5" required></textarea>
+          <div ng-messages="versesNote.note.$error">
+            <div ng-message="required">Este campo é obrigatório.</div>
+            <div ng-message="minlength">Este campo deve possuir no mínimo 2 caracteres.</div>
+          </div>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="vm.hide()">
+        Cancelar
+      </md-button>
+      <md-button class="md-raised md-primary" type="submit">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
