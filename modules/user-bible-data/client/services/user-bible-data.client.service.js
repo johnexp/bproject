@@ -3,13 +3,13 @@
   'use strict';
 
   angular
-    .module('user-meta')
-    .factory('UserMetaService', UserMetaService);
+    .module('user-bible-data')
+    .factory('UserBibleDataService', UserBibleDataService);
 
-  UserMetaService.$inject = ['$resource', '$log'];
+  UserBibleDataService.$inject = ['$resource', '$log'];
 
-  function UserMetaService($resource, $log) {
-    var UserMeta = $resource('/api/user-meta/:book/:chapter', {
+  function UserBibleDataService($resource, $log) {
+    var UserBibleData = $resource('/api/user-bible-data/:book/:chapter', {
       book: '@book',
       chapter: '@chapter'
     }, {
@@ -24,24 +24,24 @@
       }
     });
 
-    angular.extend(UserMeta.prototype, {
+    angular.extend(UserBibleData.prototype, {
       createOrUpdate: function () {
-        var userMeta = this;
-        return createOrUpdate(userMeta);
+        var userBibleData = this;
+        return createOrUpdate(userBibleData);
       }
     });
 
-    return UserMeta;
+    return UserBibleData;
 
-    function createOrUpdate(userMeta) {
-      if (userMeta._id) {
-        return userMeta.$update(onSuccess, onError);
+    function createOrUpdate(userBibleData) {
+      if (userBibleData._id) {
+        return userBibleData.$update(onSuccess, onError);
       } else {
-        return userMeta.$save(onSuccess, onError);
+        return userBibleData.$save(onSuccess, onError);
       }
 
       // Handle successful response
-      function onSuccess(userMeta) {
+      function onSuccess(userBibleData) {
         // Any required internal processing from inside the service, goes here.
       }
 

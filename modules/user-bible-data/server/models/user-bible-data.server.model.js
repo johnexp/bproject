@@ -7,9 +7,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * User meta Schema
+ * User Bible Data Schema
  */
-var UserMetaSchema = new Schema({
+var UserBibleDataSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -46,7 +46,9 @@ var UserMetaSchema = new Schema({
     note: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      minlength: [2, 'O valor do campo `{PATH}` (`{VALUE}`) não atinge o valor mínimo necessário ({MAXLENGTH}).'],
+      maxlength: [250, 'O valor do campo `{PATH}` (`{VALUE}`) excede o valor máximo permitido ({MAXLENGTH}).']
     },
     verses: [{
       type: Number,
@@ -69,7 +71,6 @@ var UserMetaSchema = new Schema({
     }]
   }],
   tags: [{
-    _id: false,
     tags: [{
       type: String,
       required: true,
@@ -83,4 +84,4 @@ var UserMetaSchema = new Schema({
   }]
 });
 
-mongoose.model('UserMeta', UserMetaSchema);
+mongoose.model('UserBibleData', UserBibleDataSchema);

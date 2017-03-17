@@ -61,7 +61,8 @@
         controllerAs: 'vm',
         resolve: {
           bookResolve: getBook,
-          userMetaResolve: getUserMeta
+          userBibleDataResolve: getUserBibleData,
+          userCustomDataResolve: getUserCustomData
         },
         data: {
           roles: ['user', 'admin', 'guest'],
@@ -82,15 +83,21 @@
     }).$promise;
   }
 
-  getUserMeta.$inject = ['$stateParams', 'UserMetaService'];
+  getUserBibleData.$inject = ['$stateParams', 'UserBibleDataService'];
 
-  function getUserMeta($stateParams, UserMetaService) {
+  function getUserBibleData($stateParams, UserBibleDataService) {
     $stateParams.abbrev = $stateParams.abbrev || 'gn';
     $stateParams.chapter = $stateParams.chapter || 1;
-    return UserMetaService.get({
+    return UserBibleDataService.get({
       book: $stateParams.abbrev,
       chapter: $stateParams.chapter
     }).$promise;
+  }
+
+  getUserCustomData.$inject = ['UserCustomDataService'];
+
+  function getUserCustomData(UserCustomDataService) {
+    return UserCustomDataService.get().$promise;
   }
 
   newBook.$inject = ['BooksService'];

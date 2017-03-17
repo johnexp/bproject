@@ -15,13 +15,13 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/user-meta/:book/:chapter',
+      resources: '/api/user-custom-data',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/user-meta/:book/:chapter',
+      resources: '/api/user-custom-data',
       permissions: '*'
     }]
   }]);
@@ -33,8 +33,8 @@ exports.invokeRolesPolicies = function () {
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an User metum is being processed and the current user created it then allow any manipulation
-  if (req.userMeta && req.user && req.userMeta.user && req.userMeta.user.id === req.user.id) {
+  // If an User custom data is being processed and the current user created it then allow any manipulation
+  if (req.userCustomData && req.user && req.userCustomData.user && req.userCustomData.user.id === req.user.id) {
     return next();
   }
 

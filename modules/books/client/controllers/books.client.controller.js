@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userMetaResolve', '$mdDialog', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
 
-  function BooksController (Authentication, book, userMeta, $mdDialog, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
+  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -40,11 +40,14 @@
     vm.markVerses = markVerses;
     vm.unmarkVerses = unmarkVerses;
     vm.selectAllVerses = selectAllVerses;
-    vm.userMeta = userMeta;
+    vm.userBibleData = userBibleData;
+    vm.userCustomData = userCustomData;
     vm.markers = {};
     vm.notes = {};
+    vm.tags = {};
     vm.setVersesUserMeta = setVersesUserMeta;
     vm.showNoteDialog = showNoteDialog;
+    vm.showTagsDialog = showTagsDialog;
     vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
     vm.noteToRemove = null;
 
@@ -185,13 +188,14 @@
     function setVersesUserMeta() {
       setVersesMark();
       setVersesNotes();
+      setVersesTags();
     }
 
     function setVersesMark() {
       var markers = {};
-      for (var i = 0; i < vm.userMeta.markers.length; i++) {
-        for (var j = 0; j < vm.userMeta.markers[i].verses.length; j++) {
-          markers[vm.userMeta.markers[i].verses[j]] = vm.userMeta.markers[i].color;
+      for (var i = 0; i < vm.userBibleData.markers.length; i++) {
+        for (var j = 0; j < vm.userBibleData.markers[i].verses.length; j++) {
+          markers[vm.userBibleData.markers[i].verses[j]] = vm.userBibleData.markers[i].color;
         }
       }
       vm.markers = markers;
@@ -199,43 +203,56 @@
 
     function setVersesNotes() {
       var notes = {};
-      for (var i = 0; i < vm.userMeta.notes.length; i++) {
-        for (var j = 0; j < vm.userMeta.notes[i].verses.length; j++) {
-          if (!angular.isArray(notes[vm.userMeta.notes[i].verses[j]])) {
-            notes[vm.userMeta.notes[i].verses[j]] = [];
+      for (var i = 0; i < vm.userBibleData.notes.length; i++) {
+        for (var j = 0; j < vm.userBibleData.notes[i].verses.length; j++) {
+          if (!angular.isArray(notes[vm.userBibleData.notes[i].verses[j]])) {
+            notes[vm.userBibleData.notes[i].verses[j]] = [];
           }
-          notes[vm.userMeta.notes[i].verses[j]].push(vm.userMeta.notes[i]);
+          notes[vm.userBibleData.notes[i].verses[j]].push(vm.userBibleData.notes[i]);
         }
       }
       vm.notes = notes;
     }
 
+    function setVersesTags() {
+      var tags = {};
+      for (var i = 0; i < vm.userBibleData.tags.length; i++) {
+        for (var j = 0; j < vm.userBibleData.tags[i].verses.length; j++) {
+          if (!angular.isArray(tags[vm.userBibleData.tags[i].verses[j]])) {
+            tags[vm.userBibleData.tags[i].verses[j]] = [];
+          }
+          tags[vm.userBibleData.tags[i].verses[j]].push(vm.userBibleData.tags[i]);
+        }
+      }
+      vm.tags = tags;
+    }
+
     function unmarkVerses() {
       for (var i = 0; i < vm.selectedVerses.length; i++) {
-        for (var j = 0; j < vm.userMeta.markers.length; j++) {
-          var verseIndex = vm.userMeta.markers[j].verses.indexOf(vm.selectedVerses[i]);
+        for (var j = 0; j < vm.userBibleData.markers.length; j++) {
+          var verseIndex = vm.userBibleData.markers[j].verses.indexOf(vm.selectedVerses[i]);
           if (verseIndex !== -1) {
-            vm.userMeta.markers[j].verses.splice(verseIndex, 1);
+            vm.userBibleData.markers[j].verses.splice(verseIndex, 1);
           }
         }
       }
-      saveUserMeta();
+      saveUserBibleData();
     }
 
     function markVerses(color) {
       var mustCreate = true;
-      for (var i = 0; i < vm.userMeta.markers.length; i++) {
-        if (vm.userMeta.markers[i].color === color) {
-          addSelectedVersesToMarker(vm.userMeta.markers[i]);
+      for (var i = 0; i < vm.userBibleData.markers.length; i++) {
+        if (vm.userBibleData.markers[i].color === color) {
+          addSelectedVersesToMarker(vm.userBibleData.markers[i]);
           mustCreate = false;
         } else {
-          removeAlreadyMarked(vm.userMeta.markers[i]);
+          removeAlreadyMarked(vm.userBibleData.markers[i]);
         }
       }
       if (mustCreate) {
-        vm.userMeta.markers.push({ color: color, verses: vm.selectedVerses });
+        vm.userBibleData.markers.push({ color: color, verses: vm.selectedVerses });
       }
-      saveUserMeta();
+      saveUserBibleData();
     }
 
     function addSelectedVersesToMarker(marker) {
@@ -258,7 +275,7 @@
     function showNoteDialog(ev, currentNote) {
       $mdDialog.show({
         controller: 'VerseNoteController as vm',
-        templateUrl: '/modules/user-meta/client/view/verse-note.client.tmpl.html',
+        templateUrl: '/modules/user-bible-data/client/view/verse-note.client.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false,
@@ -267,6 +284,22 @@
         .then(function(versesNote) {
           if (versesNote && versesNote.note) {
             addVersesNote(versesNote);
+          }
+        });
+    }
+
+    function showTagsDialog(ev, currentTags) {
+      $mdDialog.show({
+        controller: 'VerseTagsController as vm',
+        templateUrl: '/modules/user-bible-data/client/view/verse-tags.client.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false,
+        locals: { currentTags: currentTags }
+      })
+        .then(function(versesTags) {
+          if (versesTags && versesTags.tags) {
+            addVersesTags(versesTags);
           }
         });
     }
@@ -287,41 +320,74 @@
       });
     }
 
+    function addVersesTags(versesTags) {
+      if (!versesTags._id) {
+        vm.userBibleData.tags.push({ tags: versesTags.tags, verses: vm.selectedVerses });
+      }
+      saveUserTags(versesTags);
+      saveUserBibleData();
+    }
+
+    function saveUserTags(versesTags) {
+      for (var i = 0; i < versesTags.tags.length; i++) {
+        if (vm.userCustomData.tags.indexOf(versesTags.tags[i]) === -1) {
+          vm.userCustomData.tags.push(versesTags.tags[i]);
+        }
+      }
+      saveUserCustomData();
+    }
+
     function addVersesNote(versesNote) {
       if (!versesNote._id) {
-        vm.userMeta.notes.push({ note: versesNote.note, verses: vm.selectedVerses });
+        vm.userBibleData.notes.push({ note: versesNote.note, verses: vm.selectedVerses });
       }
-      saveUserMeta();
+      saveUserBibleData();
     }
 
     function removeVerseNote(verseNoteId) {
-      for (var i = 0; i < vm.userMeta.notes.length; i++) {
-        if (vm.userMeta.notes[i]._id === verseNoteId) {
-          vm.userMeta.notes.splice(i, 1);
+      for (var i = 0; i < vm.userBibleData.notes.length; i++) {
+        if (vm.userBibleData.notes[i]._id === verseNoteId) {
+          vm.userBibleData.notes.splice(i, 1);
           vm.noteToRemove = null;
-          saveUserMeta();
+          saveUserBibleData();
           return;
         }
       }
     }
 
     function clearEmptyDocuments() {
-      var markersLength = vm.userMeta.markers.length;
+      var markersLength = vm.userBibleData.markers.length;
       for (var i = markersLength - 1; i >= 0; i--) {
-        if (vm.userMeta.markers[i].verses.length === 0) {
-          vm.userMeta.markers.splice(i, 1);
+        if (vm.userBibleData.markers[i].verses.length === 0) {
+          vm.userBibleData.markers.splice(i, 1);
         }
       }
     }
 
-    function saveUserMeta() {
+    function saveUserBibleData() {
       clearEmptyDocuments();
-      vm.userMeta.createOrUpdate()
+      vm.userBibleData.createOrUpdate()
         .then(onSuccess)
         .catch(onError);
 
-      function onSuccess(userMeta) {
-        vm.userMeta = userMeta;
+      function onSuccess(userBibleData) {
+        vm.userBibleData = userBibleData;
+        setVersesUserMeta();
+      }
+
+      function onError() {
+        Toast.genericErrorMessage();
+      }
+    }
+
+    function saveUserCustomData() {
+      clearEmptyDocuments();
+      userCustomData.createOrUpdate()
+        .then(onSuccess)
+        .catch(onError);
+
+      function onSuccess(userCustomData) {
+        vm.userCustomData = userCustomData;
         setVersesUserMeta();
       }
 

@@ -1,0 +1,42 @@
+<md-dialog aria-label="Tags dos Versos" class="note-dialog">
+  <form ng-cloak name="versesTags" ng-submit="vm.saveTags()" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Tags dos Versos</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.hide()">
+          <md-icon md-font-set="material-icons" aria-label="Fechar Janela">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <md-input-container class="md-block">
+          <label>Tags</label>
+          <md-chips ng-model="vm.selectedTags.tags" name="tags" md-removable="true"  >
+            <!-- md-require-match="false" md-autocomplete-snap-->
+            <!--<md-autocomplete md-selected-item="vm.selectedItem" md-search-text="vm.searchText"-->
+              <!--md-items="item in vm.querySearch(vm.searchText)" md-item-text="item" placeholder="Digite o nome da tag">-->
+              <!--<span md-highlight-text="vm.searchText">{{item}}</span>-->
+            <!--</md-autocomplete>-->
+            <!--<md-chip-template>-->
+              <!--<span>-->
+                <!--<strong>{{$chip}}</strong>-->
+              <!--</span>-->
+            <!--</md-chip-template>-->
+          </md-chips>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="vm.hide()">
+        Cancelar
+      </md-button>
+      <md-button class="md-raised md-primary" type="submit">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

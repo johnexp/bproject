@@ -1,5 +1,5 @@
 (function (app) {
   'use strict';
 
-  app.registerModule('user-meta');
+  app.registerModule('user-custom-data');
 }(ApplicationConfiguration));

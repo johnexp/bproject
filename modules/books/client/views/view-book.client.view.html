@@ -55,6 +55,7 @@
       </md-button>
       <div flex></div>
       <md-button class="md-primary md-raised" ng-click="vm.toggleBooksList()">
+        <md-icon md-font-set="material-icons">book</md-icon>
         {{vm.isListOpen() ? 'Livro' : vm.book.book}}
         <md-tooltip><span>Selecionar Livro</span></md-tooltip>
       </md-button>
@@ -75,7 +76,7 @@
   </md-toolbar>
   <div flex layout="row">
     <md-content flex id="verses-list" ng-init="vm.setVersesUserMeta()">
-      <md-list class="md-dense" flex>
+      <md-list class="md-dense" flex="66">
         <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink class="verse" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
           <span class="pre-verse">
             <md-button class="md-icon-button note-button">
@@ -160,6 +161,10 @@
       <md-button class="md-icon-button color-button" ng-click="vm.showNoteDialog()">
         <md-icon md-font-set="material-icons">note_add</md-icon>
         <md-tooltip md-direction="top">Adicionar Nota</md-tooltip>
+      </md-button>
+      <md-button class="md-icon-button color-button" ng-click="vm.showTagsDialog()">
+        <md-icon md-font-set="material-icons">bookmark</md-icon>
+        <md-tooltip md-direction="top">Adicionar Tags</md-tooltip>
       </md-button>
     </div>
   </md-toolbar>

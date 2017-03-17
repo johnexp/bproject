@@ -6,7 +6,6 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Book = mongoose.model('Book'),
-  UserMeta = mongoose.model('UserMeta'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
