@@ -5,9 +5,10 @@
     .module('user-bible-data')
     .controller('VerseNoteController', VerseNoteController);
 
-  function VerseNoteController($mdDialog, Toast, currentNote) {
+  function VerseNoteController($mdDialog, Toast, currentNote, selectedVerses) {
     var vm = this;
-    vm.versesNote = currentNote;
+    vm.versesNote = angular.copy(currentNote);
+    vm.selectedVerses = selectedVerses;
     vm.saveNote = saveNote;
     vm.hide = hide;
 
@@ -20,7 +21,8 @@
         Toast.warning('O campo nota deve ter no mínimo 2 caracteres');
         return;
       }
-      $mdDialog.hide(vm.versesNote);
+      currentNote.note = vm.versesNote.note;
+      $mdDialog.hide(currentNote);
     }
   }
 }());

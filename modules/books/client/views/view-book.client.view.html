@@ -12,7 +12,7 @@
         <md-subheader ng-cloak>Antigo Testamento</md-subheader>
         <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
           <md-list-item ng-repeat="book in vm.bookList.at | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book)" flex="50">
-            {{book.name}}
+            <span md-highlight-text="vm.bookSearchTerm" md-highlight-flags="i">{{book.name}}</span>
           </md-list-item>
         </md-list>
       </div>
@@ -20,7 +20,7 @@
         <md-subheader ng-cloak>Novo Testamento</md-subheader>
         <md-list ng-cloak layout="row" class="md-dense" layout-wrap>
           <md-list-item ng-repeat="book in vm.bookList.nt | filter: vm.bookSearchTerm" ng-click="vm.selectBook(book)" flex="50">
-            {{book.name}}
+            <span md-highlight-text="vm.bookSearchTerm" md-highlight-flags="i">{{book.name}}</span>
           </md-list-item>
         </md-list>
       </div>
@@ -78,40 +78,10 @@
     <md-content flex id="verses-list" ng-init="vm.setVersesUserMeta()">
       <md-list class="md-dense">
         <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink class="verse" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
-          <span class="pre-verse">
+          <span class="pre-verse" ng-mouseenter="vm.showNotesPreview($event, $index + 1)" ng-mouseleave="vm.hidePreviewCards()">
             <md-button class="md-icon-button note-button">
               <md-icon md-font-set="material-icons">speaker_notes</md-icon>
             </md-button>
-            <md-card class="notes-preview">
-              <md-card-title>
-                <md-card-title-text>
-                  <span class="md-headline">Notas</span>
-                </md-card-title-text>
-              </md-card-title>
-              <md-card-content>
-                <div ng-repeat="note in vm.notes[$index + 1]">
-                  <div layout="row">
-                    <div flex>
-                      <span class="md-body-2">Nota</span>
-                      <p class="md-caption">{{note.note}}</p>
-                      <span class="md-body-2">Versos</span>
-                      <p class="md-caption">{{vm.arrayToString(note.verses)}}</p>
-                    </div>
-                    <div layout="column">
-                      <md-button class="md-icon-button" ng-click="vm.showNoteDialog($event, note)">
-                        <md-tooltip>Editar Nota</md-tooltip>
-                        <md-icon md-font-set="material-icons">edit</md-icon>
-                      </md-button>
-                      <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseNote($event, note)">
-                        <md-tooltip>Remover Nota</md-tooltip>
-                        <md-icon md-font-set="material-icons">delete</md-icon>
-                      </md-button>
-                    </div>
-                  </div>
-                  <md-divider ng-if="!$last"></md-divider>
-                </div>
-              </md-card-content>
-            </md-card>
           </span>
           <div class="md-list-item-text verse-list-item" layout="column" ng-click="vm.selectVerse($index + 1)">
             <p class="verse-text">
@@ -119,86 +89,133 @@
               {{verse}}
             </p>
           </div>
-          <span class="pos-verse">
+          <span class="pos-verse" ng-mouseenter="vm.showMorePreview($event, $index + 1)" ng-mouseleave="vm.hidePreviewCards()">
             <md-button class="md-icon-button more-button">
               <md-icon md-font-set="material-icons">more</md-icon>
             </md-button>
-            <md-card class="more-preview">
-              <md-card-title>
-                <md-card-title-text>
-                  <span class="md-headline">Tags</span>
-                </md-card-title-text>
-              </md-card-title>
-              <md-card-content>
-                <div ng-repeat="tag in vm.tags[$index + 1]">
-                  <div layout="row">
-                    <div flex>
-                      <span class="md-body-2">Tags</span>
-                      <p class="md-caption">{{vm.arrayToString(tag.tags)}}</p>
-                      <span class="md-body-2">Versos</span>
-                      <p class="md-caption">{{vm.arrayToString(tag.verses)}}</p>
-                    </div>
-                    <div layout="column">
-                      <md-button class="md-icon-button" ng-click="vm.showTagsDialog($event, tag)">
-                        <md-tooltip>Editar Tags</md-tooltip>
-                        <md-icon md-font-set="material-icons">edit</md-icon>
-                      </md-button>
-                      <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseTag($event, tag)">
-                        <md-tooltip>Remover Tags</md-tooltip>
-                        <md-icon md-font-set="material-icons">delete</md-icon>
-                      </md-button>
-                    </div>
-                  </div>
-                  <md-divider ng-if="!$last"></md-divider>
-                </div>
-              </md-card-content>
-            </md-card>
           </span>
         </md-list-item>
       </md-list>
+      <md-card class="notes-preview" ng-class="vm.notesPreviewClass" ng-style="{ top: vm.previewCardTop + 'px' }">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Notas</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <div ng-repeat="note in vm.notes[vm.versePreviewShowing]">
+            <div layout="row">
+              <div flex>
+                <span class="md-body-2">Nota</span>
+                <p class="md-caption">{{note.note}}</p>
+                <span class="md-body-2">Versos</span>
+                <p class="md-caption">{{vm.arrayToString(note.verses)}}</p>
+              </div>
+              <div layout="column">
+                <md-button class="md-icon-button" ng-click="vm.showNoteDialog($event, note)">
+                  <md-tooltip>Editar Nota</md-tooltip>
+                  <md-icon md-font-set="material-icons">edit</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseNote($event, note)">
+                  <md-tooltip>Remover Nota</md-tooltip>
+                  <md-icon md-font-set="material-icons">delete</md-icon>
+                </md-button>
+              </div>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+          </div>
+        </md-card-content>
+      </md-card>
+      <md-card class="more-preview" ng-class="vm.morePreviewClass" ng-style="{ top: vm.previewCardTop + 'px' }">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tags</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <div ng-repeat="tag in vm.tags[vm.versePreviewShowing]">
+            <div layout="row">
+              <div flex>
+                <span class="md-body-2">Tags</span>
+                <p class="md-caption">{{vm.arrayToString(tag.tags)}}</p>
+                <span class="md-body-2">Versos</span>
+                <p class="md-caption">{{vm.arrayToString(tag.verses)}}</p>
+              </div>
+              <div layout="column">
+                <md-button class="md-icon-button" ng-click="vm.showTagsDialog($event, tag)">
+                  <md-tooltip>Editar Tags</md-tooltip>
+                  <md-icon md-font-set="material-icons">edit</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseTag($event, tag)">
+                  <md-tooltip>Remover Tags</md-tooltip>
+                  <md-icon md-font-set="material-icons">delete</md-icon>
+                </md-button>
+              </div>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+          </div>
+        </md-card-content>
+      </md-card>
     </md-content>
     <div id="verses-tools" ng-class="vm.selectedVerses.length > 0 ? 'show-verses-tools' : ''">
       <div id="verses-tools-content">
-        <span>({{vm.selectedVerses.length}})</span>
+        <h3>{{vm.selectedVerses.length}} Verso(s) Selecionado(s)</h3>
+        <md-divider></md-divider>
+
+        <h3>Seleção</h3>
         <md-button class="md-icon-button" ng-click="vm.selectAllVerses()">
           <md-icon md-font-set="material-icons">check_box</md-icon>
-          <md-tooltip md-direction="top">Selecionar Todos</md-tooltip>
+          <md-tooltip>Selecionar Todos</md-tooltip>
         </md-button>
         <md-button class="md-icon-button" ng-click="vm.selectedVerses = []">
           <md-icon md-font-set="material-icons">check_box_outline_blank</md-icon>
-          <md-tooltip md-direction="top">Deselecionar Todos</md-tooltip>
+          <md-tooltip>Deselecionar Todos</md-tooltip>
         </md-button>
-        <md-button class="md-icon-button color-button white" ng-click="vm.unmarkVerses()">
-          <md-tooltip md-direction="top">Desmarcar</md-tooltip>
+        <md-divider></md-divider>
+
+        <h3>Marcar Versos</h3>
+        <md-button class="md-icon-button" ng-click="vm.unmarkVerses()">
+          <md-icon md-font-set="material-icons">panorama_fish_eye</md-icon>
+          <md-tooltip>Desmarcar</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
-          <md-tooltip md-direction="top">Amarelo</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Amarelo</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
-          <md-tooltip md-direction="top">Vermelho</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Vermelho</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
-          <md-tooltip md-direction="top">Roxo</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Roxo</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
-          <md-tooltip md-direction="top">Azul</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Azul</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
-          <md-tooltip md-direction="top">Verde</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Verde</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
-          <md-tooltip md-direction="top">Rosa</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Rosa</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
-          <md-tooltip md-direction="top">Alaranjado</md-tooltip>
+          <md-icon md-font-set="material-icons">lens</md-icon>
+          <md-tooltip>Alaranjado</md-tooltip>
         </md-button>
+        <md-divider></md-divider>
+
+        <h3>Adicionar Metadados</h3>
         <md-button class="md-icon-button color-button" ng-click="vm.showNoteDialog()">
-          <md-icon md-font-set="material-icons">note_add</md-icon>
-          <md-tooltip md-direction="top">Adicionar Nota</md-tooltip>
+          <md-icon md-font-set="material-icons">speaker_notes</md-icon>
+          <md-tooltip>Adicionar Nota</md-tooltip>
         </md-button>
         <md-button class="md-icon-button color-button" ng-click="vm.showTagsDialog()">
           <md-icon md-font-set="material-icons">more</md-icon>
-          <md-tooltip md-direction="top">Adicionar Tags</md-tooltip>
+          <md-tooltip>Adicionar Tags</md-tooltip>
         </md-button>
       </div>
     </div>

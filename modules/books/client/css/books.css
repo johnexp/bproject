@@ -10,6 +10,11 @@
 	padding-right: 5px;
 }
 
+span.highlight {
+	background-color: #f8ffaa;
+	color: #9a9a9a
+}
+
 .more-preview {
 	right: 58px;
 }
@@ -17,12 +22,17 @@
 	left: 54px;
 }
 .notes-preview, .more-preview {
-	display: none;
 	position: absolute;
-	top: 0;
 	z-index: 70;
 	width: 350px;
-	max-height: 350px;
+	max-height: 0;
+	overflow: hidden;
+	-webkit-transition: 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+	-webkit-transition-property: max-height;
+	-moz-transition: 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+	-moz-transition-property: max-height;
+	transition: 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+	transition-property: max-height;
 }
 
 .notes-preview md-card-content, .more-preview md-card-content {
@@ -44,8 +54,8 @@
 	position: relative;
 }
 
-.verse .pre-verse:hover .notes-preview, .notes-preview:hover, .verse .pos-verse:hover .more-preview, .more-preview:hover {
-	display: block;
+.verse .pre-verse:hover .notes-preview, .notes-preview:hover, .notes-preview.show, .verse .pos-verse:hover .more-preview, .more-preview:hover, .more-preview.show {
+	max-height: 350px;
 }
 
 .verse .pre-verse, .verse .pos-verse {
@@ -65,63 +75,77 @@
 	display: inline-block;
 }
 
-.verse.white p.verse-text, .color-button.white {
-	background-color: rgba(255, 255, 255, 1);
-}
-.md-button.color-button.white:hover {
-	background-color: rgba(255, 255, 255, .8);
-}
-
-.verse.yellow p.verse-text, .color-button.yellow {
+.verse.yellow p.verse-text {
 	background-color: rgba(246, 246, 110, 1);
 }
+.color-button.yellow md-icon {
+	color: rgba(246, 246, 110, 1);
+}
 .md-button.color-button.yellow:hover {
-	background-color: rgba(246, 246, 110, .8);
+	color: rgba(246, 246, 110, .8);
 }
 
-.verse.red p.verse-text, .color-button.red {
+.verse.red p.verse-text {
 	background-color: rgba(208, 85, 85, 1);
 	color: #FFFFFF;
 }
+.color-button.red md-icon {
+	color: rgba(208, 85, 85, 1);
+}
 .md-button.color-button.red:hover {
-	background-color: rgba(208, 85, 85, .8);
+	color: rgba(208, 85, 85, .8);
 }
 
-.verse.purple p.verse-text, .color-button.purple {
+.verse.purple p.verse-text {
 	background-color: rgba(145, 109, 167, 1);
 	color: #FFFFFF;
 }
+.color-button.purple md-icon {
+	color: rgba(145, 109, 167, 1);
+}
 .md-button.color-button.purple:hover {
-	background-color: rgba(145, 109, 167, .8);
+	color: rgba(145, 109, 167, .8);
 }
 
-.verse.blue p.verse-text, .color-button.blue {
+.verse.blue p.verse-text {
 	background-color: rgba(191, 218, 241, 1);
 }
+.color-button.blue md-icon {
+	color: rgba(191, 218, 241, 1);
+}
 .md-button.color-button.blue:hover {
-	background-color: rgba(191, 218, 241, .8);
+	color: rgba(191, 218, 241, .8);
 }
 
-.verse.green p.verse-text, .color-button.green {
+.verse.green p.verse-text {
 	background-color: rgba(91, 154, 142, 1);
 	color: #FFFFFF;
 }
+.color-button.green md-icon {
+	color: rgba(91, 154, 142, 1);
+}
 .md-button.color-button.green:hover {
-	background-color: rgba(91, 154, 142, .8);
+	color: rgba(91, 154, 142, .8);
 }
 
-.verse.pink p.verse-text, .color-button.pink {
+.verse.pink p.verse-text {
 	background-color: rgba(241, 192, 237, 1);
 }
+.color-button.pink md-icon {
+	color: rgba(241, 192, 237, 1);
+}
 .md-button.color-button.pink:hover {
-	background-color: rgba(241, 192, 237, .8);
+	color: rgba(241, 192, 237, .8);
 }
 
-.verse.orange p.verse-text, .color-button.orange {
+.verse.orange p.verse-text {
 	background-color: rgba(236, 176, 124, 1);
 }
+.color-button.orange md-icon {
+	color: rgba(236, 176, 124, 1);
+}
 .md-button.color-button.orange:hover {
-	background-color: rgba(236, 176, 124, .8);
+	color: rgba(236, 176, 124, .8);
 }
 
 md-list.md-dense md-list-item .md-list-item-text.verse-list-item .verse p {

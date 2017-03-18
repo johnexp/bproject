@@ -5,9 +5,10 @@
     .module('user-bible-data')
     .controller('VerseTagsController', VerseTagsController);
 
-  function VerseTagsController($mdDialog, currentTags) {
+  function VerseTagsController($mdDialog, currentTags, selectedVerses, userTags) {
     var vm = this;
-    vm.selectedTags = currentTags || { tags: [] };
+    vm.selectedTags = angular.copy(currentTags) || { tags: [] };
+    vm.selectedVerses = selectedVerses;
     vm.selectedItem = null;
     vm.searchText = null;
     vm.querySearch = querySearch;
@@ -19,13 +20,20 @@
     }
 
     function saveTags() {
-      $mdDialog.hide(vm.selectedTags);
+      currentTags.tags = vm.selectedTags.tags;
+      $mdDialog.hide(currentTags);
     }
 
     function querySearch (query) {
-      // TODO: Implement server search for tags
-      // var results = query ? vm.tags.filter(createFilterFor(query)) : [];
-      // return results;
+      var results = query ? userTags.filter(createFilterFor(query)) : [];
+      return results;
+    }
+
+    function createFilterFor(query) {
+      var lowercaseQuery = query.toLowerCase();
+      return function filterFn(tag) {
+        return (tag.toLowerCase().indexOf(lowercaseQuery) === 0) || (tag.toLowerCase().indexOf(lowercaseQuery) === 0);
+      };
     }
   }
 }());
