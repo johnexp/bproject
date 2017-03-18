@@ -49,7 +49,10 @@
     vm.showNoteDialog = showNoteDialog;
     vm.showTagsDialog = showTagsDialog;
     vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
+    vm.showConfirmRemoveVerseTag = showConfirmRemoveVerseTag;
     vm.noteToRemove = null;
+    vm.tagsToRemove = null;
+    vm.arrayToString = arrayToString;
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -174,6 +177,9 @@
       }
       if (vm.notes[verse]) {
         verseClass += ' has-note';
+      }
+      if (vm.tags[verse]) {
+        verseClass += ' has-more';
       }
       return verseClass;
     }
@@ -320,6 +326,22 @@
       });
     }
 
+    function showConfirmRemoveVerseTag(ev, tagsToRemove) {
+      vm.tagsToRemove = tagsToRemove;
+      var confirm = $mdDialog.confirm()
+        .title('Comfirmar Remoção')
+        .textContent('Deseja remover a(s) tag(s) do verso?')
+        .ariaLabel('Comfirmar Remoção')
+        .targetEvent(ev)
+        .ok('Sim')
+        .cancel('Não');
+      $mdDialog.show(confirm).then(function() {
+        removeVerseTags(vm.tagsToRemove._id);
+      }, function () {
+        vm.tagsToRemove = null;
+      });
+    }
+
     function addVersesTags(versesTags) {
       if (!versesTags._id) {
         vm.userBibleData.tags.push({ tags: versesTags.tags, verses: vm.selectedVerses });
@@ -355,6 +377,17 @@
       }
     }
 
+    function removeVerseTags(tagsNoteId) {
+      for (var i = 0; i < vm.userBibleData.tags.length; i++) {
+        if (vm.userBibleData.tags[i]._id === tagsNoteId) {
+          vm.userBibleData.tags.splice(i, 1);
+          vm.tagsToRemove = null;
+          saveUserBibleData();
+          return;
+        }
+      }
+    }
+
     function clearEmptyDocuments() {
       var markersLength = vm.userBibleData.markers.length;
       for (var i = markersLength - 1; i >= 0; i--) {
@@ -362,6 +395,14 @@
           vm.userBibleData.markers.splice(i, 1);
         }
       }
+    }
+
+    function arrayToString(array) {
+      var string = '';
+      for (var i = 0; i < array.length; i++) {
+        string += array[i] + ', ';
+      }
+      return string.slice(0, -2);
     }
 
     function saveUserBibleData() {
