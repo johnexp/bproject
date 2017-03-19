@@ -36,7 +36,9 @@ module.exports = {
         'public/lib/angular-aria/angular-aria.js',
         'public/lib/angular-material-data-table/dist/md-data-table.min.js',
         'public/lib/angular-block-ui/dist/angular-block-ui.js',
-        'public/lib/moment/moment.js'
+        'public/lib/moment/moment.js',
+        'public/lib/clipboard/dist/clipboard.min.js',
+        'public/lib/ngclipboard/dist/ngclipboard.min.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

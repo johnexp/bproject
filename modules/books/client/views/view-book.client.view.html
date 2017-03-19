@@ -60,10 +60,12 @@
         <md-tooltip><span>Selecionar Livro</span></md-tooltip>
       </md-button>
       <md-button class="md-primary md-raised" ng-click="vm.toggleChaptersList()">
+        <md-icon md-font-set="material-icons">looks_one</md-icon>
         {{vm.isListOpen() ? 'Capítulo' : 'Cap: ' + vm.chapter}}
         <md-tooltip><span>Selecionar Capítulo</span></md-tooltip>
       </md-button>
       <md-button class="md-primary md-raised" ng-click="vm.toggleVersesList()">
+        <md-icon md-font-set="material-icons">format_list_numbered</md-icon>
         {{vm.isListOpen() ? 'Versículo' : (vm.highlightedVerse ? 'Ver: ' + vm.highlightedVerse : 'Ver')}}
         <md-tooltip><span>Selecionar Versículo</span></md-tooltip>
       </md-button>
@@ -77,19 +79,19 @@
   <div flex layout="row">
     <md-content flex id="verses-list" ng-init="vm.setVersesUserMeta()">
       <md-list class="md-dense">
-        <md-list-item ng-repeat="verse in vm.book.chapters[0].verses track by $index" md-no-ink class="verse" ng-class="vm.getVerseClass($index + 1)" id="verse-{{$index + 1}}">
-          <span class="pre-verse" ng-mouseenter="vm.showNotesPreview($event, $index + 1)" ng-mouseleave="vm.hidePreviewCards()">
+        <md-list-item ng-repeat="verse in vm.verses | filter: vm.searchTerm" md-no-ink class="verse" ng-class="vm.getVerseClass(verse.number)" id="verse-{{verse.number}}">
+          <span class="pre-verse" ng-mouseenter="vm.showNotesPreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
             <md-button class="md-icon-button note-button">
               <md-icon md-font-set="material-icons">speaker_notes</md-icon>
             </md-button>
           </span>
-          <div class="md-list-item-text verse-list-item" layout="column" ng-click="vm.selectVerse($index + 1)">
+          <div class="md-list-item-text verse-list-item" layout="column" ng-click="vm.selectVerse(verse.number)">
             <p class="verse-text">
-              <sup>{{$index + 1}}</sup>
-              {{verse}}
+              <sup>{{verse.number}}</sup>
+              <span md-highlight-text="vm.searchTerm" md-highlight-flags="i">{{verse.text}}</span>
             </p>
           </div>
-          <span class="pos-verse" ng-mouseenter="vm.showMorePreview($event, $index + 1)" ng-mouseleave="vm.hidePreviewCards()">
+          <span class="pos-verse" ng-mouseenter="vm.showMorePreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
             <md-button class="md-icon-button more-button">
               <md-icon md-font-set="material-icons">more</md-icon>
             </md-button>
@@ -157,66 +159,87 @@
         </md-card-content>
       </md-card>
     </md-content>
-    <div id="verses-tools" ng-class="vm.selectedVerses.length > 0 ? 'show-verses-tools' : ''">
-      <div id="verses-tools-content">
-        <h3>{{vm.selectedVerses.length}} Verso(s) Selecionado(s)</h3>
+    <div id="verses-tools">
+      <div id="verses-tools-content" layout="column">
+        <h3>Pesquisar</h3>
+        <div layout="row">
+          <md-input-container class="no-error-field chapter-search-input" flex>
+            <md-icon md-font-set="material-icons">search</md-icon>
+            <label>Digite para pesquisar no capítulo</label>
+            <input ng-model="vm.searchTerm"/>
+          </md-input-container>
+        </div>
+
+        <h3>Seleção<span ng-if="vm.selectedVerses.length" class="md-caption">: {{vm.selectedVerses.length}} Verso(s) Selecionado(s)</span></h3>
+        <div layout="row">
+          <md-button class="md-icon-button" ng-click="vm.selectAllVerses()">
+            <md-icon md-font-set="material-icons">check_box</md-icon>
+            <md-tooltip>Selecionar Todos</md-tooltip>
+          </md-button>
+          <md-button class="md-icon-button" ng-click="vm.selectedVerses = []">
+            <md-icon md-font-set="material-icons">check_box_outline_blank</md-icon>
+            <md-tooltip>Deselecionar Todos</md-tooltip>
+          </md-button>
+        </div>
         <md-divider></md-divider>
 
-        <h3>Seleção</h3>
-        <md-button class="md-icon-button" ng-click="vm.selectAllVerses()">
-          <md-icon md-font-set="material-icons">check_box</md-icon>
-          <md-tooltip>Selecionar Todos</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" ng-click="vm.selectedVerses = []">
-          <md-icon md-font-set="material-icons">check_box_outline_blank</md-icon>
-          <md-tooltip>Deselecionar Todos</md-tooltip>
-        </md-button>
-        <md-divider></md-divider>
+        <div ng-if="vm.selectedVerses.length > 0">
+          <h3>Copiar</h3>
+          <md-button class="md-icon-button" ngclipboard ngclipboard-success="vm.onCopySuccess(e)" data-clipboard-text="{{ vm.selectedVersesText }}">
+            <md-icon md-font-set="material-icons">content_copy</md-icon>
+            <md-tooltip>Copiar</md-tooltip>
+          </md-button>
+          <md-divider></md-divider>
 
-        <h3>Marcar Versos</h3>
-        <md-button class="md-icon-button" ng-click="vm.unmarkVerses()">
-          <md-icon md-font-set="material-icons">panorama_fish_eye</md-icon>
-          <md-tooltip>Desmarcar</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Amarelo</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Vermelho</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Roxo</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Azul</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Verde</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Rosa</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
-          <md-icon md-font-set="material-icons">lens</md-icon>
-          <md-tooltip>Alaranjado</md-tooltip>
-        </md-button>
-        <md-divider></md-divider>
+          <h3>Marcar Versos</h3>
+          <div>
+            <md-button class="md-icon-button" ng-click="vm.unmarkVerses()">
+              <md-icon md-font-set="material-icons">panorama_fish_eye</md-icon>
+              <md-tooltip>Desmarcar</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Amarelo</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Vermelho</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Roxo</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Azul</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Verde</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Rosa</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
+              <md-icon md-font-set="material-icons">lens</md-icon>
+              <md-tooltip>Alaranjado</md-tooltip>
+            </md-button>
+          </div>
+          <md-divider></md-divider>
 
-        <h3>Adicionar Metadados</h3>
-        <md-button class="md-icon-button color-button" ng-click="vm.showNoteDialog()">
-          <md-icon md-font-set="material-icons">speaker_notes</md-icon>
-          <md-tooltip>Adicionar Nota</md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button color-button" ng-click="vm.showTagsDialog()">
-          <md-icon md-font-set="material-icons">more</md-icon>
-          <md-tooltip>Adicionar Tags</md-tooltip>
-        </md-button>
+          <h3>Adicionar Metadados</h3>
+          <div layout="row">
+            <md-button class="md-icon-button color-button" ng-click="vm.showNoteDialog()">
+              <md-icon md-font-set="material-icons">speaker_notes</md-icon>
+              <md-tooltip>Adicionar Nota</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button color-button" ng-click="vm.showTagsDialog()">
+              <md-icon md-font-set="material-icons">more</md-icon>
+              <md-tooltip>Adicionar Tags</md-tooltip>
+            </md-button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

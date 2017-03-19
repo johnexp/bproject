@@ -5,7 +5,7 @@
     .module('user-bible-data')
     .controller('VerseTagsController', VerseTagsController);
 
-  function VerseTagsController($mdDialog, currentTags, selectedVerses, userTags) {
+  function VerseTagsController($mdDialog, currentTags, selectedVerses, userTags, Toast) {
     var vm = this;
     vm.selectedTags = angular.copy(currentTags) || { tags: [] };
     vm.selectedVerses = selectedVerses;
@@ -20,7 +20,15 @@
     }
 
     function saveTags() {
-      currentTags.tags = vm.selectedTags.tags;
+      if (!vm.selectedTags.tags || vm.selectedTags.tags.length === 0) {
+        Toast.warning('É necessário adicionar pelo menos uma tag.');
+        return;
+      }
+      if (currentTags) {
+        currentTags.tags = vm.selectedTags.tags;
+      } else {
+        currentTags = vm.selectedTags;
+      }
       $mdDialog.hide(currentTags);
     }
 

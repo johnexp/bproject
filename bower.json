@@ -25,7 +25,8 @@
     "angular-sanitize": "~1.6.3",
     "angular-material-data-table": "^0.10.10",
     "angular-block-ui": "^0.2.2",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "ngclipboard": "^1.1.1"
   },
   "overrides": {
     "jquery": {

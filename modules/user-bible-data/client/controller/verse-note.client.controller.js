@@ -21,7 +21,12 @@
         Toast.warning('O campo nota deve ter no mínimo 2 caracteres');
         return;
       }
-      currentNote.note = vm.versesNote.note;
+
+      if (currentNote) {
+        currentNote.note = vm.versesNote.note;
+      } else {
+        currentNote = vm.versesNote;
+      }
       $mdDialog.hide(currentNote);
     }
   }

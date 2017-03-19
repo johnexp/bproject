@@ -45,8 +45,10 @@
     vm.showMorePreview = showMorePreview;
     vm.showNotesPreview = showNotesPreview;
     vm.hidePreviewCards = hidePreviewCards;
+    vm.verses = getVerses();
     vm.notesPreviewClass = '';
     vm.morePreviewClass = '';
+    vm.onCopySuccess = onCopySuccess;
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -124,6 +126,7 @@
         var index = findVerseIndex(verse);
         vm.selectedVerses.splice(index, 1);
       }
+      setSelectedVersesText();
     }
 
     function highlightVerse(verse) {
@@ -131,6 +134,14 @@
       vm.highlightedVerse = verse;
       vm.showVersesList = false;
       goToVerse(verse);
+    }
+
+    function getVerses() {
+      var verses = [];
+      for (var i = 0; i < vm.book.chapters[0].verses.length; i++) {
+        verses.push({ number: i + 1, text: vm.book.chapters[0].verses[i] });
+      }
+      return verses;
     }
 
     function findSelectedVerse(verseToFind) {
@@ -183,6 +194,7 @@
       for (var i = 1; i <= vm.book.chapters[0].verses.length; i++) {
         vm.selectedVerses.push(i);
       }
+      setSelectedVersesText();
     }
 
     function setVersesUserMeta() {
@@ -228,15 +240,19 @@
     }
 
     function unmarkVerses() {
+      var verseFound = false;
       for (var i = 0; i < vm.selectedVerses.length; i++) {
         for (var j = 0; j < vm.userBibleData.markers.length; j++) {
           var verseIndex = vm.userBibleData.markers[j].verses.indexOf(vm.selectedVerses[i]);
           if (verseIndex !== -1) {
             vm.userBibleData.markers[j].verses.splice(verseIndex, 1);
+            verseFound = true;
           }
         }
       }
-      saveUserBibleData();
+      if (verseFound) {
+        saveUserBibleData();
+      }
     }
 
     function markVerses(color) {
@@ -395,10 +411,14 @@
       }
     }
 
-    function arrayToString(array) {
+    function sortArray(array) {
       array.sort(function (a, b) {
         return a - b;
       });
+    }
+
+    function arrayToString(array) {
+      sortArray(array);
       return array.join(', ');
     }
 
@@ -457,6 +477,18 @@
     function hidePreviewCards() {
       vm.morePreviewClass = '';
       vm.notesPreviewClass = '';
+    }
+
+    function setSelectedVersesText() {
+      vm.selectedVersesText = vm.book.book + ' - Capítulo ' + vm.chapter + '\n';
+      sortArray(vm.selectedVerses);
+      for (var i = 0; i < vm.selectedVerses.length; i++) {
+        vm.selectedVersesText += vm.selectedVerses[i] + ' - ' + vm.verses[vm.selectedVerses[i] - 1].text + '\n';
+      }
+    }
+
+    function onCopySuccess() {
+      Toast.success('Versos copiados!');
     }
 
   }

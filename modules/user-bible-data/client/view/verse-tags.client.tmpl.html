@@ -12,12 +12,13 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <label>Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="!vm.selectedTags.verses">Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="vm.selectedTags.verses">Versos: {{ vm.selectedTags.verses }}</label>
         <md-chips ng-model="vm.selectedTags.tags" name="tags" md-removable="true" md-enable-chip-edit="true"
                   md-require-match="false" md-match-case-insensitive="true" md-autocomplete-snap>
           <md-autocomplete md-selected-item="vm.selectedItem" md-search-text="vm.searchText"
             md-items="item in vm.querySearch(vm.searchText)" md-item-text="item" placeholder="Digite o nome da tag">
-            <span md-highlight-text="vm.searchText">{{item}}</span>
+            <span md-highlight-text="vm.searchText"  md-highlight-flags="i">{{item}}</span>
           </md-autocomplete>
         </md-chips>
       </div>
@@ -27,7 +28,7 @@
       <md-button ng-click="vm.hide()">
         Cancelar
       </md-button>
-      <md-button class="md-raised md-primary" type="submit">
+      <md-button class="md-raised md-primary" type="submit" ng-disabled="!vm.selectedTags.tags || vm.selectedTags.tags.length === 0">
         Salvar
       </md-button>
     </md-dialog-actions>
