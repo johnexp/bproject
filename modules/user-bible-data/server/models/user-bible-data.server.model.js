@@ -57,7 +57,6 @@ var UserBibleDataSchema = new Schema({
     }]
   }],
   refs: [{
-    _id: false,
     refs: [{
       type: String,
       required: true,

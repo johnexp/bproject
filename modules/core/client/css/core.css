@@ -321,3 +321,10 @@ body[dir=rtl] .menu-items .md-button {
 .select-search md-content._md {
 	max-height: 240px;
 }
+.visual-chips input {
+	display: none;
+	visibility: hidden;
+	opacity: 0;
+	width: 0px;
+	height: 0px;
+}

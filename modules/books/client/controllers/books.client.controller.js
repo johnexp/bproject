@@ -339,9 +339,16 @@
       })
         .then(function(versesRefs) {
           if (versesRefs && versesRefs.refs) {
-            addVersesTags(versesRefs);
+            addVersesRefs(versesRefs);
           }
         });
+    }
+
+    function addVersesRefs(versesRefs) {
+      if (!versesRefs._id) {
+        vm.userBibleData.refs.push({ refs: versesRefs.refs, verses: vm.selectedVerses });
+      }
+      saveUserBibleData();
     }
 
     function showConfirmRemoveVerseNote(ev, noteToRemove) {
