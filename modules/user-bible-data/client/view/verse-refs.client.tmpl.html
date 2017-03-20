@@ -1,0 +1,67 @@
+<md-dialog aria-label="Adicionar Nota" class="note-dialog">
+  <form ng-cloak name="versesNote" ng-submit="vm.saveRefs()" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Adicionar Referência</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.hide()">
+          <md-icon md-font-set="material-icons" aria-label="Fechar Janela">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <label>Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <div layout="row" layout-wrap>
+          <md-input-container flex="100">
+            <label>Livro</label>
+            <md-select ng-model="vm.selectedBook" md-on-close="vm.clearSearchTerm()" ng-change="vm.getBookChapters()" data-md-container-class="select-search-select-header">
+              <md-select-header class="select-search-header">
+                <input ng-model="vm.searchTerm" type="search" placeholder="Pesquise por um livro" class="select-header-searchbox md-text">
+              </md-select-header>
+              <md-optgroup label="Livros">
+                <md-option ng-value="book.abbrev" ng-repeat="book in vm.books.at | filter: vm.searchTerm">{{ book.name }}</md-option>
+                <md-option ng-value="book.abbrev" ng-repeat="book in vm.books.nt | filter: vm.searchTerm">{{ book.name }}</md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex="50">
+            <label>Capítulo</label>
+            <md-select ng-model="vm.selectedChapter" ng-disabled="vm.chapters.length === 0" ng-change="vm.getChapterVerses()" md-on-close="vm.clearSearchTerm()" data-md-container-class="select-search-select-header">
+              <md-select-header class="select-search-header">
+                <input ng-model="vm.searchTerm" type="search" placeholder="Pesquise por um capítulo" class="select-header-searchbox md-text">
+              </md-select-header>
+              <md-optgroup label="Capítulos">
+                <md-option ng-value="chapter.number" ng-repeat="chapter in vm.chapters | filter: vm.searchTerm">{{ chapter.number }}</md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex="50">
+            <label>Versículo</label>
+            <md-select ng-model="vm.selectedVersesRefs" ng-disabled="vm.verses.length === 0" md-on-close="vm.clearSearchTerm()" data-md-container-class="select-search-select-header" multiple>
+              <md-select-header class="select-search-header">
+                <input ng-model="vm.searchTerm" type="search" placeholder="Pesquise por um versículo" class="select-header-searchbox md-text">
+              </md-select-header>
+              <md-optgroup label="Versículos">
+                <md-option ng-value="verse" ng-repeat="verse in vm.verses | filter: vm.searchTerm">{{ verse.number }}</md-option>
+              </md-optgroup>
+            </md-select>
+          </md-input-container>
+        </div>
+        <div layout="column">
+          <p ng-repeat="verse in vm.selectedVersesRefs">{{verse.text}}</p>
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="vm.hide()">
+        Cancelar
+      </md-button>
+      <md-button class="md-raised md-primary" type="submit">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

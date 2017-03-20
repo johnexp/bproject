@@ -3,11 +3,11 @@
 
   angular
     .module('books')
-    .factory('ListBooksService', ListBooksService);
+    .factory('BooksListService', BooksListService);
 
-  ListBooksService.$inject = [];
+  BooksListService.$inject = [];
 
-  function ListBooksService() {
+  function BooksListService() {
     var ListBooksService = {
       getBooks: getBooks,
       getChaptersByAbbrev: getChaptersByAbbrev

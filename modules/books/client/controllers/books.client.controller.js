@@ -6,7 +6,7 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'ListBooksService', '$timeout', '$anchorScroll', '$location', 'Toast'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast'];
 
   function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
     var vm = this;
@@ -39,6 +39,7 @@
     vm.setVersesUserMeta = setVersesUserMeta;
     vm.showNoteDialog = showNoteDialog;
     vm.showTagsDialog = showTagsDialog;
+    vm.showRefsDialog = showRefsDialog;
     vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
     vm.showConfirmRemoveVerseTag = showConfirmRemoveVerseTag;
     vm.arrayToString = arrayToString;
@@ -320,6 +321,25 @@
         .then(function(versesTags) {
           if (versesTags && versesTags.tags) {
             addVersesTags(versesTags);
+          }
+        });
+    }
+
+    function showRefsDialog(ev, currentRefs) {
+      $mdDialog.show({
+        controller: 'VerseRefsController as vm',
+        templateUrl: '/modules/user-bible-data/client/view/verse-refs.client.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false,
+        locals: {
+          currentRefs: currentRefs,
+          selectedVerses: arrayToString(vm.selectedVerses)
+        }
+      })
+        .then(function(versesRefs) {
+          if (versesRefs && versesRefs.refs) {
+            addVersesTags(versesRefs);
           }
         });
     }

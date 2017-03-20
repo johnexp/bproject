@@ -207,11 +207,11 @@ md-list.md-dense md-list-item.selected .md-list-item-text.verse-list-item:hover 
 .select-search-select-header md-content._md {
 	max-height: 240px;
 	overflow: hidden;
-	padding-top: 60px;
+	padding: 0;
 }
 
 .select-search-select-header md-content._md md-optgroup {
-	max-height: 240px;
+	max-height: 190px;
 	overflow-y: auto;
 	margin-top: 50px;
 }
