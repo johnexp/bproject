@@ -27,7 +27,6 @@
 
     function getBookChapters(item) {
       if (item) {
-        vm.verseRef.selectedBook = item.abbrev;
         var chaptersAmmount = BooksListService.getChaptersByAbbrev(item.abbrev);
         vm.chapters = [];
         for (var i = 1; i <= chaptersAmmount.length; i++) {
@@ -37,13 +36,14 @@
     }
 
     function getChapterVerses(item) {
-      if (item && vm.verseRef.selectedChapter !== item.number) {
-        vm.verseRef.selectedChapter = item.number;
+      if (item) {
         vm.verses = [];
         vm.verseRef.selectedVersesRefs = [];
+        vm.verseRef.$setPristine();
+        vm.verseRef.$setUntouched();
         BooksService.get({
           version: $stateParams.version,
-          abbrev: vm.verseRef.selectedBook,
+          abbrev: vm.form.selectedBook.abbrev,
           chapter: item.number
         }).$promise.then(function (result) {
           for (var i = 0; i < result.chapters[0].verses.length; i++) {
@@ -60,13 +60,12 @@
         return false;
       }
       for (var i = 0; i < vm.verseRef.selectedVersesRefs.length; i++) {
-        vm.versesRefs.refs.push(vm.verseRef.selectedBook + '-' + vm.verseRef.selectedChapter + '-' + vm.verseRef.selectedVersesRefs[i].number);
+        vm.versesRefs.refs.push(vm.form.selectedBook.abbrev + '-' + vm.form.selectedChapter.number + '-' + vm.verseRef.selectedVersesRefs[i].number);
       }
       getRefsAdded();
-      // TODO: Clear autocompletes
       vm.verseRef.selectedVersesRefs = [];
-      vm.verseRef.selectedChapter = [];
-      vm.verseRef.selectedBook = [];
+      vm.form.selectedBook = null;
+      vm.form.selectedChapter = null;
       vm.verseRef.$setPristine();
       vm.verseRef.$setUntouched();
     }
@@ -132,7 +131,7 @@
         for (var i = 0; i < vm.chapters.length; i++) {
           if (vm.chapters[i].number === item) {
             found = true;
-            vm.selectedChapter = { number: { number: item } };
+            vm.form.selectedChapter = { number: item };
             return;
           }
         }
