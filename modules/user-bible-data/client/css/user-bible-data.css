@@ -10,3 +10,6 @@
 	max-width: 100%;
 	width: 600px;
 }
+.vertical-autocomplete-form md-autocomplete md-input-container {
+	margin-bottom: 0;
+}

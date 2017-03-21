@@ -61,7 +61,12 @@ var UserBibleDataSchema = new Schema({
       type: String,
       required: true,
       trim: true,
-      match: /[0-9]{0,1}[a-z\u00E0-\u00FC]{2,4}\-[0-9]{1,3}\-[0-9]{1,3}/g
+      validate: {
+        validator: function(v) {
+          return /\b([0-9]{0,1}[a-z\u00E0-\u00FC]{2,4}\-[0-9]{1,3}\-[0-9]{1,3})\b/i.test(v);
+        },
+        message: 'Formato inválido: ({VALUE})'
+      }
     }],
     verses: [{
       type: Number,

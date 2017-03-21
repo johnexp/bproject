@@ -328,3 +328,6 @@ body[dir=rtl] .menu-items .md-button {
 	width: 0px;
 	height: 0px;
 }
+.light-color {
+	color: #AAA;
+}

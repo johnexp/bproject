@@ -1,5 +1,5 @@
 <md-dialog aria-label="Adicionar Nota" class="refs-dialog">
-  <form ng-cloak name="vm.verseRef" ng-submit="vm.addRef(vm.verseRef.$valid)" novalidate>
+  <form ng-cloak name="vm.verseRef" class="vertical-autocomplete-form" ng-submit="vm.addRef(vm.verseRef.$valid)" novalidate>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Adicionar Referência</h2>
@@ -16,6 +16,7 @@
         <div layout="row" layout-wrap>
           <md-autocomplete flex="100" required
                            md-selected-item-change="vm.getBookChapters(item)"
+                           md-search-text-change="vm.clearFields()"
                            md-input-name="selectedBook"
                            md-min-length="0"
                            md-selected-item="vm.form.selectedBook"
@@ -57,33 +58,43 @@
               <div ng-message="md-require-match">Por favor, selecione um capítulo existente.</div>
             </div>
           </md-autocomplete>
-          <md-input-container flex>
-            <label>Versículo</label>
-            <md-select ng-model="vm.verseRef.selectedVersesRefs" name="selectedVersesRefs" ng-disabled="vm.verses.length === 0" md-on-close="vm.clearSearchTerm()" data-md-container-class="select-search-select-header" multiple required>
-              <md-select-header class="select-search-header">
-                <input ng-model="vm.searchTerm" type="search" placeholder="Pesquise por um versículo" class="select-header-searchbox md-text">
-              </md-select-header>
-              <md-optgroup label="Versículos">
-                <md-option ng-value="verse" ng-repeat="verse in vm.verses | filter: vm.searchTerm">{{ verse.number }}</md-option>
-              </md-optgroup>
-            </md-select>
-            <div ng-messages="vm.verseRef.selectedVersesRefs.$error">
+          <md-autocomplete flex="100" required
+                           ng-disabled="vm.verses.length === 0"
+                           ng-blur="vm.checkSelectedVerse(vm.versesSearchTerm)"
+                           md-input-name="selectedVerse"
+                           md-min-length="0"
+                           md-selected-item="vm.form.selectedVerse"
+                           md-search-text="vm.versesSearchTerm"
+                           md-items="item in vm.versesQuerySearch(vm.versesSearchTerm)"
+                           md-item-text="item.number"
+                           md-require-match
+                           md-floating-label="Verso"
+                           required>
+            <md-item-template>
+              <span md-highlight-text="vm.versesSearchTerm">{{item.number}}</span> - <span class="light-color">{{item.text}}</span>
+            </md-item-template>
+            <div ng-messages="vm.verseRef.selectedVerse.$error" ng-if="vm.verseRef.selectedVerse.$touched">
               <div ng-message="required">Este campo é obrigatório.</div>
+              <div ng-message="md-require-match">Por favor, selecione um versículo existente.</div>
             </div>
-          </md-input-container>
-          <md-input-container>
-            <md-button class="md-icon-button md-primary" type="submit">
+          </md-autocomplete>
+          <md-input-container flex="100" layout="row" layout-align="center center">
+            <md-button class="md-warn" ng-click="vm.clearFields()">
+              <md-icon md-font-set="material-icons">clear</md-icon>
+              Limpar
+              <md-tooltip>Limpar Campos</md-tooltip>
+            </md-button>
+            <md-button class="md-primary md-raised" type="submit">
               <md-icon md-font-set="material-icons">add_circle</md-icon>
+              Adicionar
               <md-tooltip>Adicionar Referência</md-tooltip>
             </md-button>
           </md-input-container>
         </div>
         <div layout="column">
-          <h3>Preview</h3>
-          <p ng-repeat="verse in vm.getOrderedVerses()">{{verse.text}}</p>
           <h3>Referências</h3>
           <md-chips ng-model="vm.refsAdded" name="refsAdded" class="visual-chips" md-removable="true" md-require-match="true">
-            <md-autocomplete md-selected-item="vm.emptyArray" md-search-text="vm.searchText" md-items="item in []" md-item-text="item" placeholder=""></md-autocomplete>
+            <md-autocomplete md-selected-item="[]" md-search-text="vm.searchText" md-items="item in []" md-item-text="item" placeholder=""></md-autocomplete>
           </md-chips>
         </div>
       </div>
@@ -91,9 +102,11 @@
   </form>
   <md-dialog-actions layout="row">
     <md-button ng-click="vm.hide()">
+      <md-icon md-font-set="material-icons">clear</md-icon>
       Cancelar
     </md-button>
     <md-button class="md-raised md-primary" ng-click="vm.saveRefs()">
+      <md-icon md-font-set="material-icons">save</md-icon>
       Salvar
     </md-button>
   </md-dialog-actions>

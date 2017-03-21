@@ -202,6 +202,7 @@
       setVersesMark();
       setVersesNotes();
       setVersesTags();
+      setVersesRefs();
     }
 
     function setVersesMark() {
@@ -238,6 +239,19 @@
         }
       }
       vm.tags = tags;
+    }
+
+    function setVersesRefs() {
+      var refs = {};
+      for (var i = 0; i < vm.userBibleData.refs.length; i++) {
+        for (var j = 0; j < vm.userBibleData.refs[i].verses.length; j++) {
+          if (!angular.isArray(refs[vm.userBibleData.refs[i].verses[j]])) {
+            refs[vm.userBibleData.refs[i].verses[j]] = [];
+          }
+          refs[vm.userBibleData.refs[i].verses[j]].push(vm.userBibleData.refs[i]);
+        }
+      }
+      vm.refs = refs;
     }
 
     function unmarkVerses() {
