@@ -183,6 +183,13 @@ function count(body, res) {
   });
 }
 
+// db.getCollection('books').aggregate(
+//   {$match: {'abbrev': 'gn'}},
+//   {$match: {'version': 'aa'}},
+//   {$unwind: "$chapters"},
+//   {$match: {"chapters.verses": /abraão/i}}
+// )
+
 /**
  * Book middleware
  */

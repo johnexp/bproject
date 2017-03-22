@@ -8,7 +8,7 @@
 
   BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast'];
 
-  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, ListBooksService, $timeout, $anchorScroll, $location, Toast) {
+  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService, $timeout, $anchorScroll, $location, Toast) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -17,8 +17,8 @@
     vm.abbrev = $stateParams.abbrev;
     vm.nextChap = nextChap;
     vm.prevChap = prevChap;
-    vm.bookList = ListBooksService.getBooks();
-    vm.chaptersAmmount = ListBooksService.getChaptersByAbbrev(vm.abbrev);
+    vm.bookList = BooksListService.getBooks();
+    vm.chaptersAmmount = BooksListService.getChaptersByAbbrev(vm.abbrev);
     vm.versesAmmount = new Array(vm.book.chapters[0].verses.length);
     vm.selectedBook = { abbrev: vm.abbrev, name: vm.book.book };
     vm.selectedVerses = [];
@@ -71,7 +71,7 @@
 
     function selectBook(book) {
       vm.selectedBook = book;
-      vm.chaptersAmmount = ListBooksService.getChaptersByAbbrev(book.abbrev);
+      vm.chaptersAmmount = BooksListService.getChaptersByAbbrev(book.abbrev);
       vm.showChaptersList = true;
       vm.showSelectionClass = 'show-chapters-list';
     }
@@ -109,7 +109,7 @@
     function resetSelectedBook() {
       $timeout(function () {
         vm.selectedBook = { abbrev: vm.abbrev, name: vm.book.book };
-        vm.chaptersAmmount = ListBooksService.getChaptersByAbbrev(vm.abbrev);
+        vm.chaptersAmmount = BooksListService.getChaptersByAbbrev(vm.abbrev);
       }, 500);
     }
 
@@ -248,10 +248,20 @@
           if (!angular.isArray(refs[vm.userBibleData.refs[i].verses[j]])) {
             refs[vm.userBibleData.refs[i].verses[j]] = [];
           }
-          refs[vm.userBibleData.refs[i].verses[j]].push(vm.userBibleData.refs[i]);
+          createVerseRefObj(refs, i, j);
         }
       }
       vm.refs = refs;
+    }
+
+    function createVerseRefObj(refs, i, j) {
+      for (var k = 0; k < vm.userBibleData.refs[i].refs.length; k++) {
+        var verseRefArray = vm.userBibleData.refs[i].refs[k].split('-');
+        var bookName = BooksListService.getBookByAbbrev(verseRefArray[0]);
+        var verseRefText = bookName + ' ' + verseRefArray[1] + ':' + verseRefArray[2];
+        var verseRefUrl = '/' + verseRefArray[0] + '/' + verseRefArray[1];
+        refs[vm.userBibleData.refs[i].verses[j]].push({ refText: verseRefText, refUrl: verseRefUrl, refObj: vm.userBibleData.refs[i] });
+      }
     }
 
     function unmarkVerses() {

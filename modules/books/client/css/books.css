@@ -1,9 +1,19 @@
 .verse p.verse-text {
-	padding: 5px 10px;
-	margin: 8px 0px;
+	padding: 5px 10px 0;
+	margin: 8px 0px 0;
 	font-size: 1em;
 	display: inline-table;
 	border-radius: 2px;
+}
+
+.verse p.verse-refs {
+	margin: 4px 0;
+	padding-bottom: 5px;
+	text-align: right;
+}
+
+.verse p.verse-refs span {
+	padding: 0 5px;
 }
 
 .verse p.verse-text sup {

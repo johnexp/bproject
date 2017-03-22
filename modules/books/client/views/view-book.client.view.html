@@ -89,7 +89,9 @@
             <p class="verse-text">
               <sup>{{verse.number}}</sup>
               <span md-highlight-text="vm.searchTerm" md-highlight-flags="i">{{verse.text}}</span>
-              <span>{{vm.refs[verse.number]}}</span>
+            </p>
+            <p class="verse-refs md-caption">
+              <span ng-repeat="ref in vm.refs[verse.number]">{{ref.refText}}</span>
             </p>
           </div>
           <span class="pos-verse" ng-mouseenter="vm.showMorePreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
