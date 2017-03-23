@@ -45,10 +45,12 @@
     vm.arrayToString = arrayToString;
     vm.showMorePreview = showMorePreview;
     vm.showNotesPreview = showNotesPreview;
+    vm.showRefsPreview = showRefsPreview;
     vm.hidePreviewCards = hidePreviewCards;
     vm.verses = getVerses();
     vm.notesPreviewClass = '';
     vm.morePreviewClass = '';
+    vm.refsPreviewClass = '';
     vm.onCopySuccess = onCopySuccess;
 
     function nextChap() {
@@ -244,23 +246,21 @@
     function setVersesRefs() {
       var refs = {};
       for (var i = 0; i < vm.userBibleData.refs.length; i++) {
-        for (var j = 0; j < vm.userBibleData.refs[i].verses.length; j++) {
-          if (!angular.isArray(refs[vm.userBibleData.refs[i].verses[j]])) {
-            refs[vm.userBibleData.refs[i].verses[j]] = [];
-          }
-          createVerseRefObj(refs, i, j);
+        if (!angular.isArray(refs[vm.userBibleData.refs[i].verse])) {
+          refs[vm.userBibleData.refs[i].verse] = [];
         }
+        createVerseRefObj(refs, i);
       }
       vm.refs = refs;
     }
 
-    function createVerseRefObj(refs, i, j) {
+    function createVerseRefObj(refs, i) {
       for (var k = 0; k < vm.userBibleData.refs[i].refs.length; k++) {
         var verseRefArray = vm.userBibleData.refs[i].refs[k].split('-');
         var bookName = BooksListService.getBookByAbbrev(verseRefArray[0]);
         var verseRefText = bookName + ' ' + verseRefArray[1] + ':' + verseRefArray[2];
         var verseRefUrl = '/' + verseRefArray[0] + '/' + verseRefArray[1];
-        refs[vm.userBibleData.refs[i].verses[j]].push({ refText: verseRefText, refUrl: verseRefUrl, refObj: vm.userBibleData.refs[i] });
+        refs[vm.userBibleData.refs[i].verse].push({ refText: verseRefText, refUrl: verseRefUrl, refObj: vm.userBibleData.refs[i] });
       }
     }
 
@@ -370,9 +370,33 @@
 
     function addVersesRefs(versesRefs) {
       if (!versesRefs._id) {
-        vm.userBibleData.refs.push({ refs: versesRefs.refs, verses: vm.selectedVerses });
+        for (var i = 0; i < vm.selectedVerses.length; i++) {
+          var addedVerse = getAddedRefByVerse(vm.selectedVerses[i]);
+          if (addedVerse) {
+            addRefsInVerse(addedVerse, versesRefs.refs);
+          } else {
+            vm.userBibleData.refs.push({ refs: versesRefs.refs, verse: vm.selectedVerses[i] });
+          }
+        }
       }
       saveUserBibleData();
+    }
+
+    function getAddedRefByVerse(selectedVerse) {
+      for (var i = 0; i < vm.userBibleData.refs.length; i++) {
+        if (vm.userBibleData.refs[i].verse === selectedVerse) {
+          return vm.userBibleData.refs[i];
+        }
+      }
+      return null;
+    }
+
+    function addRefsInVerse(addedVerse, refs) {
+      for (var i = 0; i < refs.length; i++) {
+        if (addedVerse.refs.indexOf(refs[i]) === -1) {
+          addedVerse.refs.push(refs[i]);
+        }
+      }
     }
 
     function showConfirmRemoveVerseNote(ev, noteToRemove) {
@@ -507,22 +531,32 @@
 
     function showMorePreview(event, versePreviewShowing) {
       vm.morePreviewClass = 'show';
-      setCardPreviewPosition(event);
+      setSideCardPreviewPosition(event);
       vm.versePreviewShowing = versePreviewShowing;
     }
 
     function showNotesPreview(event, versePreviewShowing) {
       vm.notesPreviewClass = 'show';
-      setCardPreviewPosition(event);
+      setSideCardPreviewPosition(event);
       vm.versePreviewShowing = versePreviewShowing;
     }
 
-    function setCardPreviewPosition() {
+    function showRefsPreview(event, versePreviewShowing) {
+      vm.refsPreviewClass = 'show';
+      setBottomCardPreviewPosition(event);
+      vm.versePreviewShowing = versePreviewShowing;
+    }
+
+    function setSideCardPreviewPosition(event) {
       if (event.srcElement.localName === 'md-icon' && event.relatedTarget.nextElementSibling) {
         vm.previewCardTop = event.relatedTarget.nextElementSibling.offsetTop;
       } else {
         vm.previewCardTop = event.srcElement.offsetParent.offsetTop;
       }
+    }
+
+    function setBottomCardPreviewPosition(event) {
+      vm.previewCardTop = event.srcElement.offsetParent.offsetTop;
     }
 
     function hidePreviewCards() {

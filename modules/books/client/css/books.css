@@ -1,3 +1,7 @@
+* {
+	opacity: .85;
+}
+
 .verse p.verse-text {
 	padding: 5px 10px 0;
 	margin: 8px 0px 0;
@@ -32,7 +36,7 @@ span.highlight {
 .notes-preview {
 	left: 54px;
 }
-.notes-preview, .more-preview {
+.notes-preview, .more-preview, .refs-preview {
 	position: absolute;
 	z-index: 70;
 	width: 350px;
@@ -46,26 +50,34 @@ span.highlight {
 	transition-property: max-height;
 }
 
-.notes-preview md-card-content, .more-preview md-card-content {
+.notes-preview md-card-content, .more-preview md-card-content, .refs-preview md-card-content {
 	max-height: 260px;
 	overflow: auto;
 }
 
-.notes-preview p, .more-preview p {
+.notes-preview p, .more-preview p, .refs-preview p {
 	padding-left: 10px;
 	margin: 0 0 10px;
 }
 
-.notes-preview span, .more-preview span {
+.notes-preview span, .more-preview span, .refs-preview span {
 	color: #969696;
 	line-height: 35px;
 }
 
-.notes-preview md-divider, .more-preview md-divider {
+.notes-preview md-divider, .more-preview md-divider, .refs-preview md-divider {
 	position: relative;
 }
 
-.verse .pre-verse:hover .notes-preview, .notes-preview:hover, .notes-preview.show, .verse .pos-verse:hover .more-preview, .more-preview:hover, .more-preview.show {
+.verse .pre-verse:hover .notes-preview,
+.notes-preview:hover,
+.notes-preview.show,
+.verse .pos-verse:hover .more-preview,
+.more-preview:hover,
+.more-preview.show,
+.verse .pre-verse:hover .refs-preview,
+.refs-preview:hover,
+.refs-preview.show {
 	max-height: 350px;
 }
 

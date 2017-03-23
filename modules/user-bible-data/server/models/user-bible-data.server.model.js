@@ -68,11 +68,11 @@ var UserBibleDataSchema = new Schema({
         message: 'Formato inválido: ({VALUE})'
       }
     }],
-    verses: [{
+    verse: {
       type: Number,
       required: true,
       min: 1
-    }]
+    }
   }],
   tags: [{
     tags: [{

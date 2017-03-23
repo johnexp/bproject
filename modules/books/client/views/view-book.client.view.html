@@ -90,7 +90,7 @@
               <sup>{{verse.number}}</sup>
               <span md-highlight-text="vm.searchTerm" md-highlight-flags="i">{{verse.text}}</span>
             </p>
-            <p class="verse-refs md-caption">
+            <p class="verse-refs md-caption" ng-mouseenter="vm.showRefsPreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
               <span ng-repeat="ref in vm.refs[verse.number]">{{ref.refText}}</span>
             </p>
           </div>
@@ -152,6 +152,34 @@
                   <md-icon md-font-set="material-icons">edit</md-icon>
                 </md-button>
                 <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseTag($event, tag)">
+                  <md-tooltip>Remover Tags</md-tooltip>
+                  <md-icon md-font-set="material-icons">delete</md-icon>
+                </md-button>
+              </div>
+            </div>
+            <md-divider ng-if="!$last"></md-divider>
+          </div>
+        </md-card-content>
+      </md-card>
+      <md-card class="refs-preview" ng-class="vm.refsPreviewClass" ng-style="{ top: vm.previewCardTop + 'px' }">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Tags</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <div ng-repeat="ref in vm.refs[vm.versePreviewShowing]">
+            <div layout="row">
+              <div flex>
+                <span class="md-body-2">REFS</span>
+                <p class="md-caption"></p>
+              </div>
+              <div layout="column">
+                <md-button class="md-icon-button" ng-click="vm.showTagsDialog($event, ref)">
+                  <md-tooltip>Editar Tags</md-tooltip>
+                  <md-icon md-font-set="material-icons">edit</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseTag($event, ref)">
                   <md-tooltip>Remover Tags</md-tooltip>
                   <md-icon md-font-set="material-icons">delete</md-icon>
                 </md-button>
