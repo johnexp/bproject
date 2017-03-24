@@ -12,7 +12,8 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <label>Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="!vm.versesNote.verses">Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="vm.versesNote.verses">Versos: {{ vm.versesNote.verses }}</label>
         <md-input-container class="md-block">
           <label>Nota</label>
           <textarea ng-model="vm.versesNote.note" name="note" md-maxlength="250" minlength="2" rows="5" required></textarea>
@@ -26,9 +27,11 @@
 
     <md-dialog-actions layout="row">
       <md-button ng-click="vm.hide()">
+        <md-icon md-font-set="material-icons">cancel</md-icon>
         Cancelar
       </md-button>
-      <md-button class="md-raised md-primary" type="submit">
+      <md-button class="md-raised md-primary" type="submit" ng-disabled="!vm.versesNote.note || vm.versesNote.note.length === 0">
+        <md-icon md-font-set="material-icons">save</md-icon>
         Salvar
       </md-button>
     </md-dialog-actions>

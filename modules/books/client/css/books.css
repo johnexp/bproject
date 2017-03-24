@@ -1,7 +1,3 @@
-* {
-	opacity: .85;
-}
-
 .verse p.verse-text {
 	padding: 5px 10px 0;
 	margin: 8px 0px 0;
@@ -18,6 +14,10 @@
 
 .verse p.verse-refs span {
 	padding: 0 5px;
+	margin: 0 3px;
+	cursor: pointer;
+	border-radius: 2px;
+	background-color: #f0f0f0;
 }
 
 .verse p.verse-text sup {
@@ -75,7 +75,7 @@ span.highlight {
 .verse .pos-verse:hover .more-preview,
 .more-preview:hover,
 .more-preview.show,
-.verse .pre-verse:hover .refs-preview,
+.verse .verse-refs span:hover .refs-preview,
 .refs-preview:hover,
 .refs-preview.show {
 	max-height: 350px;

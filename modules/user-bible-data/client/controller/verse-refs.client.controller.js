@@ -17,13 +17,13 @@
     vm.hide = hide;
     vm.getBookChapters = getBookChapters;
     vm.getChapterVerses = getChapterVerses;
-    vm.refsAdded = getRefsAdded();
     vm.booksQuerySearch = booksQuerySearch;
     vm.chaptersQuerySearch = chaptersQuerySearch;
     vm.versesQuerySearch = versesQuerySearch;
     vm.checkSelectedChapter = checkSelectedChapter;
     vm.checkSelectedVerse = checkSelectedVerse;
     vm.clearFields = clearFields;
+    vm.getRefHumanized = getRefHumanized;
 
     function getBookChapters(item) {
       if (item) {
@@ -67,7 +67,6 @@
         }
       }
       vm.versesRefs.refs.push(ref);
-      getRefsAdded();
       vm.form.selectedVerse = null;
       vm.verseRef.$setPristine();
       vm.verseRef.$setUntouched();
@@ -101,14 +100,9 @@
       $mdDialog.hide(currentRefs);
     }
 
-    function getRefsAdded() {
-      var refsAdded = [];
-      for (var i = 0; i < vm.versesRefs.refs.length; i++) {
-        var verseSplited = vm.versesRefs.refs[i].split('-');
-        refsAdded.push(BooksListService.getBookByAbbrev(verseSplited[0]) + ' ' + verseSplited[1] + ':' + verseSplited[2]);
-      }
-      vm.refsAdded = refsAdded;
-      return vm.refsAdded;
+    function getRefHumanized(ref) {
+      var verseSplited = ref.split('-');
+      return BooksListService.getBookByAbbrev(verseSplited[0]) + ' ' + verseSplited[1] + ':' + verseSplited[2];
     }
 
     function booksQuerySearch(query) {

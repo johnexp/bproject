@@ -26,9 +26,11 @@
 
     <md-dialog-actions layout="row">
       <md-button ng-click="vm.hide()">
+        <md-icon md-font-set="material-icons">cancel</md-icon>
         Cancelar
       </md-button>
       <md-button class="md-raised md-primary" type="submit" ng-disabled="!vm.selectedTags.tags || vm.selectedTags.tags.length === 0">
+        <md-icon md-font-set="material-icons">save</md-icon>
         Salvar
       </md-button>
     </md-dialog-actions>

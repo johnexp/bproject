@@ -6,9 +6,9 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast', 'BooksService'];
 
-  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService, $timeout, $anchorScroll, $location, Toast) {
+  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService, $timeout, $anchorScroll, $location, Toast, BooksService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -28,7 +28,6 @@
     vm.selectBook = selectBook;
     vm.selectChapter = selectChapter;
     vm.selectVerse = selectVerse;
-    vm.isListOpen = isListOpen;
     vm.highlightVerse = highlightVerse;
     vm.getVerseClass = getVerseClass;
     vm.markVerses = markVerses;
@@ -42,6 +41,7 @@
     vm.showRefsDialog = showRefsDialog;
     vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
     vm.showConfirmRemoveVerseTag = showConfirmRemoveVerseTag;
+    vm.showConfirmRemoveVerseRef = showConfirmRemoveVerseRef;
     vm.arrayToString = arrayToString;
     vm.showMorePreview = showMorePreview;
     vm.showNotesPreview = showNotesPreview;
@@ -52,6 +52,8 @@
     vm.morePreviewClass = '';
     vm.refsPreviewClass = '';
     vm.onCopySuccess = onCopySuccess;
+    vm.verseRefTexts = [];
+    vm.getVerseRefText = getVerseRefText;
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -82,6 +84,7 @@
       vm.showBooksList = !vm.showBooksList;
       vm.showChaptersList = false;
       vm.showVersesList = false;
+      vm.isListOpen = !vm.showBooksList;
       vm.showSelectionClass = vm.showBooksList ? 'show-books-list' : '';
       if (!vm.showBooksList) {
         resetSelectedBook();
@@ -92,6 +95,7 @@
       vm.showBooksList = false;
       vm.showChaptersList = !vm.showChaptersList;
       vm.showVersesList = false;
+      vm.isListOpen = !vm.showChaptersList;
       vm.showSelectionClass = vm.showChaptersList ? 'show-chapters-list' : '';
       if (!vm.showChaptersList) {
         resetSelectedBook();
@@ -102,6 +106,7 @@
       vm.showBooksList = false;
       vm.showChaptersList = false;
       vm.showVersesList = !vm.showVersesList;
+      vm.isListOpen = !vm.showVersesList;
       vm.showSelectionClass = vm.showVersesList ? 'show-verses-number-list' : '';
       if (!vm.showVersesList) {
         resetSelectedBook();
@@ -123,10 +128,10 @@
     }
 
     function selectVerse(verse) {
-      if (!findSelectedVerse(verse)) {
+      if (vm.selectedVerses.indexOf(verse) === -1) {
         vm.selectedVerses.push(verse);
       } else {
-        var index = findVerseIndex(verse);
+        var index = vm.selectedVerses.indexOf(verse);
         vm.selectedVerses.splice(index, 1);
       }
       setSelectedVersesText();
@@ -147,22 +152,6 @@
       return verses;
     }
 
-    function findSelectedVerse(verseToFind) {
-      return vm.selectedVerses.find(function (verse) {
-        return verse === verseToFind;
-      });
-    }
-
-    function findVerseIndex(verseToFind) {
-      return vm.selectedVerses.findIndex(function (verse) {
-        return verse === verseToFind;
-      });
-    }
-
-    function isListOpen() {
-      return vm.showBooksList || vm.showChaptersList;
-    }
-
     function goToVerse(verse) {
       var newHash = 'verse-' + verse;
       if ($location.hash() !== newHash) {
@@ -177,7 +166,7 @@
       if (vm.highlightedVerse === verse) {
         verseClass = 'highlighted';
       }
-      if (findSelectedVerse(verse)) {
+      if (vm.selectedVerses.indexOf(verse) > -1) {
         verseClass = 'selected';
       }
       if (vm.markers[verse]) {
@@ -259,8 +248,9 @@
         var verseRefArray = vm.userBibleData.refs[i].refs[k].split('-');
         var bookName = BooksListService.getBookByAbbrev(verseRefArray[0]);
         var verseRefText = bookName + ' ' + verseRefArray[1] + ':' + verseRefArray[2];
-        var verseRefUrl = '/' + verseRefArray[0] + '/' + verseRefArray[1];
-        refs[vm.userBibleData.refs[i].verse].push({ refText: verseRefText, refUrl: verseRefUrl, refObj: vm.userBibleData.refs[i] });
+        refs[vm.userBibleData.refs[i].verse].push({ refText: verseRefText, refUrl: vm.userBibleData.refs[i].refs[k] });
+        refs[vm.userBibleData.refs[i].verse].refObj = vm.userBibleData.refs[i];
+
       }
     }
 
@@ -431,6 +421,19 @@
       });
     }
 
+    function showConfirmRemoveVerseRef(ev, refsId, refUrl) {
+      var confirm = $mdDialog.confirm()
+        .title('Comfirmar Remoção')
+        .textContent('Deseja remover a referência do verso?')
+        .ariaLabel('Comfirmar Remoção')
+        .targetEvent(ev)
+        .ok('Sim')
+        .cancel('Não');
+      $mdDialog.show(confirm).then(function() {
+        removeVerseRef(refsId, refUrl);
+      });
+    }
+
     function addVersesTags(versesTags) {
       if (!versesTags._id) {
         vm.userBibleData.tags.push({ tags: versesTags.tags, verses: vm.selectedVerses });
@@ -477,11 +480,30 @@
       }
     }
 
+    function removeVerseRef(refsId, refUrl) {
+      for (var i = 0; i < vm.userBibleData.refs.length; i++) {
+        if (vm.userBibleData.refs[i]._id === refsId) {
+          var refIndex = vm.userBibleData.refs[i].refs.indexOf(refUrl);
+          if (refIndex > -1) {
+            vm.userBibleData.refs[i].refs.splice(refIndex, 1);
+          }
+          saveUserBibleData();
+          return;
+        }
+      }
+    }
+
     function clearEmptyDocuments() {
       var markersLength = vm.userBibleData.markers.length;
       for (var i = markersLength - 1; i >= 0; i--) {
         if (vm.userBibleData.markers[i].verses.length === 0) {
           vm.userBibleData.markers.splice(i, 1);
+        }
+      }
+      var refsLength = vm.userBibleData.refs.length;
+      for (var j = refsLength - 1; j >= 0; j--) {
+        if (vm.userBibleData.refs[j].refs.length === 0) {
+          vm.userBibleData.refs.splice(j, 1);
         }
       }
     }
@@ -556,12 +578,15 @@
     }
 
     function setBottomCardPreviewPosition(event) {
-      vm.previewCardTop = event.srcElement.offsetParent.offsetTop;
+      vm.previewCardTop = event.srcElement.offsetTop + 7 + event.srcElement.offsetParent.offsetTop;
+      var offsetLeft = event.srcElement.offsetLeft + event.srcElement.offsetWidth - 350;
+      vm.previewCardLeft = offsetLeft < 0 ? 0 : offsetLeft;
     }
 
     function hidePreviewCards() {
       vm.morePreviewClass = '';
       vm.notesPreviewClass = '';
+      vm.refsPreviewClass = '';
     }
 
     function setSelectedVersesText() {
@@ -574,6 +599,26 @@
 
     function onCopySuccess() {
       Toast.success('Versos copiados!');
+    }
+
+    function getVerseRefText(refUrl) {
+      vm.refsPreviewZIndex = 99999;
+      if (!vm.verseRefTexts[refUrl]) {
+        var chapterInfo = refUrl.split('-');
+        BooksService.get({
+          version: $stateParams.version,
+          abbrev: chapterInfo[0],
+          chapter: chapterInfo[1]
+        }).$promise.then(function (result) {
+          for (var i = 0; i < result.chapters[0].verses.length; i++) {
+            vm.verseRefTexts[chapterInfo[0] + '-' + chapterInfo[1] + '-' + (i + 1)] = result.chapters[0].verses[i];
+          }
+          // Setting timeout to prevent ref preview disappear when blockUI is hiding
+          $timeout(function () {
+            vm.refsPreviewZIndex = 70;
+          }, 500);
+        });
+      }
     }
 
   }

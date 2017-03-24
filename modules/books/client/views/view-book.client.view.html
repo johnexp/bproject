@@ -56,17 +56,17 @@
       <div flex></div>
       <md-button class="md-primary md-raised" ng-click="vm.toggleBooksList()">
         <md-icon md-font-set="material-icons">book</md-icon>
-        {{vm.isListOpen() ? 'Livro' : vm.book.book}}
+        {{vm.isListOpen ? 'Livro' : vm.book.book}}
         <md-tooltip><span>Selecionar Livro</span></md-tooltip>
       </md-button>
       <md-button class="md-primary md-raised" ng-click="vm.toggleChaptersList()">
         <md-icon md-font-set="material-icons">looks_one</md-icon>
-        {{vm.isListOpen() ? 'Capítulo' : 'Cap: ' + vm.chapter}}
+        {{vm.isListOpen ? 'Capítulo' : 'Cap: ' + vm.chapter}}
         <md-tooltip><span>Selecionar Capítulo</span></md-tooltip>
       </md-button>
       <md-button class="md-primary md-raised" ng-click="vm.toggleVersesList()">
         <md-icon md-font-set="material-icons">format_list_numbered</md-icon>
-        {{vm.isListOpen() ? 'Versículo' : (vm.highlightedVerse ? 'Ver: ' + vm.highlightedVerse : 'Ver')}}
+        {{vm.isListOpen ? 'Versículo' : (vm.highlightedVerse ? 'Ver: ' + vm.highlightedVerse : 'Ver')}}
         <md-tooltip><span>Selecionar Versículo</span></md-tooltip>
       </md-button>
       <div flex></div>
@@ -90,8 +90,8 @@
               <sup>{{verse.number}}</sup>
               <span md-highlight-text="vm.searchTerm" md-highlight-flags="i">{{verse.text}}</span>
             </p>
-            <p class="verse-refs md-caption" ng-mouseenter="vm.showRefsPreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
-              <span ng-repeat="ref in vm.refs[verse.number]">{{ref.refText}}</span>
+            <p class="verse-refs md-caption">
+              <span ng-repeat="ref in vm.refs[verse.number]" ng-mouseenter="vm.showRefsPreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">{{ref.refText}}</span>
             </p>
           </div>
           <span class="pos-verse" ng-mouseenter="vm.showMorePreview($event, verse.number)" ng-mouseleave="vm.hidePreviewCards()">
@@ -161,29 +161,36 @@
           </div>
         </md-card-content>
       </md-card>
-      <md-card class="refs-preview" ng-class="vm.refsPreviewClass" ng-style="{ top: vm.previewCardTop + 'px' }">
+      <md-card class="refs-preview" ng-class="vm.refsPreviewClass"
+               ng-style="{ top: vm.previewCardTop + 'px', left: vm.previewCardLeft + 'px', 'z-index': vm.refsPreviewZIndex }">
         <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Tags</span>
+          <md-card-title-text layout="row">
+            <span class="md-headline" flex>
+              Referências
+            </span>
+            <md-button class="md-icon-button" ng-click="vm.showRefsDialog($event, vm.refs[vm.versePreviewShowing].refObj)">
+              <md-tooltip>Editar Referências</md-tooltip>
+              <md-icon md-font-set="material-icons">edit</md-icon>
+            </md-button>
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
           <div ng-repeat="ref in vm.refs[vm.versePreviewShowing]">
-            <div layout="row">
-              <div flex>
-                <span class="md-body-2">REFS</span>
-                <p class="md-caption"></p>
-              </div>
-              <div layout="column">
-                <md-button class="md-icon-button" ng-click="vm.showTagsDialog($event, ref)">
-                  <md-tooltip>Editar Tags</md-tooltip>
-                  <md-icon md-font-set="material-icons">edit</md-icon>
+            <div layout="column">
+              <span class="md-body-2" layout="row">
+                <span flex>{{ref.refText}}</span>
+                <md-button ng-if="!vm.verseRefTexts[ref.refUrl]" class="md-icon-button" ng-click="vm.getVerseRefText(ref.refUrl)">
+                  <md-tooltip>Ver Verso</md-tooltip>
+                  <md-icon md-font-set="material-icons">remove_red_eye</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseTag($event, ref)">
-                  <md-tooltip>Remover Tags</md-tooltip>
+                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseRef($event, vm.refs[vm.versePreviewShowing].refObj._id, ref.refUrl)">
+                  <md-tooltip>Remover Referência</md-tooltip>
                   <md-icon md-font-set="material-icons">delete</md-icon>
                 </md-button>
-              </div>
+              </span>
+              <p class="md-caption">
+                {{vm.verseRefTexts[ref.refUrl]}}
+              </p>
             </div>
             <md-divider ng-if="!$last"></md-divider>
           </div>

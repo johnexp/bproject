@@ -12,9 +12,10 @@
 
     <md-dialog-content>
       <div class="md-dialog-content">
-        <label>Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="!vm.versesRefs.verse">Versos Selecionados: {{ vm.selectedVerses }}</label>
+        <label ng-if="vm.versesRefs.verse">Verso: {{ vm.versesRefs.verse }}</label>
         <div layout="row" layout-wrap>
-          <md-autocomplete flex="100" required
+          <md-autocomplete flex="50" required
                            md-selected-item-change="vm.getBookChapters(item)"
                            md-search-text-change="vm.clearFields()"
                            md-input-name="selectedBook"
@@ -37,7 +38,7 @@
               <div ng-message="md-require-match">Por favor, selecione um livro existente.</div>
             </div>
           </md-autocomplete>
-          <md-autocomplete flex="100" required
+          <md-autocomplete flex="50" required
                            ng-disabled="vm.chapters.length === 0"
                            ng-blur="vm.checkSelectedChapter(vm.chaptersSearchTerm)"
                            md-selected-item-change="vm.getChapterVerses(item)"
@@ -93,8 +94,11 @@
         </div>
         <div layout="column">
           <h3>Referências</h3>
-          <md-chips ng-model="vm.refsAdded" name="refsAdded" class="visual-chips" md-removable="true" md-require-match="true">
+          <md-chips ng-model="vm.versesRefs.refs" class="visual-chips" md-removable="true" md-require-match="true">
             <md-autocomplete md-selected-item="[]" md-search-text="vm.searchText" md-items="item in []" md-item-text="item" placeholder=""></md-autocomplete>
+            <md-chip-template>
+              <span>{{vm.getRefHumanized($chip)}}</span>
+            </md-chip-template>
           </md-chips>
         </div>
       </div>
@@ -102,10 +106,10 @@
   </form>
   <md-dialog-actions layout="row">
     <md-button ng-click="vm.hide()">
-      <md-icon md-font-set="material-icons">clear</md-icon>
+      <md-icon md-font-set="material-icons">cancel</md-icon>
       Cancelar
     </md-button>
-    <md-button class="md-raised md-primary" ng-click="vm.saveRefs()">
+    <md-button class="md-raised md-primary" ng-click="vm.saveRefs()" ng-disabled="!vm.versesRefs.refs || vm.versesRefs.refs.length === 0">
       <md-icon md-font-set="material-icons">save</md-icon>
       Salvar
     </md-button>
