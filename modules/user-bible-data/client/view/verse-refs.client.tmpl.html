@@ -99,6 +99,9 @@
             <md-chip-template>
               <span>{{vm.getRefHumanized($chip)}}</span>
             </md-chip-template>
+            <button md-chip-remove ng-click="vm.removeChip($chip)" class="md-primary custom-chips-remove-button" ng-if="vm.isNew($chip)">
+              <md-icon md-font-set="material-icons">close</md-icon>
+            </button>
           </md-chips>
         </div>
       </div>

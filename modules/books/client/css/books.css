@@ -1,3 +1,6 @@
+* {
+	opacity: .85;
+}
 .verse p.verse-text {
 	padding: 5px 10px 0;
 	margin: 8px 0px 0;

@@ -8,6 +8,7 @@
   function VerseRefsController($mdDialog, Toast, currentRefs, selectedVerses, BooksListService, BooksService, $stateParams, DiacriticsUtilService, $scope) {
     var vm = this;
     vm.versesRefs = angular.copy(currentRefs) || { refs: [] };
+    vm.actualVerses = angular.copy(vm.versesRefs.refs);
     vm.books = BooksListService.getBooks();
     vm.chapters = [];
     vm.verses = [];
@@ -24,6 +25,8 @@
     vm.checkSelectedVerse = checkSelectedVerse;
     vm.clearFields = clearFields;
     vm.getRefHumanized = getRefHumanized;
+    vm.isNew = isNew;
+    vm.removeChip = removeChip;
 
     function getBookChapters(item) {
       if (item) {
@@ -66,7 +69,7 @@
           return;
         }
       }
-      vm.versesRefs.refs.push(ref);
+      vm.versesRefs.refs.push(ref + '*');
       vm.form.selectedVerse = null;
       vm.verseRef.$setPristine();
       vm.verseRef.$setUntouched();
@@ -101,7 +104,7 @@
     }
 
     function getRefHumanized(ref) {
-      var verseSplited = ref.split('-');
+      var verseSplited = ref.replace('*', '').split('-');
       return BooksListService.getBookByAbbrev(verseSplited[0]) + ' ' + verseSplited[1] + ':' + verseSplited[2];
     }
 
@@ -156,6 +159,18 @@
           }
         }
       }
+    }
+
+    function isNew(ref) {
+      if (vm.actualVerses.indexOf(ref) === -1) {
+        return true;
+      }
+      return false;
+    }
+
+    function removeChip(chip) {
+      var index = vm.versesRefs.refs.indexOf(chip);
+      vm.versesRefs.refs.splice(index, 1);
     }
   }
 }());
