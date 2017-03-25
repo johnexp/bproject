@@ -1,0 +1,66 @@
+<md-dialog aria-label="Legenda das Cores" class="colors-legend-dialog">
+  <form ng-cloak name="colorsLegend" ng-submit="vm.saveLegends()" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Legenda das Cores</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.hide()">
+          <md-icon md-font-set="material-icons" aria-label="Fechar Janela">close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <div layout="row" layout-lt-md="column" layout-wrap class="colors-legend-inputs">
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Amarelo</label>
+            <md-icon class="yellow" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.yellow" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Vermelho</label>
+            <md-icon class="red" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.red" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Roxo</label>
+            <md-icon class="purple" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.purple" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Azul</label>
+            <md-icon class="blue" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.blue" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Verde</label>
+            <md-icon class="green" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.green" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Rosa</label>
+            <md-icon class="pink" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.pink" type="text">
+          </md-input-container>
+          <md-input-container class="md-icon-float md-block" flex="100" flex-gt-sm="50">
+            <label>Alaranjado</label>
+            <md-icon class="orange" md-font-set="material-icons">lens</md-icon>
+            <input maxlength="50" ng-model="vm.colorsLegend.orange" type="text">
+          </md-input-container>
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="vm.hide()">
+        <md-icon md-font-set="material-icons">cancel</md-icon>
+        Cancelar
+      </md-button>
+      <md-button class="md-raised md-primary" type="submit">
+        <md-icon md-font-set="material-icons">save</md-icon>
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,28 @@
+md-input-container.md-input-focused md-icon.yellow, md-icon.yellow {
+	color: #F6F66E;
+}
+md-input-container.md-input-focused md-icon.red, md-icon.red {
+	color: #c55757;
+}
+md-input-container.md-input-focused md-icon.purple, md-icon.purple {
+	color: #805998;
+}
+md-input-container.md-input-focused md-icon.blue, md-icon.blue {
+	color: #617ab0;
+}
+md-input-container.md-input-focused md-icon.green, md-icon.green {
+	color: #5B9A8E;
+}
+md-input-container.md-input-focused md-icon.pink, md-icon.pink {
+	color: #F1C0ED;
+}
+md-input-container.md-input-focused md-icon.orange, md-icon.orange {
+	color: #ECB07C;
+}
+.colors-legend-inputs md-input-container {
+	margin: 0;
+}
+.colors-legend-dialog {
+	max-width: 95%;
+	width: 600px;
+}

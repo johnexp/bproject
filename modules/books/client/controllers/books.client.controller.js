@@ -6,9 +6,11 @@
     .module('books')
     .controller('BooksController', BooksController);
 
-  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog', '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast', 'BooksService'];
+  BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog',
+    '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast', 'BooksService', 'UserBibleDataService'];
 
-  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService, $timeout, $anchorScroll, $location, Toast, BooksService) {
+  function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService,
+                            $timeout, $anchorScroll, $location, Toast, BooksService, UserBibleDataService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -39,6 +41,7 @@
     vm.showNoteDialog = showNoteDialog;
     vm.showTagsDialog = showTagsDialog;
     vm.showRefsDialog = showRefsDialog;
+    vm.showColorsLegendDialog = showColorsLegendDialog;
     vm.showConfirmRemoveVerseNote = showConfirmRemoveVerseNote;
     vm.showConfirmRemoveVerseTag = showConfirmRemoveVerseTag;
     vm.showConfirmRemoveVerseRef = showConfirmRemoveVerseRef;
@@ -84,7 +87,7 @@
       vm.showBooksList = !vm.showBooksList;
       vm.showChaptersList = false;
       vm.showVersesList = false;
-      vm.isListOpen = !vm.showBooksList;
+      vm.isListOpen = vm.showBooksList;
       vm.showSelectionClass = vm.showBooksList ? 'show-books-list' : '';
       if (!vm.showBooksList) {
         resetSelectedBook();
@@ -95,7 +98,7 @@
       vm.showBooksList = false;
       vm.showChaptersList = !vm.showChaptersList;
       vm.showVersesList = false;
-      vm.isListOpen = !vm.showChaptersList;
+      vm.isListOpen = vm.showChaptersList;
       vm.showSelectionClass = vm.showChaptersList ? 'show-chapters-list' : '';
       if (!vm.showChaptersList) {
         resetSelectedBook();
@@ -106,7 +109,7 @@
       vm.showBooksList = false;
       vm.showChaptersList = false;
       vm.showVersesList = !vm.showVersesList;
-      vm.isListOpen = !vm.showVersesList;
+      vm.isListOpen = vm.showVersesList;
       vm.showSelectionClass = vm.showVersesList ? 'show-verses-number-list' : '';
       if (!vm.showVersesList) {
         resetSelectedBook();
@@ -194,6 +197,7 @@
       setVersesNotes();
       setVersesTags();
       setVersesRefs();
+      setColorsLegend();
     }
 
     function setVersesMark() {
@@ -241,6 +245,14 @@
         createVerseRefObj(refs, i);
       }
       vm.refs = refs;
+    }
+
+    function setColorsLegend() {
+      vm.colorsLegend = {};
+      for (var i = 0; i < vm.userCustomData.colorsLegend.length; i++) {
+        vm.colorsLegend[vm.userCustomData.colorsLegend[i].color] = vm.userCustomData.colorsLegend[i].legend;
+      }
+      return vm.colorsLegend;
     }
 
     function createVerseRefObj(refs, i) {
@@ -358,8 +370,28 @@
         });
     }
 
+    function showColorsLegendDialog(ev) {
+      $mdDialog.show({
+        controller: 'ColorsLegendController as vm',
+        templateUrl: '/modules/user-custom-data/client/view/colors-legend.client.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: false,
+        locals: {
+          userCustomData: vm.userCustomData
+        }
+      })
+        .then(function(userCustomData) {
+          if (userCustomData) {
+            vm.userCustomData = userCustomData;
+            saveUserCustomData();
+          }
+        });
+    }
+
     function addVersesRefs(versesRefs) {
       if (!versesRefs._id) {
+        checkForActualChapterRefs(versesRefs);
         for (var i = 0; i < vm.selectedVerses.length; i++) {
           var addedVerse = getAddedRefByVerse(vm.selectedVerses[i]);
           if (addedVerse) {
@@ -370,6 +402,30 @@
         }
       }
       saveUserBibleData();
+    }
+
+    function checkForActualChapterRefs(versesRefs) {
+      for (var i = 0; i < versesRefs.refs.length; i++) {
+        var verseSplited = versesRefs.refs[i].replace('*', '').split('-');
+        if (verseSplited[0] === $stateParams.abbrev && verseSplited[1] === $stateParams.chapter) {
+          versesRefs.refs[i] = versesRefs.refs[i].replace('*', '');
+          createActualChapterRefs(verseSplited);
+        }
+      }
+    }
+
+    function createActualChapterRefs(verseSplited) {
+      var refsToAdd = [];
+      for (var i = 0; i < vm.selectedVerses.length; i++) {
+        refsToAdd.push(verseSplited[0] + '-' + verseSplited[1] + '-' + vm.selectedVerses[i]);
+      }
+
+      var addedVerse = getAddedRefByVerse(verseSplited[2]);
+      if (addedVerse) {
+        addRefsInVerse(addedVerse, refsToAdd);
+      } else {
+        vm.userBibleData.refs.push({ refs: refsToAdd, verse: verseSplited[2] });
+      }
     }
 
     function getAddedRefByVerse(selectedVerse) {
@@ -421,7 +477,7 @@
       });
     }
 
-    function showConfirmRemoveVerseRef(ev, refsId, refUrl) {
+    function showConfirmRemoveVerseRef(ev, refsId, refUrl, verse) {
       var confirm = $mdDialog.confirm()
         .title('Comfirmar Remoção')
         .textContent('Deseja remover a referência do verso?')
@@ -430,7 +486,7 @@
         .ok('Sim')
         .cancel('Não');
       $mdDialog.show(confirm).then(function() {
-        removeVerseRef(refsId, refUrl);
+        removeVerseRef(refsId, refUrl, verse);
       });
     }
 
@@ -480,7 +536,7 @@
       }
     }
 
-    function removeVerseRef(refsId, refUrl) {
+    function removeVerseRef(refsId, refUrl, verse) {
       for (var i = 0; i < vm.userBibleData.refs.length; i++) {
         if (vm.userBibleData.refs[i]._id === refsId) {
           var refIndex = vm.userBibleData.refs[i].refs.indexOf(refUrl);
@@ -488,7 +544,44 @@
             vm.userBibleData.refs[i].refs.splice(refIndex, 1);
           }
           saveUserBibleData();
+          findReferredVerseToRemove(refUrl, verse);
           return;
+        }
+      }
+    }
+
+    function findReferredVerseToRemove(refUrl, verse) {
+      var refSplited = refUrl.split('-');
+      if (refSplited[0] === $stateParams.abbrev && refSplited[1] === $stateParams.chapter) {
+        removeReferredVerse(vm.userBibleData, verse);
+      } else {
+        UserBibleDataService.get({
+          book: refSplited[0],
+          chapter: refSplited[1]
+        }).$promise
+          .then(function (result) {
+            removeReferredVerse(result, verse);
+            result.createOrUpdate();
+          });
+      }
+    }
+
+    function removeReferredVerse(userBibleData, verse) {
+      var refToFind = $stateParams.abbrev + '-' + $stateParams.chapter + '-' + verse;
+      for (var i = 0; i < userBibleData.refs.length; i++) {
+        var refIndex = userBibleData.refs[i].refs.indexOf(refToFind);
+        if (refIndex > -1) {
+          userBibleData.refs[i].refs.splice(refIndex, 1);
+        }
+      }
+      clearReferredData();
+
+      function clearReferredData() {
+        var refsLength = userBibleData.refs.length;
+        for (var j = refsLength - 1; j >= 0; j--) {
+          if (userBibleData.refs[j].refs.length === 0) {
+            userBibleData.refs.splice(j, 1);
+          }
         }
       }
     }
@@ -536,8 +629,7 @@
     }
 
     function saveUserCustomData() {
-      clearEmptyDocuments();
-      userCustomData.createOrUpdate()
+      vm.userCustomData.createOrUpdate()
         .then(onSuccess)
         .catch(onError);
 

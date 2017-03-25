@@ -22,13 +22,7 @@ exports.userBibleDataByChapter = function (req, res, next) {
       if (err) {
         return next(err);
       } else if (!userBibleData) {
-        userBibleData = {};
-        userBibleData.book = req.params.book;
-        userBibleData.chapter = req.params.chapter;
-        userBibleData.markers = [];
-        userBibleData.tags = [];
-        userBibleData.notes = [];
-        userBibleData.refs = [];
+        userBibleData = createUserBibleDataObj(req);
       }
       req.userBibleData = userBibleData;
       return res.jsonp(userBibleData);
@@ -64,6 +58,11 @@ exports.updateUserBibleData = function (req, res) {
 
   saveVerseReferredTo(userBibleData);
 
+  if (userBibleData.refs.length === 0 && userBibleData.notes.length === 0 && userBibleData.markers.length === 0 && userBibleData.tags.length === 0) {
+    deleteUserBibleData(userBibleData, req, res);
+    return;
+  }
+
   userBibleData.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -75,14 +74,44 @@ exports.updateUserBibleData = function (req, res) {
   });
 };
 
+function createUserBibleDataObj(req) {
+  var userBibleData = {};
+  userBibleData.book = req.params.book;
+  userBibleData.chapter = req.params.chapter;
+  userBibleData.markers = [];
+  userBibleData.tags = [];
+  userBibleData.notes = [];
+  userBibleData.refs = [];
+  return userBibleData;
+}
+
+/**
+ * Delete a User Meta
+ */
+function deleteUserBibleData(userBibleData, req, res) {
+  userBibleData.remove(function (err) {
+    if (res) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(createUserBibleDataObj(req));
+      }
+    }
+  });
+}
+
 function saveVerseReferredTo(userBibleData) {
   var refsToSave = {};
+  var versesRefsToCreate = [];
   for (var i = 0; i < userBibleData.refs.length; i++) {
     for (var j = 0; j < userBibleData.refs[i].refs.length; j++) {
       if (userBibleData.refs[i].refs[j].indexOf('*') > -1) {
         userBibleData.refs[i].refs[j] = userBibleData.refs[i].refs[j].replace('*', '');
         var refArray = userBibleData.refs[i].refs[j].split('-');
         if (!refsToSave[refArray[0] + '-' + refArray[1]]) {
+          versesRefsToCreate.push(refArray[0] + '-' + refArray[1]);
           refsToSave[refArray[0] + '-' + refArray[1]] = { refs: [], verse: '' };
         }
         refsToSave[refArray[0] + '-' + refArray[1]].refs.push(userBibleData.refs[i].refs[j]);
@@ -91,43 +120,34 @@ function saveVerseReferredTo(userBibleData) {
     }
   }
 
-  console.log(refsToSave);
-  refsToSave.forEach(function (refToSave) {
-    console.log('entrouAqui');
-    createOrUpdateRef(userBibleData, refToSave.refs, refToSave.verse);
+  versesRefsToCreate.forEach(function (refToSave) {
+    createOrUpdateRef(userBibleData, refsToSave[refToSave].refs, refsToSave[refToSave].verse);
   });
 }
 
 function createOrUpdateRef(userBibleData, refs, verse) {
-
   var refToSearchArray = refs[0].split('-');
-  console.log(refToSearchArray);
   UserBibleData.findOne({
     'user': userBibleData.user,
     'book': refToSearchArray[0],
     'chapter': refToSearchArray[1]
   })
   .exec(function (err, newUserBibleData) {
+    if (!newUserBibleData) {
+      newUserBibleData = new UserBibleData({ book: refToSearchArray[0], chapter: refToSearchArray[1], refs: [], user: userBibleData.user });
+    }
     for (var i = 0; i < refs.length; i++) {
       var refToAddArray = refs[i].split('-');
-      console.log('VERSE_REF_TO_ADD: ' + refToAddArray);
-      if (!newUserBibleData) {
-        createRefs(refToAddArray, userBibleData, verse);
-      } else {
-        updateRefs(refToAddArray, newUserBibleData, userBibleData, verse);
-      }
+      saveRefs(refToAddArray, newUserBibleData, userBibleData, verse);
+    }
+
+    if (newUserBibleData.refs.length === 0 && newUserBibleData.notes.length === 0 && newUserBibleData.markers.length === 0 && newUserBibleData.tags.length === 0) {
+      deleteUserBibleData(newUserBibleData);
     }
   });
 }
 
-function createRefs(ref, userBibleData, verse) {
-  var newUserBibleData = { book: ref[0], chapter: ref[1], refs: [], user: ref.user };
-  newUserBibleData.refs.push({ refs: [userBibleData.book + '-' + userBibleData.chapter + '-' + verse], verse: ref[2] });
-  newUserBibleData = new UserBibleData(newUserBibleData);
-  newUserBibleData.save();
-}
-
-function updateRefs(ref, newUserBibleData, userBibleData, verse) {
+function saveRefs(ref, newUserBibleData, userBibleData, verse) {
   newUserBibleData.refs.push({ refs: [userBibleData.book + '-' + userBibleData.chapter + '-' + verse], verse: ref[2] });
   newUserBibleData.save();
 }

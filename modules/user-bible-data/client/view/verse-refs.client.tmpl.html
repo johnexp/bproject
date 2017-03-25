@@ -41,6 +41,7 @@
           <md-autocomplete flex="50" required
                            ng-disabled="vm.chapters.length === 0"
                            ng-blur="vm.checkSelectedChapter(vm.chaptersSearchTerm)"
+                           md-no-cache="true"
                            md-selected-item-change="vm.getChapterVerses(item)"
                            md-input-name="selectedChapter"
                            md-min-length="0"
@@ -62,6 +63,7 @@
           <md-autocomplete flex="100" required
                            ng-disabled="vm.verses.length === 0"
                            ng-blur="vm.checkSelectedVerse(vm.versesSearchTerm)"
+                           md-no-cache="true"
                            md-input-name="selectedVerse"
                            md-min-length="0"
                            md-selected-item="vm.form.selectedVerse"

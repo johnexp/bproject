@@ -63,16 +63,35 @@
         return false;
       }
       var ref = vm.form.selectedBook.abbrev + '-' + vm.form.selectedChapter.number + '-' + vm.form.selectedVerse.number;
-      for (var i = 0; i < vm.versesRefs.refs.length; i++) {
-        if (vm.versesRefs.refs[i] === ref) {
-          Toast.error('Erro: Não é possível adicionar referência duplicada.');
-          return;
-        }
+      if (isDup(ref)) {
+        return;
+      }
+      if (isAutoRef(vm.form.selectedVerse.number)) {
+        return;
       }
       vm.versesRefs.refs.push(ref + '*');
       vm.form.selectedVerse = null;
       vm.verseRef.$setPristine();
       vm.verseRef.$setUntouched();
+    }
+
+    function isDup(ref) {
+      for (var i = 0; i < vm.versesRefs.refs.length; i++) {
+        if (vm.versesRefs.refs[i] === ref) {
+          Toast.error('Erro: Não é possível adicionar referência duplicada.');
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function isAutoRef(verseToAdd) {
+      if ($stateParams.abbrev === vm.form.selectedBook.abbrev && $stateParams.chapter == vm.form.selectedChapter.number &&
+        (vm.selectedVerses.indexOf(verseToAdd) > -1 || (vm.versesRefs.verse && vm.versesRefs.verse === verseToAdd))) {
+        Toast.error('Erro: Não é possível relacionar um verso com ele mesmo.');
+        return true;
+      }
+      return false;
     }
 
     function clearFields() {

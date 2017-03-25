@@ -29,7 +29,7 @@ var UserCustomDataSchema = new Schema({
       type: String,
       required: true,
       minlength: [2, 'O valor do campo `{PATH}` (`{VALUE}`) não atinge o valor mínimo necessário ({MAXLENGTH}).'],
-      maxlength: [20, 'O valor do campo `{PATH}` (`{VALUE}`) excede o valor máximo permitido ({MAXLENGTH}).']
+      maxlength: [50, 'O valor do campo `{PATH}` (`{VALUE}`) excede o valor máximo permitido ({MAXLENGTH}).']
     }
   }]
 });

@@ -183,7 +183,7 @@
                   <md-tooltip>Ver Verso</md-tooltip>
                   <md-icon md-font-set="material-icons">remove_red_eye</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseRef($event, vm.refs[vm.versePreviewShowing].refObj._id, ref.refUrl)">
+                <md-button class="md-icon-button" ng-click="vm.showConfirmRemoveVerseRef($event, vm.refs[vm.versePreviewShowing].refObj._id, ref.refUrl, vm.versePreviewShowing)">
                   <md-tooltip>Remover Referência</md-tooltip>
                   <md-icon md-font-set="material-icons">delete</md-icon>
                 </md-button>
@@ -237,31 +237,35 @@
             </md-button>
             <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Amarelo</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.yellow || 'Amarelo' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Vermelho</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.red || 'Vermelho' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Roxo</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.purple || 'Roxo' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Azul</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.blue || 'Azul' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Verde</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.green || 'Verde' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Rosa</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.pink || 'Rosa' }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>Alaranjado</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend.orange || 'Alaranjado' }}</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="vm.showColorsLegendDialog($event)">
+              <md-icon md-font-set="material-icons">format_color_text</md-icon>
+              <md-tooltip>Alterar Legenda</md-tooltip>
             </md-button>
           </div>
           <md-divider></md-divider>
