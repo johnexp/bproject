@@ -34,8 +34,7 @@ exports.filter = function (req, res) {
     { $unwind: '$chapters.verses' },
     { $match: { 'chapters.verses': new RegExp(req.params.searchTerm, 'i') } },
     { $project: { _id: 1, abbrev: 1, book: 1, chapter: '$chapters.number', verse: '$chapters.verses' } },
-    { $limit: 50 },
-    { $skip : 5 }
+    { $limit: 200 }
   ];
   if (req.params.abbrev) {
     pipeline.unshift({ $match: { 'abbrev': req.params.abbrev } });

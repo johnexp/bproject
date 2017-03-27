@@ -13,11 +13,26 @@
         <md-icon md-font-set="material-icons">filter_list</md-icon>
         <input name="value" type="text" ng-model="vm.searchForm.version">
       </md-input-container>
-      <md-input-container flex>
-        <label translate>Abbrev</label>
-        <md-icon md-font-set="material-icons">filter_list</md-icon>
-        <input name="value" type="text" ng-model="vm.searchForm.abbrev">
-      </md-input-container>
+      <md-autocomplete flex="50" required
+                       md-input-name="abbrev"
+                       md-min-length="0"
+                       md-selected-item="vm.searchForm.book"
+                       md-search-text="vm.booksSearchTerm"
+                       md-items="item in vm.booksQuerySearch(vm.booksSearchTerm)"
+                       md-item-text="item.name"
+                       md-require-match
+                       required
+                       md-floating-label="Livro">
+        <md-item-template>
+          <span md-highlight-text="vm.booksSearchTerm" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+        <md-not-found>
+          Nenhum livro para o termpo "{{vm.booksSearchTerm}}" foi encontrado.
+        </md-not-found>
+        <div ng-messages="vm.form.bookFilter.abbrev.$error" ng-if="vm.form.bookFilter.abbrev.$touched">
+          <div ng-message="md-require-match">Por favor, selecione um livro existente.</div>
+        </div>
+      </md-autocomplete>
       <md-input-container flex>
         <label translate>Search</label>
         <md-icon md-font-set="material-icons">filter_list</md-icon>
@@ -28,15 +43,16 @@
   </form>
   <md-divider></md-divider>
   <md-list class="md-dense" flex>
-    <div ng-if="!vm.result || (vm.result | filter: { 'name': vm.bookFilter.value, 'active': vm.bookFilter.active  }).length == 0">
+    <div ng-if="!vm.result">
       <md-subheader class="md-no-sticky" layout="row" layout-align="center center">
         {{ 'No records' | translate }}
       </md-subheader>
       <md-divider></md-divider>
     </div>
-    <md-list-item class="md-2-line secondary-button-padding" ng-repeat="result in vm.result | filter: { 'name': vm.bookFilter.value, 'active': vm.bookFilter.active  }">
+    <md-list-item class="md-2-line md-long-text secondary-button-padding" ng-repeat="result in vm.result">
       <div class="md-list-item-text" layout="column">
-        <h3>{{ result }}</h3>
+        <h3>{{ result.book + ' - ' + result.chapter}}</h3>
+        <p md-highlight-text="vm.searchForm.searchTerm" md-highlight-flags="i">{{ result.verse }}</p>
       </div>
       <md-divider></md-divider>
     </md-list-item>
