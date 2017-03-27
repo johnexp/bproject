@@ -10,10 +10,19 @@
   function menuConfig(menuService) {
     // Set top bar menu items
     menuService.addMenuItem('sidebar', {
-      title: 'Versions',
+      title: 'Bíblias',
       state: 'bible',
       type: 'dropdown',
-      icon: 'help',
+      icon: 'collections_bookmark',
+      roles: ['user', 'admin', 'guest']
+    });
+
+    // Set top bar menu items
+    menuService.addMenuItem('sidebar', {
+      title: 'Pesquisa',
+      state: 'bible.search',
+      type: 'dropdown',
+      icon: 'search',
       roles: ['user', 'admin', 'guest']
     });
 

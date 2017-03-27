@@ -86,7 +86,7 @@
     }
 
     function isAutoRef(verseToAdd) {
-      if ($stateParams.abbrev === vm.form.selectedBook.abbrev && $stateParams.chapter == vm.form.selectedChapter.number &&
+      if ($stateParams.abbrev === vm.form.selectedBook.abbrev && $stateParams.chapter === vm.form.selectedChapter.number &&
         (vm.selectedVerses.indexOf(verseToAdd) > -1 || (vm.versesRefs.verse && vm.versesRefs.verse === verseToAdd))) {
         Toast.error('Erro: Não é possível relacionar um verso com ele mesmo.');
         return true;

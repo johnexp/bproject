@@ -17,11 +17,17 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: '/api/book/:version/:abbrev/:chapter',
       permissions: '*'
+    }, {
+      resources: '/api/search/:searchTerm/:version/:abbrev*?',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
       resources: '/api/book/:version/:abbrev/:chapter',
+      permissions: ['get']
+    }, {
+      resources: '/api/search/:searchTerm/:version/:abbrev*?',
       permissions: ['get']
     }]
   }]);

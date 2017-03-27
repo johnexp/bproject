@@ -5,7 +5,7 @@
         <md-icon class="icone36" md-font-set="material-icons">menu</md-icon>
       </md-button>
       <div flex="10">
-        <a ui-sref="home">MEAN.JS</a>
+        <a ui-sref="home">Bíblia de Estudo</a>
       </div>
       <md-menu-bar class="topbar">
         <md-menu ng-repeat="menuItem in vm.menu.items" ng-if="menuItem.shouldRender(vm.authentication.user)">
@@ -22,20 +22,6 @@
       </md-menu-bar>
       <div flex></div>
       <md-menu-bar class="topbar">
-        <md-menu>
-          <button ng-click="$mdMenu.open()">
-            Lang
-            <md-icon md-font-set="material-icons">expand_more</md-icon>
-          </button>
-          <md-menu-content>
-            <md-menu-item>
-              <md-button ng-click="vm.changeLanguage('en_US')">English</md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button ng-click="vm.changeLanguage('pt_BR')">Português</md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
         <md-menu ng-hide="vm.authentication.user">
           <button ng-click="$mdMenu.open()" ui-sref="authentication.signup">Sign Up</button>
           <md-menu-content ng-hide="true"></md-menu-content>

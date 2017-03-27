@@ -15,17 +15,14 @@
         url: 'bible',
         template: '<ui-view/>'
       })
-      .state('bible.list', {
-        url: '',
-        templateUrl: '/modules/books/client/views/list-books.client.view.html',
-        controller: 'BooksListController',
+      .state('bible.search', {
+        url: '/search',
+        templateUrl: '/modules/books/client/views/books-search.client.view.html',
+        controller: 'BooksSearchController',
         controllerAs: 'vm',
-        resolve: {
-          bookResolve: newBook
-        },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Books List'
+          pageTitle: 'Books Search'
         }
       })
       .state('bible.create', {
