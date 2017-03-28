@@ -81,9 +81,44 @@ exports.filterNotes = function (req, res) {
   var pipeline = [
     { $unwind: '$notes' },
     { $unwind: '$notes.note' },
+    { $project: { _id: 1, book: 1, chapter: 1, verses: '$notes.verses', note: '$notes.note' } }
+  ];
+  if (req.params.searchTerm && req.params.searchTerm !== '*') {
+    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+  }
+  if (req.params.book) {
+    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+  }
+  UserBibleData.aggregate(pipeline,
+    function(err, result) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(result);
+      }
+    });
+};
+
+/**
+ * Filter User Tags
+ */
+exports.filterTags = function (req, res) {
+  var pipeline = [
+    { $unwind: '$notes' },
+    { $unwind: '$notes.note' },
     { $project: { _id: 1, book: 1, chapter: 1, verses: '$notes.verses', note: '$notes.note' } },
     { $limit: 200 }
   ];
+
+  // db.getCollection('userbibledatas').aggregate(
+  //   { $unwind: '$tags' },
+  //   { $unwind: '$tags.tags' },
+  //   { $match: { 'tags.tags': { $in: ['Vish', 'test'] } } },
+  //   //{ $unwind: '$notes.note' },
+  //   { $project: { _id: 1, book: 1, chapter: 1, verses: '$tags.verses', note: '$tags.tags' } }
+  // )
   if (req.params.searchTerm && req.params.searchTerm !== '*') {
     pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
   }
