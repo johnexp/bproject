@@ -1,19 +1,20 @@
 <section layout="column" layout-padding>
   <div layout="row">
-    <h2 class="md-title" translate>Books</h2>
-    <div flex></div>
-    <list-action-bar module-name="books"></list-action-bar>
+    <h2 class="md-title">Pesquisar na Bíblia</h2>
   </div>
   <md-divider></md-divider>
-  <h3 class="md-subheader" translate>Filter</h3>
-  <form name="vm.form.bookFilter">
+  <h3 class="md-subheader">Filtro</h3>
+  <form name="vm.form.bookFilter" ng-submit="vm.search(vm.form.bookFilter.$valid)" novalidate>
     <div layout="column" layout-gt-sm="row" layout-wrap>
       <md-input-container flex>
-        <label translate>Version</label>
-        <md-icon md-font-set="material-icons">filter_list</md-icon>
-        <input name="value" type="text" ng-model="vm.searchForm.version">
+        <label>Versão</label>
+        <md-select ng-model="vm.searchForm.version">
+          <md-option ng-repeat="version in vm.versions" ng-value="version.abbrev">
+            {{version.name}}
+          </md-option>
+        </md-select>
       </md-input-container>
-      <md-autocomplete flex="50" required
+      <md-autocomplete flex
                        md-input-name="abbrev"
                        md-min-length="0"
                        md-selected-item="vm.searchForm.book"
@@ -21,7 +22,6 @@
                        md-items="item in vm.booksQuerySearch(vm.booksSearchTerm)"
                        md-item-text="item.name"
                        md-require-match
-                       required
                        md-floating-label="Livro">
         <md-item-template>
           <span md-highlight-text="vm.booksSearchTerm" md-highlight-flags="^i">{{item.name}}</span>
@@ -29,23 +29,32 @@
         <md-not-found>
           Nenhum livro para o termpo "{{vm.booksSearchTerm}}" foi encontrado.
         </md-not-found>
-        <div ng-messages="vm.form.bookFilter.abbrev.$error" ng-if="vm.form.bookFilter.abbrev.$touched">
+        <div ng-messages="vm.form.bookFilter.abbrev.$error">
           <div ng-message="md-require-match">Por favor, selecione um livro existente.</div>
         </div>
       </md-autocomplete>
       <md-input-container flex>
-        <label translate>Search</label>
+        <label>Pesquisa</label>
         <md-icon md-font-set="material-icons">filter_list</md-icon>
-        <input name="value" type="text" ng-model="vm.searchForm.searchTerm">
+        <input type="text" name="searchTerm" ng-model="vm.searchForm.searchTerm" minlength="3" required>
+        <div ng-messages="vm.form.bookFilter.searchTerm.$error">
+          <div ng-message="required">O termo da pesquisa é obrigatório.</div>
+          <div ng-message="minlength">O termo da pesquisa deve possuir no mínimo 3 caracteres.</div>
+        </div>
       </md-input-container>
     </div>
-    <md-button ng-click="vm.search()">Search</md-button>
+    <div layout="row" layout-align="center center">
+      <md-button type="submit" class="md-primary md-raised">
+        <md-icon md-font-set="material-icons">search</md-icon>
+        Pesquisar
+      </md-button>
+    </div>
   </form>
   <md-divider></md-divider>
   <md-list class="md-dense" flex>
-    <div ng-if="!vm.result">
+    <div ng-if="vm.result && vm.result.length === 0">
       <md-subheader class="md-no-sticky" layout="row" layout-align="center center">
-        {{ 'No records' | translate }}
+        Nenhum registro encontrado
       </md-subheader>
       <md-divider></md-divider>
     </div>

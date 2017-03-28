@@ -15,8 +15,14 @@
         url: 'bible',
         template: '<ui-view/>'
       })
-      .state('bible.search', {
-        url: '/search',
+      .state('search', {
+        abstract: true,
+        parent: 'home',
+        url: 'search',
+        template: '<ui-view/>'
+      })
+      .state('search.bible', {
+        url: '/bible',
         templateUrl: '/modules/books/client/views/books-search.client.view.html',
         controller: 'BooksSearchController',
         controllerAs: 'vm',

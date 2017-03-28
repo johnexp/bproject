@@ -20,10 +20,10 @@
     // Set top bar menu items
     menuService.addMenuItem('sidebar', {
       title: 'Pesquisa',
-      state: 'bible.search',
+      state: 'search',
       type: 'dropdown',
       icon: 'search',
-      roles: ['user', 'admin', 'guest']
+      roles: ['user', 'admin']
     });
 
     // Add the dropdown list item
@@ -45,6 +45,13 @@
       title: 'Nova Versão Internacional',
       state: 'bible.view({"version": "nvi"})',
       roles: ['user', 'admin', 'guest']
+    });
+
+    // Add the dropdown list item
+    menuService.addSubMenuItem('sidebar', 'search', {
+      title: 'Pesquisar na Bíblia',
+      state: 'search.bible',
+      roles: ['user', 'admin']
     });
   }
 }());

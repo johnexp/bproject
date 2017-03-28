@@ -5,18 +5,33 @@
     .module('books')
     .controller('BooksSearchController', BooksSearchController);
 
-  BooksSearchController.$inject = ['Authentication', 'BooksSearchService', 'Toast', 'DiacriticsUtilService', 'BooksListService'];
+  BooksSearchController.$inject = ['Authentication', 'BooksSearchService', 'Toast', 'DiacriticsUtilService', 'BooksListService', '$scope'];
 
-  function BooksSearchController(Authentication, BooksSearchService, Toast, DiacriticsUtilService, BooksListService) {
+  function BooksSearchController(Authentication, BooksSearchService, Toast, DiacriticsUtilService, BooksListService, $scope) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.books = BooksListService.getBooks();
     vm.search = search;
     vm.booksQuerySearch = booksQuerySearch;
-    vm.searchForm = {};
+    vm.searchForm = { version: 'aa' };
+    vm.versions = [{
+      abbrev: 'aa',
+      name: 'Almeida Atualizada'
+    }, {
+      abbrev: 'acf',
+      name: 'Almeida Corrigida Fiel'
+    }, {
+      abbrev: 'nvi',
+      name: 'Nova Versão Internacional'
+    }];
 
-    function search() {
+    function search(isValid) {
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.form.searchForm');
+        Toast.error('Campos não preenchidos corretamente');
+        return false;
+      }
       BooksSearchService.get({
         version: vm.searchForm.version,
         abbrev: vm.searchForm.book ? vm.searchForm.book.abbrev : null,
