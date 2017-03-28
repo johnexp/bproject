@@ -318,7 +318,7 @@
     function showNoteDialog(ev, currentNote) {
       $mdDialog.show({
         controller: 'VerseNoteController as vm',
-        templateUrl: '/modules/user-bible-data/client/view/verse-note.client.tmpl.html',
+        templateUrl: '/modules/user-bible-data/client/views/verse-note.client.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false,
@@ -334,7 +334,7 @@
     function showTagsDialog(ev, currentTags) {
       $mdDialog.show({
         controller: 'VerseTagsController as vm',
-        templateUrl: '/modules/user-bible-data/client/view/verse-tags.client.tmpl.html',
+        templateUrl: '/modules/user-bible-data/client/views/verse-tags.client.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false,
@@ -354,7 +354,7 @@
     function showRefsDialog(ev, currentRefs) {
       $mdDialog.show({
         controller: 'VerseRefsController as vm',
-        templateUrl: '/modules/user-bible-data/client/view/verse-refs.client.tmpl.html',
+        templateUrl: '/modules/user-bible-data/client/views/verse-refs.client.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false,
@@ -373,7 +373,7 @@
     function showColorsLegendDialog(ev) {
       $mdDialog.show({
         controller: 'ColorsLegendController as vm',
-        templateUrl: '/modules/user-custom-data/client/view/colors-legend.client.tmpl.html',
+        templateUrl: '/modules/user-custom-data/client/views/colors-legend.client.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose: false,

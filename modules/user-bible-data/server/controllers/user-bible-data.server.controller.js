@@ -74,6 +74,34 @@ exports.updateUserBibleData = function (req, res) {
   });
 };
 
+/**
+ * Filter User Notes
+ */
+exports.filterNotes = function (req, res) {
+  var pipeline = [
+    { $unwind: '$notes' },
+    { $unwind: '$notes.note' },
+    { $project: { _id: 1, book: 1, chapter: 1, verses: '$notes.verses', note: '$notes.note' } },
+    { $limit: 200 }
+  ];
+  if (req.params.searchTerm && req.params.searchTerm !== '*') {
+    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+  }
+  if (req.params.book) {
+    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+  }
+  UserBibleData.aggregate(pipeline,
+    function(err, result) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(result);
+      }
+    });
+};
+
 function createUserBibleDataObj(req) {
   var userBibleData = {};
   userBibleData.book = req.params.book;
@@ -85,9 +113,6 @@ function createUserBibleDataObj(req) {
   return userBibleData;
 }
 
-/**
- * Delete a User Meta
- */
 function deleteUserBibleData(userBibleData, req, res) {
   userBibleData.remove(function (err) {
     if (res) {

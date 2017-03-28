@@ -1,44 +1,35 @@
 <section layout="column" layout-padding>
   <div layout="row">
-    <h2 class="md-title">Pesquisar na Bíblia</h2>
+    <h2 class="md-title">Pesquisar Notas</h2>
   </div>
   <md-divider></md-divider>
   <h3 class="md-subheader">Filtro</h3>
-  <form name="vm.form.bookFilter" ng-submit="vm.search(vm.form.bookFilter.$valid)" novalidate>
+  <form name="vm.form.notesFilter" ng-submit="vm.search(vm.form.notesFilter.$valid)" novalidate>
     <div layout="column" layout-gt-sm="row" layout-wrap>
-      <md-input-container flex>
-        <label>Versão</label>
-        <md-select ng-model="vm.searchForm.version">
-          <md-option ng-repeat="version in vm.versions" ng-value="version.abbrev">
-            {{version.name}}
-          </md-option>
-        </md-select>
-      </md-input-container>
       <md-autocomplete flex
                        md-input-name="abbrev"
                        md-min-length="0"
                        md-selected-item="vm.searchForm.book"
-                       md-search-text="vm.booksSearchTerm"
-                       md-items="item in vm.booksQuerySearch(vm.booksSearchTerm)"
+                       md-search-text="vm.notesSearchTerm"
+                       md-items="item in vm.booksQuerySearch(vm.notesSearchTerm)"
                        md-item-text="item.name"
                        md-require-match
                        md-floating-label="Livro">
         <md-item-template>
-          <span md-highlight-text="vm.booksSearchTerm" md-highlight-flags="^i">{{item.name}}</span>
+          <span md-highlight-text="vm.notesSearchTerm" md-highlight-flags="^i">{{item.name}}</span>
         </md-item-template>
         <md-not-found>
-          Nenhum livro para o termpo "{{vm.booksSearchTerm}}" foi encontrado.
+          Nenhum livro para o termpo "{{vm.notesSearchTerm}}" foi encontrado.
         </md-not-found>
-        <div ng-messages="vm.form.bookFilter.abbrev.$error">
+        <div ng-messages="vm.form.notesFilter.abbrev.$error">
           <div ng-message="md-require-match">Por favor, selecione um livro existente.</div>
         </div>
       </md-autocomplete>
       <md-input-container flex>
         <label>Pesquisa</label>
         <md-icon md-font-set="material-icons">filter_list</md-icon>
-        <input type="text" name="searchTerm" ng-model="vm.searchForm.searchTerm" minlength="3" required>
-        <div ng-messages="vm.form.bookFilter.searchTerm.$error">
-          <div ng-message="required">O termo da pesquisa é obrigatório.</div>
+        <input type="text" name="searchTerm" ng-model="vm.searchForm.searchTerm" minlength="3">
+        <div ng-messages="vm.form.notesFilter.searchTerm.$error">
           <div ng-message="minlength">O termo da pesquisa deve possuir no mínimo 3 caracteres.</div>
         </div>
       </md-input-container>
@@ -58,12 +49,13 @@
       </md-subheader>
       <md-divider></md-divider>
     </div>
-    <md-list-item class="md-2-line md-long-text secondary-button-padding" ng-repeat="result in vm.result">
+    <md-list-item class="md-3-line md-long-text secondary-button-padding" ng-repeat="result in vm.result">
       <div class="md-list-item-text" layout="column">
-        <h3>{{ result.book + ' - ' + result.chapter}}</h3>
-        <p md-highlight-text="vm.searchForm.searchTerm" md-highlight-flags="i">{{ result.verse }}</p>
+        <h3>{{ vm.abbrevBooks[result.book] + ' - ' + result.chapter }}</h3>
+        <h4>Versos: {{ result.verses.join(', ') }}</h4>
+        <p md-highlight-text="vm.searchForm.searchTerm" md-highlight-flags="i">{{ result.note }}</p>
       </div>
-      <md-button class="md-secondary md-icon-button" ui-sref="bible.view({ version: vm.searchForm.version, abbrev: result.abbrev, chapter: result.chapter })" aria-label="Ir para o capítulo">
+      <md-button class="md-secondary md-icon-button" ui-sref="bible.view({ version: 'aa', abbrev: result.book, chapter: result.chapter })" aria-label="Ir para o capítulo">
         <md-icon md-font-set="material-icons">send</md-icon>
         <md-tooltip>Ir para o capítulo</md-tooltip>
       </md-button>

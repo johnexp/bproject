@@ -11,7 +11,8 @@
     var ListBooksService = {
       getBooks: getBooks,
       getBookByAbbrev: getBookByAbbrev,
-      getChaptersByAbbrev: getChaptersByAbbrev
+      getChaptersByAbbrev: getChaptersByAbbrev,
+      getAbbrevBooks: getAbbrevBooks
     };
 
     function getBooks() {
@@ -355,6 +356,10 @@
       'jd': 'Judas',
       'ap': 'Apocalipse'
     };
+
+    function getAbbrevBooks() {
+      return abbrevBook;
+    }
 
     function getBookByAbbrev(abbrev) {
       return abbrevBook[abbrev];

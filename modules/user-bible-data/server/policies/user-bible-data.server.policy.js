@@ -17,12 +17,18 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: '/api/user-bible-data/:book/:chapter',
       permissions: '*'
+    }, {
+      resources: '/api/user-notes-search/:searchTerm/:book*?',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
       resources: '/api/user-bible-data/:book/:chapter',
       permissions: '*'
+    }, {
+      resources: '/api/user-notes-search/:searchTerm/:book*?',
+      permissions: ['get']
     }]
   }]);
 };

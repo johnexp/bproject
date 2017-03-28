@@ -12,4 +12,7 @@ module.exports = function(app) {
     .post(userBibleData.createUserBibleData)
     .put(userBibleData.updateUserBibleData);
 
+  app.route('/api/user-notes-search/:searchTerm/:book*?').all(userBibleDataPolicy.isAllowed)
+    .get(userBibleData.filterNotes);
+
 };
