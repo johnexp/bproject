@@ -112,12 +112,15 @@ exports.filterTags = function (req, res) {
     { $limit: 200 }
   ];
 
+  // TODO
   // db.getCollection('userbibledatas').aggregate(
   //   { $unwind: '$tags' },
   //   { $unwind: '$tags.tags' },
-  //   { $match: { 'tags.tags': { $in: ['Vish', 'test'] } } },
-  //   //{ $unwind: '$notes.note' },
-  //   { $project: { _id: 1, book: 1, chapter: 1, verses: '$tags.verses', note: '$tags.tags' } }
+  //   { $unwind: '$tags.verses' },
+  //   { $match: { 'tags.tags': { $in: ['Vish', 'test', 'Gente'] } } },
+  //   { $group: { _id: { tags: '$tags.tags', book: '$book', chapter: '$chapter' }, verses: { $push: { verses: '$tags.verses' } } } },
+  //   { $group: { _id: { tag: '$_id.tags', book: '$_id.book' }, chapters: { $addToSet: { verses: '$verses.verses', chapter: '$_id.chapter' } } } },
+  //   { $group: { _id: { tag: '$_id.tag' }, books: { $addToSet: { chapters: '$chapters', name: '$_id.book' } } } }
   // )
   if (req.params.searchTerm && req.params.searchTerm !== '*') {
     pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
