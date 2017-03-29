@@ -1,0 +1,81 @@
+<section layout="column" layout-padding>
+  <div layout="row">
+    <h2 class="md-title">Pesquisar Notas</h2>
+  </div>
+  <md-divider></md-divider>
+  <h3 class="md-subheader">Filtro</h3>
+  <form name="vm.form.notesFilter" ng-submit="vm.search(vm.form.notesFilter.$valid)" novalidate>
+    <div layout="column" layout-gt-sm="row" layout-wrap>
+      <md-autocomplete flex
+                       md-input-name="abbrev"
+                       md-min-length="0"
+                       md-selected-item="vm.searchForm.book"
+                       md-search-text="vm.notesSearchTerm"
+                       md-items="item in vm.booksQuerySearch(vm.notesSearchTerm)"
+                       md-item-text="item.name"
+                       md-require-match
+                       md-floating-label="Livro">
+        <md-item-template>
+          <span md-highlight-text="vm.notesSearchTerm" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+        <md-not-found>
+          Nenhum livro para o termpo "{{vm.notesSearchTerm}}" foi encontrado.
+        </md-not-found>
+        <div ng-messages="vm.form.notesFilter.abbrev.$error">
+          <div ng-message="md-require-match">Por favor, selecione um livro existente.</div>
+        </div>
+      </md-autocomplete>
+      <md-input-container>
+        <label>Tags</label>
+        <md-select ng-model="vm.searchForm.tags"
+                   md-on-close="vm.clearSearchTerm()"
+                   data-md-container-class="select-search-select-header"
+                   multiple>
+          <md-select-header class="select-search-header">
+            <input ng-model="vm.searchTerm"
+                   type="search"
+                   placeholder="Pesquise por uma tag"
+                   class="select-header-searchbox md-text">
+          </md-select-header>
+          <md-optgroup label="vegetables">
+            <md-option ng-value="tag" ng-repeat="tag in vm.tags |
+              filter: vm.searchTerm">{{tag}}</md-option>
+          </md-optgroup>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div layout="row" layout-align="center center">
+      <md-button type="submit" class="md-primary md-raised">
+        <md-icon md-font-set="material-icons">search</md-icon>
+        Pesquisar
+      </md-button>
+    </div>
+  </form>
+  <md-divider></md-divider>
+  <md-content flex>
+    <div ng-if="vm.result && vm.result.length === 0">
+      <md-subheader class="md-no-sticky" layout="row" layout-align="center center">
+        Nenhum registro encontrado
+      </md-subheader>
+      <md-divider></md-divider>
+    </div>
+    <section ng-repeat="tags in vm.result">
+      <md-subheader>{{ tags._id.tag }}</md-subheader>
+      <md-list class="md-dense" flex>
+        <div ng-repeat="book in tags.books">
+          <md-list-item class="md-2-line md-long-text secondary-button-padding" ng-repeat="chapter in book.chapters">
+            <div class="md-list-item-text" layout="column">
+              <h3>{{ vm.abbrevBooks[book.name] + ' - ' + chapter.chapter}}</h3>
+              <p>Versos: {{ chapter.verses }}</p>
+            </div>
+            <md-button class="md-secondary md-icon-button" ui-sref="bible.view({ version: 'aa', abbrev: book.name, chapter: chapter.chapter })" aria-label="Ir para o capítulo">
+              <md-icon md-font-set="material-icons">send</md-icon>
+              <md-tooltip>Ir para o capítulo</md-tooltip>
+            </md-button>
+            <md-divider></md-divider>
+          </md-list-item>
+        </div>
+      </md-list>
+    </section>
+  </md-content>
+</section>

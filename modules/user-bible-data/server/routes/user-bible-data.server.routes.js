@@ -15,4 +15,7 @@ module.exports = function(app) {
   app.route('/api/user-notes-search/:searchTerm/:book*?').all(userBibleDataPolicy.isAllowed)
     .get(userBibleData.filterNotes);
 
+  app.route('/api/user-tags-search/:book*?').all(userBibleDataPolicy.isAllowed)
+    .post(userBibleData.filterTags);
+
 };

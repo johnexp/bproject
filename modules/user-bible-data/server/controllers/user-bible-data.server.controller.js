@@ -87,7 +87,7 @@ exports.filterNotes = function (req, res) {
     pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
   }
   if (req.params.book) {
-    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+    pipeline.splice(2, 0, { $match: { 'book': req.params.book } });
   }
   UserBibleData.aggregate(pipeline,
     function(err, result) {
@@ -106,27 +106,19 @@ exports.filterNotes = function (req, res) {
  */
 exports.filterTags = function (req, res) {
   var pipeline = [
-    { $unwind: '$notes' },
-    { $unwind: '$notes.note' },
-    { $project: { _id: 1, book: 1, chapter: 1, verses: '$notes.verses', note: '$notes.note' } },
-    { $limit: 200 }
+    { $unwind: '$tags' },
+    { $unwind: '$tags.tags' },
+    { $unwind: '$tags.verses' },
+    { $group: { _id: { tags: '$tags.tags', book: '$book', chapter: '$chapter' }, verses: { $push: { verses: '$tags.verses' } } } },
+    { $group: { _id: { tag: '$_id.tags', book: '$_id.book' }, chapters: { $addToSet: { verses: '$verses.verses', chapter: '$_id.chapter' } } } },
+    { $group: { _id: { tag: '$_id.tag' }, books: { $addToSet: { chapters: '$chapters', name: '$_id.book' } } } }
   ];
 
-  // TODO
-  // db.getCollection('userbibledatas').aggregate(
-  //   { $unwind: '$tags' },
-  //   { $unwind: '$tags.tags' },
-  //   { $unwind: '$tags.verses' },
-  //   { $match: { 'tags.tags': { $in: ['Vish', 'test', 'Gente'] } } },
-  //   { $group: { _id: { tags: '$tags.tags', book: '$book', chapter: '$chapter' }, verses: { $push: { verses: '$tags.verses' } } } },
-  //   { $group: { _id: { tag: '$_id.tags', book: '$_id.book' }, chapters: { $addToSet: { verses: '$verses.verses', chapter: '$_id.chapter' } } } },
-  //   { $group: { _id: { tag: '$_id.tag' }, books: { $addToSet: { chapters: '$chapters', name: '$_id.book' } } } }
-  // )
-  if (req.params.searchTerm && req.params.searchTerm !== '*') {
-    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+  if (req.body.tags && req.body.tags.length > 0) {
+    pipeline.splice(3, 0, { $match: { 'tags.tags': { $in: req.body.tags } } });
   }
   if (req.params.book) {
-    pipeline.splice(2, 0, { $match: { 'notes.note': new RegExp(req.params.searchTerm, 'i') } });
+    pipeline.splice(3, 0, { $match: { 'book': req.params.book } });
   }
   UserBibleData.aggregate(pipeline,
     function(err, result) {
