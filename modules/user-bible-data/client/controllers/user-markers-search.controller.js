@@ -3,13 +3,13 @@
 
   angular
     .module('books')
-    .controller('UserTagsSearchController', UserTagsSearchController);
+    .controller('UserMarkersSearchController', UserMarkersSearchController);
 
-  UserTagsSearchController.$inject = ['Authentication', 'UserTagsSearchService', 'userCustomDataResolve', 'Toast', 'DiacriticsUtilService',
-    'BooksListService', 'BooksService', '$scope'];
+  UserMarkersSearchController.$inject = ['Authentication', 'UserMarkersSearchService', 'userCustomDataResolve', 'Toast', 'DiacriticsUtilService',
+    'BooksListService', 'BooksService', '$scope', 'BooksUtilService'];
 
-  function UserTagsSearchController(Authentication, UserTagsSearchService, userCustomData, Toast, DiacriticsUtilService,
-                                    BooksListService, BooksService, $scope) {
+  function UserMarkersSearchController(Authentication, UserMarkersSearchService, userCustomData, Toast, DiacriticsUtilService,
+                                    BooksListService, BooksService, $scope, BooksUtilService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -18,7 +18,7 @@
     vm.search = search;
     vm.booksQuerySearch = booksQuerySearch;
     vm.searchForm = {};
-    vm.tags = userCustomData.tags;
+    vm.markers = getMarkers();
     vm.clearSearchTerm = clearSearchTerm;
     vm.getVerseRefText = getVerseRefText;
     vm.verseRefTexts = [];
@@ -29,10 +29,10 @@
 
     function search(isValid) {
       if (filterIsValid(isValid)) {
-        UserTagsSearchService.get({
+        UserMarkersSearchService.get({
           book: vm.searchForm.book ? vm.searchForm.book.abbrev : null
         }, {
-          tags: vm.searchForm.tags
+          markers: vm.searchForm.markers
         }).$promise
           .then(function (result) {
             for (var i = 0; i < result.length; i++) {
@@ -57,7 +57,7 @@
         Toast.error('Campos não preenchidos corretamente');
         return false;
       }
-      if ((!vm.searchForm.tags || vm.searchForm.tags.length === 0) && !vm.searchForm.book) {
+      if ((!vm.searchForm.markers || vm.searchForm.markers.length === 0) && !vm.searchForm.book) {
         Toast.error('É necessário informar pelo menos um filtro.');
         return false;
       }
@@ -105,6 +105,17 @@
           }
         });
       }
+    }
+
+    function getMarkers() {
+      vm.legends = BooksUtilService.getLegends();
+      for (var i = 0; i < userCustomData.colorsLegend.length; i++) {
+        vm.legends[userCustomData.colorsLegend[i].color].legend = userCustomData.colorsLegend[i].legend;
+      }
+      var markers = Object.keys(vm.legends).map(function(k) {
+        return vm.legends[k];
+      });
+      return markers;
     }
 
     angular.element(document.getElementsByClassName('select-header-searchbox')).on('keydown', function(ev) {

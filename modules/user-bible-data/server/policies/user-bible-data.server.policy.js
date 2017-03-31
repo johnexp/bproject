@@ -23,6 +23,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/user-tags-search/:book*?',
       permissions: '*'
+    }, {
+      resources: '/api/user-markers-search/:book*?',
+      permissions: '*'
     }]
   }, {
     roles: ['user'],
@@ -34,6 +37,9 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get']
     }, {
       resources: '/api/user-tags-search/:book*?',
+      permissions: ['post']
+    }, {
+      resources: '/api/user-markers-search/:book*?',
       permissions: ['post']
     }]
   }]);

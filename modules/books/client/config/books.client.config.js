@@ -51,6 +51,7 @@
     menuService.addSubMenuItem('sidebar', 'search', {
       title: 'Pesquisar na Bíblia',
       state: 'search.bible',
+      icon: 'library_books',
       roles: ['user', 'admin']
     });
   }

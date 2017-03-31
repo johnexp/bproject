@@ -18,4 +18,7 @@ module.exports = function(app) {
   app.route('/api/user-tags-search/:book*?').all(userBibleDataPolicy.isAllowed)
     .post(userBibleData.filterTags);
 
+  app.route('/api/user-markers-search/:book*?').all(userBibleDataPolicy.isAllowed)
+    .post(userBibleData.filterMarkers);
+
 };

@@ -28,33 +28,7 @@
         controllerAs: 'vm',
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Books Search'
-        }
-      })
-      .state('bible.create', {
-        url: '/create',
-        templateUrl: '/modules/books/client/views/form-book.client.view.html',
-        controller: 'BooksController',
-        controllerAs: 'vm',
-        resolve: {
-          bookResolve: newBook
-        },
-        data: {
-          roles: ['admin'],
-          pageTitle: 'Books Create'
-        }
-      })
-      .state('bible.edit', {
-        url: '/:bookId/edit',
-        templateUrl: '/modules/books/client/views/form-book.client.view.html',
-        controller: 'BooksController',
-        controllerAs: 'vm',
-        resolve: {
-          bookResolve: getBook
-        },
-        data: {
-          roles: ['admin'],
-          pageTitle: 'Edit Book {{ bookResolve.name }}'
+          pageTitle: 'Pesquisar na Bíblia'
         }
       })
       .state('bible.view', {
@@ -69,7 +43,7 @@
         },
         data: {
           roles: ['user', 'admin', 'guest'],
-          pageTitle: 'Book {{ bookResolve.name }}'
+          pageTitle: '{{ bookResolve.book }} - {{ bookResolve.chapters[0].number }}'
         }
       });
   }

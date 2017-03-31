@@ -1,6 +1,6 @@
 <section layout="column" layout-padding>
   <div layout="row">
-    <h2 class="md-title">Pesquisar Tags</h2>
+    <h2 class="md-title">Pesquisar Marcadores</h2>
   </div>
   <md-divider></md-divider>
   <h3 class="md-subheader">Filtro</h3>
@@ -26,20 +26,20 @@
         </div>
       </md-autocomplete>
       <md-input-container flex>
-        <label>Tags</label>
-        <md-select ng-model="vm.searchForm.tags"
+        <label>Marcadores</label>
+        <md-select ng-model="vm.searchForm.markers"
                    md-on-close="vm.clearSearchTerm()"
-                   data-md-container-class="select-search-select-header"
+                   data-md-container-class="select-search-select-header select-colored"
                    multiple>
           <md-select-header class="select-search-header">
             <input ng-model="vm.searchTerm"
                    type="search"
-                   placeholder="Pesquise por uma tag"
+                   placeholder="Pesquise por um marcador"
                    class="select-header-searchbox md-text">
           </md-select-header>
-          <md-optgroup label="Tags">
-            <md-option ng-value="tag" ng-repeat="tag in vm.tags |
-              filter: vm.searchTerm">{{tag}}</md-option>
+          <md-optgroup label="Marcadores">
+            <md-option ng-value="marker.marker" ng-repeat="marker in vm.markers |
+              filter: vm.searchTerm" ng-class="marker.marker">{{marker.legend}}</md-option>
           </md-optgroup>
         </md-select>
       </md-input-container>
@@ -60,10 +60,10 @@
       <md-divider></md-divider>
     </div>
     <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab ng-repeat="tags in vm.result" label="{{ tags._id.tag }}">
+      <md-tab ng-repeat="markers in vm.result" ng-class="markers._id.marker" label="{{ vm.legends[markers._id.marker].legend }}">
         <md-content class="md-padding">
           <md-list class="md-dense" flex>
-            <div ng-repeat="book in tags.books">
+            <div ng-repeat="book in markers.books">
               <md-subheader>{{ vm.abbrevBooks[book.name] }}</md-subheader>
               <md-list-item class="md-3-line md-long-text secondary-button-padding" ng-repeat="chapter in book.chapters">
                 <div class="md-list-item-text" layout="column">

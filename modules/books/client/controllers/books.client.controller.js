@@ -7,10 +7,10 @@
     .controller('BooksController', BooksController);
 
   BooksController.$inject = ['Authentication', 'bookResolve', 'userBibleDataResolve', 'userCustomDataResolve', '$mdDialog',
-    '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast', 'BooksService', 'UserBibleDataService'];
+    '$stateParams', '$state', 'BooksListService', '$timeout', '$anchorScroll', '$location', 'Toast', 'BooksService', 'UserBibleDataService', 'BooksUtilService'];
 
   function BooksController (Authentication, book, userBibleData, userCustomData, $mdDialog, $stateParams, $state, BooksListService,
-                            $timeout, $anchorScroll, $location, Toast, BooksService, UserBibleDataService) {
+                            $timeout, $anchorScroll, $location, Toast, BooksService, UserBibleDataService, BooksUtilService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -57,6 +57,7 @@
     vm.onCopySuccess = onCopySuccess;
     vm.verseRefTexts = [];
     vm.getVerseRefText = getVerseRefText;
+    vm.markers = BooksUtilService.getMarkers();
 
     function nextChap() {
       var nextChapNumber = parseInt($stateParams.chapter, 0) + 1;
@@ -172,8 +173,8 @@
       if (vm.selectedVerses.indexOf(verse) > -1) {
         verseClass = 'selected';
       }
-      if (vm.markers[verse]) {
-        verseClass += ' ' + vm.markers[verse];
+      if (vm.chapterMarkers[verse]) {
+        verseClass += ' ' + vm.chapterMarkers[verse];
       }
       if (vm.notes[verse]) {
         verseClass += ' has-note';
@@ -207,7 +208,7 @@
           markers[vm.userBibleData.markers[i].verses[j]] = vm.userBibleData.markers[i].color;
         }
       }
-      vm.markers = markers;
+      vm.chapterMarkers = markers;
     }
 
     function setVersesNotes() {
@@ -332,6 +333,9 @@
     }
 
     function showTagsDialog(ev, currentTags) {
+      if (!currentTags && vm.selectedVerses.length === 1 && vm.tags[vm.selectedVerses] && vm.tags[vm.selectedVerses][0]) {
+        currentTags = vm.tags[vm.selectedVerses][0];
+      }
       $mdDialog.show({
         controller: 'VerseTagsController as vm',
         templateUrl: '/modules/user-bible-data/client/views/verse-tags.client.tmpl.html',
@@ -492,10 +496,26 @@
 
     function addVersesTags(versesTags) {
       if (!versesTags._id) {
+        var tagsInVerses = isTagsInVerses(versesTags.tags, vm.selectedVerses);
+        if (tagsInVerses) {
+          Toast.warning('Não é possível adicionar a tag "' + tagsInVerses.tag + '" pois o verso "' + tagsInVerses.verse + '" já possui a tag.');
+          return;
+        }
         vm.userBibleData.tags.push({ tags: versesTags.tags, verses: vm.selectedVerses });
       }
       saveUserTags(versesTags);
       saveUserBibleData();
+    }
+
+    function isTagsInVerses(tags, verses) {
+      for (var i = 0; i < verses.length; i++) {
+        for (var j = 0; j < tags.length; j++) {
+          if (vm.tags[verses[i]][0].tags.indexOf(tags[j]) > -1) {
+            return { tag: tags[j], verse: verses[i] };
+          }
+        }
+      }
+      return false;
     }
 
     function saveUserTags(versesTags) {

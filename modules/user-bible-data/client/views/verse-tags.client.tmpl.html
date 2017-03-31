@@ -13,7 +13,7 @@
     <md-dialog-content>
       <div class="md-dialog-content">
         <label ng-if="!vm.selectedTags.verses">Versos Selecionados: {{ vm.selectedVerses }}</label>
-        <label ng-if="vm.selectedTags.verses">Versos: {{ vm.selectedTags.verses }}</label>
+        <label ng-if="vm.selectedTags.verses">Versos: {{ vm.selectedTags.verses.join(', ') }}</label>
         <md-chips ng-model="vm.selectedTags.tags" name="tags" md-removable="true" md-enable-chip-edit="true"
                   md-require-match="false" md-match-case-insensitive="true" md-autocomplete-snap>
           <md-autocomplete md-selected-item="vm.selectedItem" md-search-text="vm.searchText"

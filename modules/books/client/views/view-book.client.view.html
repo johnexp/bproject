@@ -235,33 +235,9 @@
               <md-icon md-font-set="material-icons">panorama_fish_eye</md-icon>
               <md-tooltip>Desmarcar</md-tooltip>
             </md-button>
-            <md-button class="md-icon-button color-button yellow" ng-click="vm.markVerses('yellow')">
+            <md-button class="md-icon-button color-button" ng-class="marker.marker" ng-click="vm.markVerses(marker.marker)" ng-repeat="marker in vm.markers">
               <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.yellow || 'Amarelo' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button red" ng-click="vm.markVerses('red')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.red || 'Vermelho' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button purple" ng-click="vm.markVerses('purple')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.purple || 'Roxo' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button blue" ng-click="vm.markVerses('blue')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.blue || 'Azul' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button green" ng-click="vm.markVerses('green')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.green || 'Verde' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button pink" ng-click="vm.markVerses('pink')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.pink || 'Rosa' }}</md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button color-button orange" ng-click="vm.markVerses('orange')">
-              <md-icon md-font-set="material-icons">lens</md-icon>
-              <md-tooltip>{{ vm.colorsLegend.orange || 'Alaranjado' }}</md-tooltip>
+              <md-tooltip>{{ vm.colorsLegend[marker.marker] || marker.legend }}</md-tooltip>
             </md-button>
             <md-button class="md-icon-button" ng-click="vm.showColorsLegendDialog($event)">
               <md-icon md-font-set="material-icons">format_color_text</md-icon>

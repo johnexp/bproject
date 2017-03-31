@@ -1,6 +1,3 @@
-* {
-	opacity: .85;
-}
 .verse p.verse-text {
 	padding: 5px 10px;
 	margin: 8px 0px 0;
@@ -290,4 +287,92 @@ md-list.md-dense md-list-item.selected .md-list-item-text.verse-list-item:hover 
 }
 .chapter-search-input {
 	margin: 0 0 10px;
+}
+
+md-option.yellow,
+md-select-menu md-content md-option:not([disabled]).yellow:focus,
+md-select-menu md-content md-option:not([disabled]).yellow:hover,
+md-select-menu md-content md-option[selected].yellow,
+md-select-menu md-content md-option[selected].yellow:focus {
+	background-color: rgba(246, 246, 110, 1);
+	color: #514b51;
+}
+md-select-menu md-content md-option:not([disabled]).yellow:hover {
+	opacity: .8;
+}
+
+md-option.red,
+md-select-menu md-content md-option:not([disabled]).red:focus,
+md-select-menu md-content md-option:not([disabled]).red:hover,
+md-select-menu md-content md-option[selected].red,
+md-select-menu md-content md-option[selected].red:focus {
+	background-color: #c55757;
+	color: #FFFFFF;
+}
+md-select-menu md-content md-option:not([disabled]).red:hover {
+	opacity: .8;
+}
+
+md-option.purple,
+md-select-menu md-content md-option:not([disabled]).purple:focus,
+md-select-menu md-content md-option:not([disabled]).purple:hover,
+md-select-menu md-content md-option[selected].purple,
+md-select-menu md-content md-option[selected].purple:focus {
+	background-color: #805998;
+	color: #FFFFFF;
+}
+md-select-menu md-content md-option:not([disabled]).purple:hover {
+	opacity: .8;
+}
+
+md-option.blue,
+md-select-menu md-content md-option:not([disabled]).blue:focus,
+md-select-menu md-content md-option:not([disabled]).blue:hover,
+md-select-menu md-content md-option[selected].blue,
+md-select-menu md-content md-option[selected].blue:focus {
+	background-color: #617ab0;
+	color: #FFF;
+}
+md-select-menu md-content md-option:not([disabled]).blue:hover {
+	opacity: .8;
+}
+
+md-option.green,
+md-select-menu md-content md-option:not([disabled]).green:focus,
+md-select-menu md-content md-option:not([disabled]).green:hover,
+md-select-menu md-content md-option[selected].green,
+md-select-menu md-content md-option[selected].green:focus {
+	background-color: rgba(91, 154, 142, 1);
+	color: #FFFFFF;
+}
+md-select-menu md-content md-option:not([disabled]).green:hover {
+	opacity: .8;
+}
+
+md-option.pink,
+md-select-menu md-content md-option:not([disabled]).pink:focus,
+md-select-menu md-content md-option:not([disabled]).pink:hover,
+md-select-menu md-content md-option[selected].pink,
+md-select-menu md-content md-option[selected].pink:focus {
+	background-color: rgba(241, 192, 237, 1);
+	color: #514b51;
+}
+md-select-menu md-content md-option:not([disabled]).pink:hover {
+	opacity: .8;
+}
+
+md-option.orange,
+md-select-menu md-content md-option:not([disabled]).orange:focus,
+md-select-menu md-content md-option:not([disabled]).orange:hover,
+md-select-menu md-content md-option[selected].orange,
+md-select-menu md-content md-option[selected].orange:focus {
+	background-color: rgba(236, 176, 124, 1);
+	color: #514b51;
+}
+md-select-menu md-content md-option:not([disabled]).orange:hover {
+	opacity: .8;
+}
+
+.select-colored .md-checkbox-enabled.md-default-theme[selected] .md-icon, .select-colored .md-checkbox-enabled[selected] .md-icon {
+	background-color: #514b51;
 }

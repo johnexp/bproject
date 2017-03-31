@@ -31,6 +31,19 @@
           roles: ['user', 'admin'],
           pageTitle: 'Pesquisar Tags'
         }
+      })
+      .state('search.markers', {
+        url: '/markers',
+        templateUrl: '/modules/user-bible-data/client/views/user-markers-search.client.view.html',
+        controller: 'UserMarkersSearchController',
+        controllerAs: 'vm',
+        resolve: {
+          userCustomDataResolve: getUserCustomData
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Pesquisar Marcadores'
+        }
       });
 
     getUserCustomData.$inject = ['UserCustomDataService'];

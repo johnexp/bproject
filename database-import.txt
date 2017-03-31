@@ -1,0 +1,7 @@
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\aa-2.json --collection books --db bible --jsonArray;
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\acf.json --collection books --db bible --jsonArray;
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\nvi.json --collection books --db bible --jsonArray;
+
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\aa-search.json --collection books-search --db bible --jsonArray;
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\acf-search.json --collection books-search --db bible --jsonArray;
+cd C:\Program Files\MongoDB\Server\3.4\bin && mongoimport --type json --file C:\Projects\bproject\json\nvi-search.json --collection books-search --db bible --jsonArray;
