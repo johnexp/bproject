@@ -1,6 +1,10 @@
-<div>
-  <h3 class="col-xs-12 text-center">Or with your account</h3>
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
+<md-card flex-offset-gt-sm="30" flex-offset-sm="20" flex-gt-sm="40" flex-sm="60">
+  <md-card-title>
+    <md-card-title-text>
+      <h3 class="md-headline">Or with your account</h3>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content layout="row" layout-align="space-between">
     <form name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
       <fieldset>
         <div class="form-group" show-errors>
@@ -31,5 +35,5 @@
         <br />
       </fieldset>
     </form>
-  </div>
-</div>
+  </md-card-content>
+</md-card>

@@ -81,7 +81,8 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signin'
+          pageTitle: 'Signin',
+          pageClass: 'signin-page'
         }
       })
       .state('password', {
