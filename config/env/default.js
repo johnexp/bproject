@@ -28,7 +28,7 @@ module.exports = {
     secure: false
   },
   // sessionSecret should be changed for security measures and concerns
-  sessionSecret: process.env.SESSION_SECRET || 'MEAN',
+  sessionSecret: process.env.SESSION_SECRET || 'ALLRIGHT',
   // sessionKey is the cookie session name
   sessionKey: 'sessionId',
   sessionCollection: 'sessions',
@@ -59,9 +59,9 @@ module.exports = {
     owasp: {
       allowPassphrases: true,
       maxLength: 128,
-      minLength: 10,
+      minLength: 7,
       minPhraseLength: 20,
-      minOptionalTestsToPass: 4
+      minOptionalTestsToPass: 3
     }
   }
 

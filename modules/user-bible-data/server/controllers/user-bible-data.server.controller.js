@@ -81,6 +81,7 @@ exports.filterNotes = function (req, res) {
   var pipeline = [
     { $unwind: '$notes' },
     { $unwind: '$notes.note' },
+    { $match: { 'user': req.user._id } },
     { $project: { _id: 1, book: 1, chapter: 1, verses: '$notes.verses', note: '$notes.note' } }
   ];
   if (req.params.searchTerm && req.params.searchTerm !== '*') {
@@ -109,6 +110,7 @@ exports.filterTags = function (req, res) {
     { $unwind: '$tags' },
     { $unwind: '$tags.tags' },
     { $unwind: '$tags.verses' },
+    { $match: { 'user': req.user._id } },
     { $group: { _id: { tags: '$tags.tags', book: '$book', chapter: '$chapter' }, verses: { $push: { verses: '$tags.verses' } } } },
     { $group: { _id: { tag: '$_id.tags', book: '$_id.book' }, chapters: { $addToSet: { verses: '$verses.verses', chapter: '$_id.chapter' } } } },
     { $group: { _id: { tag: '$_id.tag' }, books: { $addToSet: { chapters: '$chapters', name: '$_id.book' } } } }
@@ -140,6 +142,7 @@ exports.filterMarkers = function (req, res) {
     { $unwind: '$markers' },
     { $unwind: '$markers.color' },
     { $unwind: '$markers.verses' },
+    { $match: { 'user': req.user._id } },
     { $group: { _id: { markers: '$markers.color', book: '$book', chapter: '$chapter' }, verses: { $push: { verses: '$markers.verses' } } } },
     { $group: { _id: { marker: '$_id.markers', book: '$_id.book' }, chapters: { $addToSet: { verses: '$verses.verses', chapter: '$_id.chapter' } } } },
     { $group: { _id: { marker: '$_id.marker' }, books: { $addToSet: { chapters: '$chapters', name: '$_id.book' } } } }

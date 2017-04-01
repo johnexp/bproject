@@ -1,7 +1,7 @@
 <div flex layout="column" layout-fill>
   <md-toolbar ng-controller="HeaderController as vm" class="md-whiteframe-z2">
     <div class="md-toolbar-tools" layout="row">
-      <md-button id="menu-button" ng-click="vm.toggleLeftMenu()" aria-label="Abrir o menu">
+      <md-button id="menu-button" ng-click="vm.toggleLeftMenu()" aria-label="Abrir o menu" ng-show="vm.authentication.user">
         <md-icon class="icone36" md-font-set="material-icons">menu</md-icon>
       </md-button>
       <div flex="10">

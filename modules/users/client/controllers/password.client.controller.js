@@ -5,9 +5,9 @@
     .module('users')
     .controller('PasswordController', PasswordController);
 
-  PasswordController.$inject = ['$scope', '$stateParams', 'UsersService', '$location', 'Authentication', 'PasswordValidator', 'Notification'];
+  PasswordController.$inject = ['$scope', '$stateParams', 'UsersService', '$location', 'Authentication', 'PasswordValidator', 'Toast'];
 
-  function PasswordController($scope, $stateParams, UsersService, $location, Authentication, PasswordValidator, Notification) {
+  function PasswordController($scope, $stateParams, UsersService, $location, Authentication, PasswordValidator, Toast) {
     var vm = this;
 
     vm.resetUserPassword = resetUserPassword;
@@ -53,13 +53,13 @@
     function onRequestPasswordResetSuccess(response) {
       // Show user success message and clear form
       vm.credentials = null;
-      Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!' });
+      Toast.success('Um email foi enviado ao endereço de email da sua conta!');
     }
 
     function onRequestPasswordResetError(response) {
       // Show user error message and clear form
       vm.credentials = null;
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to send password reset email!', delay: 4000 });
+      Toast.error('Não foi possível enviar o email com as informações para a troca da senha!');
     }
 
     function onResetPasswordSuccess(response) {
@@ -68,13 +68,13 @@
 
       // Attach user profile
       Authentication.user = response;
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Password reset successful!' });
+      Toast.success('Senha alterada com sucesso!');
       // And redirect to the index page
       $location.path('/password/reset/success');
     }
 
     function onResetPasswordError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Password reset failed!', delay: 4000 });
+      Toast.error('Não foi possível alterar a senha!');
     }
   }
 }());

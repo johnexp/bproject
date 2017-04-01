@@ -72,7 +72,8 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signup'
+          pageTitle: 'Signup',
+          pageClass: 'pre-account-page'
         }
       })
       .state('authentication.signin', {
@@ -82,7 +83,7 @@
         controllerAs: 'vm',
         data: {
           pageTitle: 'Signin',
-          pageClass: 'signin-page'
+          pageClass: 'pre-account-page'
         }
       })
       .state('password', {
@@ -97,7 +98,8 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password forgot'
+          pageTitle: 'Password forgot',
+          pageClass: 'pre-account-page'
         }
       })
       .state('password.reset', {
@@ -110,14 +112,16 @@
         url: '/invalid',
         templateUrl: '/modules/users/client/views/password/reset-password-invalid.client.view.html',
         data: {
-          pageTitle: 'Password reset invalid'
+          pageTitle: 'Password reset invalid',
+          pageClass: 'pre-account-page'
         }
       })
       .state('password.reset.success', {
         url: '/success',
         templateUrl: '/modules/users/client/views/password/reset-password-success.client.view.html',
         data: {
-          pageTitle: 'Password reset success'
+          pageTitle: 'Password reset success',
+          pageClass: 'pre-account-page'
         }
       })
       .state('password.reset.form', {
@@ -126,7 +130,8 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password reset form'
+          pageTitle: 'Password reset form',
+          pageClass: 'pre-account-page'
         }
       });
   }

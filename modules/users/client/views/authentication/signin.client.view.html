@@ -1,39 +1,35 @@
-<md-card flex-offset-gt-sm="30" flex-offset-sm="20" flex-gt-sm="40" flex-sm="60">
+<md-card flex-offset-md="30" flex-offset-sm="20" flex-md="40" flex-sm="60" flex-gt-md="30" flex-offset-gt-md="35">
   <md-card-title>
     <md-card-title-text>
-      <h3 class="md-headline">Or with your account</h3>
+      <h2 class="md-headline">Entre com suas redes sociais</h2>
     </md-card-title-text>
   </md-card-title>
-  <md-card-content layout="row" layout-align="space-between">
-    <form name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
-      <fieldset>
-        <div class="form-group" show-errors>
-          <uib-alert type="danger" ng-show="vm.error" class="text-center text-danger">
-            <span ng-bind="vm.error"></span>
-          </uib-alert>
-          <label for="usernameOrEmail">Username or Email</label>
-          <input type="text" id="usernameOrEmail" name="usernameOrEmail" class="form-control" ng-model="vm.credentials.usernameOrEmail" placeholder="Username or Email" required autofocus>
-          <div ng-messages="vm.userForm.usernameOrEmail.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Username or Email is required.</p>
-          </div>
+  <md-card-content layout="column" layout-align="space-between">
+    <h4 class="md-subhead info-text">Ou preencha seus dados de acesso</h4>
+    <form name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" class="signin" novalidate autocomplete="off" layout="column">
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">face</md-icon>
+        <label>Usuário ou Email</label>
+        <input type="text" name="usernameOrEmail" ng-model="vm.credentials.usernameOrEmail" required>
+        <div ng-messages="vm.userForm.usernameOrEmail.$error" ng-if="vm.userForm.usernameOrEmail.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" required>
-          <div ng-messages="vm.userForm.password.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Password is required.</p>
-          </div>
+      </md-input-container>
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">lock_outline</md-icon>
+        <label>Senha</label>
+        <input type="password" name="password" ng-model="vm.credentials.password" required>
+        <div ng-messages="vm.userForm.password.$error" ng-if="vm.userForm.password.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Sign in</button>
-          &nbsp; or&nbsp;
-          <a ui-sref="authentication.signup">Sign up</a>
-        </div>
-        <div class="text-center forgot-password">
-          <a ui-sref="password.forgot">Forgot your password?</a>
-        </div>
-        <br />
-      </fieldset>
+      </md-input-container>
+      <div layout="row" layout-align="end center">
+        <md-button class="md-accent" ui-sref="password.forgot">Esqueceu sua senha?</md-button>
+        <md-button type="submit" class="md-accent md-raised">
+          <md-icon md-font-set="material-icons">lock_open</md-icon>
+          Entrar
+        </md-button>
+      </div>
     </form>
   </md-card-content>
 </md-card>

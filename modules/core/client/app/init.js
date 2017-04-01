@@ -74,7 +74,7 @@
       'A100': '#00bc97',
       'A200': '#00a383',
       'A400': '#00896f',
-      'A700': '#23ffd4',
+      'A700': '#007e66',
       'contrastDefaultColor': 'light',
       'contrastDarkColors': ['50', '100', '200', '300', '400', 'A100'],
       'contrastLightColors': 'light'

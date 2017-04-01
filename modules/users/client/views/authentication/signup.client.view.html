@@ -1,58 +1,72 @@
-<div>
-  <h3 class="col-xs-12 text-center">Or sign up using your email</h3>
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
-    <form name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.credentials.firstName" placeholder="First Name" required autofocus>
-          <div ng-messages="vm.userForm.firstName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">First name is required.</p>
-          </div>
+<md-card flex-offset-md="30" flex-offset-sm="20" flex-md="40" flex-sm="60" flex-gt-md="30" flex-offset-gt-md="35">
+  <md-card-title>
+    <md-card-title-text>
+      <h2 class="md-headline">Entre com suas redes sociais</h2>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content layout="column" layout-align="space-between">
+    <h4 class="md-subhead info-text">Ou cadastre-se usando seu email</h4>
+    <form name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" class="signin" novalidate autocomplete="off" layout="column">
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">account_box</md-icon>
+        <label>Primeiro Nome</label>
+        <input type="text" name="firstName" ng-model="vm.credentials.firstName" required>
+        <div ng-messages="vm.userForm.firstName.$error" ng-if="vm.userForm.firstName.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" class="form-control" ng-model="vm.credentials.lastName" placeholder="Last Name" required>
-          <div ng-messages="vm.userForm.lastName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Last name is required.</p>
-          </div>
+      </md-input-container>
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">account_box</md-icon>
+        <label>Sobrenome</label>
+        <input type="text" name="lastName" ng-model="vm.credentials.lastName" required>
+        <div ng-messages="vm.userForm.lastName.$error" ng-if="vm.userForm.lastName.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="form-control" ng-model="vm.credentials.email" placeholder="Email" lowercase required>
-          <div ng-messages="vm.userForm.email.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Email address is required.</p>
-            <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
-          </div>
+      </md-input-container>
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">email</md-icon>
+        <label>Email</label>
+        <input type="email" name="email" ng-model="vm.credentials.email" lowercase required>
+        <div ng-messages="vm.userForm.email.$error" ng-if="vm.userForm.email.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
+          <div ng-message="email">Insira um endereço de email válido.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" placeholder="Username" lowercase required>
-          <div ng-messages="vm.userForm.username.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Username is required.</p>
-            <p class="help-block error-text" ng-message="pattern">Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.</p>
-          </div>
+      </md-input-container>
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">fingerprint</md-icon>
+        <label>Usuário</label>
+        <input type="text" name="username" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" lowercase required>
+        <div ng-messages="vm.userForm.username.$error" ng-if="vm.userForm.username.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
+          <div ng-message="pattern">Por favor, insira um nome de usuário válido: Mais de 3 caracteres, sem palavras restritas, caracteres "_-.", sem pontos consecutivos, não começar ou terminar com pontos, letras a-z e números 0-9.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
-          <div ng-messages="vm.userForm.password.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Password is required.</p>
-            <div ng-repeat="passwordError in passwordErrors">
-              <p class="help-block error-text" ng-show="vm.userForm.password.$error.requirements">{{passwordError}}</p>
-            </div>
-          </div>
+      </md-input-container>
+      <md-input-container class="md-accent" flex>
+        <md-icon md-font-set="material-icons">lock_outline</md-icon>
+        <label>Senha</label>
+        <input type="password" name="password" ng-model="vm.credentials.password" minlength="7" maxlength="20" password-validator required>
+        <div ng-messages="vm.userForm.password.$error" ng-if="vm.userForm.password.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
+          <div ng-message="minlength">Digite uma senha de no mínimo 7 caracteres</div>
         </div>
-        <div class="form-group" ng-show="!vm.userForm.password.$error.required">
-          <label>Password Requirements</label>
-          <uib-progressbar value="requirementsProgress" type="{{requirementsColor}}"><span style="color:white; white-space:nowrap;">{{requirementsProgress}}%</span></uib-progressbar>
-        </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Sign up</button>
-          &nbsp; or&nbsp;
-          <a ui-sref="authentication.signin" class="show-signup">Sign in</a>
-        </div>
-      </fieldset>
+      </md-input-container>
+      <div ng-show="!vm.userForm.password.$error.required" flex>
+        <label>
+          Força da Senha
+          <md-button class="md-icon-button">
+            <md-icon md-font-set="material-icons">help_outline</md-icon>
+            <md-tooltip md-direction="top">{{getPopoverMsg}}</md-tooltip>
+          </md-button>
+        </label>
+        <md-progress-linear ng-class="'requirement-bar-' + requirementsColor" md-mode="determinate" value="{{requirementsProgress}}"></md-progress-linear>
+      </div>
+      <div layout="row" layout-align="end center">
+        <md-button class="md-accent" ui-sref="authentication.signin">Já sou cadastrado</md-button>
+        <md-button type="submit" class="md-accent md-raised">
+          <md-icon md-font-set="material-icons">send</md-icon>
+          Enviar
+        </md-button>
+      </div>
     </form>
-  </div>
-</div>
+  </md-card-content>
+</md-card>

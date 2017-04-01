@@ -26,7 +26,7 @@
             $injector.get('$state').transitionTo('authentication.signin');
             break;
           case 403:
-            // $injector.get('$state').transitionTo('forbidden');
+            $injector.get('$state').transitionTo('forbidden');
             break;
           case 404:
             // $injector.get('$state').go('not-found', { message: rejection.data.message });

@@ -66,6 +66,11 @@ exports.isAllowed = function (req, res, next) {
         // Access granted! Invoke next middleware
         return next();
       } else {
+        if (roles[0] === 'guest') {
+          return res.status(401).json({
+            message: 'É necessário se autenticar para acessar esse recurso.'
+          });
+        }
         return res.status(403).json({
           message: 'User is not authorized'
         });

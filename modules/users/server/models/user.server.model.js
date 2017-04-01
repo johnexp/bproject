@@ -149,7 +149,7 @@ UserSchema.pre('save', function (next) {
 UserSchema.pre('validate', function (next) {
   if (this.provider === 'local' && this.password && this.isModified('password')) {
     var result = owasp.test(this.password);
-    if (result.errors.length) {
+    if (result.requiredTestErrors.length) {
       var error = result.errors.join(' ');
       this.invalidate('password', error);
     }

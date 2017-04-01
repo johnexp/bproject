@@ -24,7 +24,7 @@
     }
 
     function getPopoverMsg() {
-      var popoverMsg = 'Please enter a passphrase or password with ' + owaspPasswordStrengthTest.configs.minLength + ' or more characters, numbers, lowercase, uppercase, and special characters.';
+      var popoverMsg = 'Para sua segurança, digite uma senha com ' + owaspPasswordStrengthTest.configs.minLength + ' caracteres ou mais, números, letras minúsculas e maiúsculas, e caracteres especiais.';
 
       return popoverMsg;
     }

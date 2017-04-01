@@ -49,8 +49,12 @@
 
           if (result.errors.length) {
             scope.getPopoverMsg = PasswordValidator.getPopoverMsg();
-            scope.passwordErrors = result.errors;
-            status = false;
+            scope.passwordErrors = result.requiredTestErrors;
+            if (result.requiredTestErrors.length) {
+              status = false;
+            } else {
+              status = true;
+            }
           } else {
             scope.getPopoverMsg = '';
             scope.passwordErrors = [];

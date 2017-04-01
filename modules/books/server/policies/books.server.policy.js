@@ -30,6 +30,12 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/search/:searchTerm/:version/:abbrev*?',
       permissions: ['get']
     }]
+  }, {
+    roles: ['guest'],
+    allows: [{
+      resources: '/api/book/:version/:abbrev/:chapter',
+      permissions: ['get']
+    }]
   }]);
 };
 

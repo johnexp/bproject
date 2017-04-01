@@ -109,10 +109,12 @@
 
     function getMarkers() {
       vm.legends = BooksUtilService.getLegends();
-      for (var i = 0; i < userCustomData.colorsLegend.length; i++) {
-        vm.legends[userCustomData.colorsLegend[i].color].legend = userCustomData.colorsLegend[i].legend;
+      if (userCustomData.colorsLegend) {
+        for (var i = 0; i < userCustomData.colorsLegend.length; i++) {
+          vm.legends[userCustomData.colorsLegend[i].color].legend = userCustomData.colorsLegend[i].legend;
+        }
       }
-      var markers = Object.keys(vm.legends).map(function(k) {
+      var markers = Object.keys(vm.legends).map(function (k) {
         return vm.legends[k];
       });
       return markers;
