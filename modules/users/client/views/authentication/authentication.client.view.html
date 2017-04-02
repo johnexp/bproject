@@ -1,9 +1,32 @@
-<section class="row">
-  <!--<h3 class="col-md-12 text-center">Sign in using your social accounts</h3>-->
-  <!--<div class="col-md-12 text-center">-->
+<div flex layout="column" layout-fill class="pre-account-page">
+  <md-toolbar class="md-whiteframe-z2">
+    <div class="md-toolbar-tools" layout="row">
+      <div flex="10">
+        <a ui-sref="home">DataBible</a>
+      </div>
+      <div flex></div>
+      <md-menu-bar class="topbar">
+        <md-menu>
+          <button ui-sref="authentication.signup" ng-click="$mdMenu.close()">Sign Up</button>
+          <md-menu-content ng-hide="true"></md-menu-content>
+        </md-menu>
+        <md-menu>
+          <button ui-sref="authentication.signin" ng-click="$mdMenu.close()">Sign In</button>
+          <md-menu-content ng-hide="true"></md-menu-content>
+        </md-menu>
+      </md-menu-bar>
+    </div>
+  </md-toolbar>
+
+  <!-- Area menu e conteúdo -->
+  <div flex layout="row">
+    <!--<h3 class="col-md-12 text-center">Sign in using your social accounts</h3>-->
+    <!--<div class="col-md-12 text-center">-->
     <!--<div class="social-account-container social-button"><a class="btn"><img class="img-responsive" ng-click="vm.callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png"></a></div>-->
     <!--<div class="social-account-container social-button"><a class="btn"><img class="img-responsive" ng-click="vm.callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png"></a></div>-->
     <!--<div class="social-account-container social-button"><a class="btn"><img class="img-responsive" ng-click="vm.callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png"></a></div>-->
-  <!--</div>-->
-  <div ui-view></div>
-</section>
+    <!--</div>-->
+    <!-- Area de trabalho -->
+    <md-content flex id="content" ui-view></md-content>
+  </div>
+</div>

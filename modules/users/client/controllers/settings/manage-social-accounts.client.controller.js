@@ -5,9 +5,9 @@
     .module('users')
     .controller('SocialAccountsController', SocialAccountsController);
 
-  SocialAccountsController.$inject = ['$state', '$window', 'UsersService', 'Authentication', 'Notification'];
+  SocialAccountsController.$inject = ['$state', '$window', 'UsersService', 'Authentication', 'Toast'];
 
-  function SocialAccountsController($state, $window, UsersService, Authentication, Notification) {
+  function SocialAccountsController($state, $window, UsersService, Authentication, Toast) {
     var vm = this;
 
     vm.user = Authentication.user;
@@ -36,12 +36,12 @@
 
     function onRemoveSocialAccountSuccess(response) {
       // If successful show success message and clear form
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Removed successfully!' });
+      Toast.success('Removido com sucesso!');
       vm.user = Authentication.user = response;
     }
 
     function onRemoveSocialAccountError(response) {
-      Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Remove failed!' });
+      Toast.error('Erro ao tentar remover!');
     }
 
     // OAuth provider request

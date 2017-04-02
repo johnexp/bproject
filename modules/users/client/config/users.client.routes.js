@@ -60,8 +60,7 @@
       })
       .state('authentication', {
         abstract: true,
-        parent: 'home',
-        url: 'authentication',
+        url: '/authentication',
         templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
         controller: 'AuthenticationController',
         controllerAs: 'vm'
@@ -72,8 +71,7 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signup',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Signup'
         }
       })
       .state('authentication.signin', {
@@ -82,15 +80,13 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signin',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Signin'
         }
       })
       .state('password', {
         abstract: true,
-        parent: 'home',
-        url: 'password',
-        template: '<ui-view/>'
+        url: '/password',
+        templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html'
       })
       .state('password.forgot', {
         url: '/forgot',
@@ -98,30 +94,27 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password forgot',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Password forgot'
         }
       })
       .state('password.reset', {
         abstract: true,
-        parent: 'home',
-        url: 'reset',
+        url: '/reset',
+        home: 'password',
         template: '<ui-view/>'
       })
       .state('password.reset.invalid', {
         url: '/invalid',
         templateUrl: '/modules/users/client/views/password/reset-password-invalid.client.view.html',
         data: {
-          pageTitle: 'Password reset invalid',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Password reset invalid'
         }
       })
       .state('password.reset.success', {
         url: '/success',
         templateUrl: '/modules/users/client/views/password/reset-password-success.client.view.html',
         data: {
-          pageTitle: 'Password reset success',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Password reset success'
         }
       })
       .state('password.reset.form', {
@@ -130,8 +123,7 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password reset form',
-          pageClass: 'pre-account-page'
+          pageTitle: 'Password reset form'
         }
       });
   }

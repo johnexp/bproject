@@ -5,9 +5,9 @@
     .module('users')
     .controller('EditProfileController', EditProfileController);
 
-  EditProfileController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Notification'];
+  EditProfileController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Toast'];
 
-  function EditProfileController($scope, $http, $location, UsersService, Authentication, Notification) {
+  function EditProfileController($scope, $http, $location, UsersService, Authentication, Toast) {
     var vm = this;
 
     vm.user = Authentication.user;
@@ -27,10 +27,10 @@
       user.$update(function (response) {
         $scope.$broadcast('show-errors-reset', 'vm.userForm');
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit profile successful!' });
+        Toast.success('Perfil alterado com sucesso!');
         Authentication.user = response;
       }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit profile failed!' });
+        Toast.error('Erro ao tentar alterar o perfil!');
       });
     }
   }

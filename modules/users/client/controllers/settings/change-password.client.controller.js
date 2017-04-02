@@ -5,9 +5,9 @@
     .module('users')
     .controller('ChangePasswordController', ChangePasswordController);
 
-  ChangePasswordController.$inject = ['$scope', '$http', 'Authentication', 'UsersService', 'PasswordValidator', 'Notification'];
+  ChangePasswordController.$inject = ['$scope', '$http', 'Authentication', 'UsersService', 'PasswordValidator', 'Toast'];
 
-  function ChangePasswordController($scope, $http, Authentication, UsersService, PasswordValidator, Notification) {
+  function ChangePasswordController($scope, $http, Authentication, UsersService, PasswordValidator, Toast) {
     var vm = this;
 
     vm.user = Authentication.user;
@@ -30,12 +30,12 @@
 
     function onChangePasswordSuccess(response) {
       // If successful show success message and clear form
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Password Changed Successfully' });
+      Toast.success('Senha alterada com sucesso!');
       vm.passwordDetails = null;
     }
 
     function onChangePasswordError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Password change failed!' });
+      Toast.error('Erro ao tentar alterar a senha!');
     }
   }
 }());

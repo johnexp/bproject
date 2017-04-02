@@ -8,6 +8,13 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
+
+    menuService.addMenuItem('sidebar', {
+      title: 'Home',
+      icon: 'home',
+      state: 'home'
+    });
+
     // Set top bar menu items
     menuService.addMenuItem('sidebar', {
       title: 'Bíblias',

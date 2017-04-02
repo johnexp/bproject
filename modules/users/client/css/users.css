@@ -48,7 +48,7 @@
 .pre-account-page md-toolbar.md-default-theme:not(.md-menu-toolbar), .pre-account-page md-toolbar:not(.md-menu-toolbar) {
   background-color: inherit;
 }
-.pre-account-page .md-whiteframe-4dp, .md-whiteframe-z2 {
+.pre-account-page .md-whiteframe-4dp, .pre-account-page .md-whiteframe-z2 {
   box-shadow: none;
 }
 .pre-account-page md-card {
@@ -62,6 +62,9 @@
   background: linear-gradient(60deg, #00a383, #0a6f5c);
   border-radius: 3px;
   text-align: center;
+}
+.pre-account-page md-card md-card-title.card-error {
+  background: linear-gradient(60deg, #d0b009, #9f9a0b);
 }
 .pre-account-page form md-input-container {
   margin-top: 0;

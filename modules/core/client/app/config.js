@@ -6,7 +6,7 @@
   var service = {
     applicationEnvironment: window.env,
     applicationModuleName: applicationModuleName,
-    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ngMaterial', 'ngFileUpload', 'ui-notification', 'pascalprecht.translate', 'ui.mask', 'ngMdIcons', 'ui.select', 'ngSanitize', 'md.data.table', 'blockUI', 'ngclipboard'],
+    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ngMaterial', 'ngFileUpload', 'pascalprecht.translate', 'ui.mask', 'ngSanitize', 'blockUI', 'ngclipboard'],
     registerModule: registerModule
   };
 
@@ -20,19 +20,6 @@
     // Add the module to the AngularJS configuration file
     angular.module(applicationModuleName).requires.push(moduleName);
   }
-
-  // Angular-ui-notification configuration
-  angular.module('ui-notification').config(function(NotificationProvider) {
-    NotificationProvider.setOptions({
-      delay: 2000,
-      startTop: 20,
-      startRight: 10,
-      verticalSpacing: 20,
-      horizontalSpacing: 20,
-      positionX: 'right',
-      positionY: 'bottom'
-    });
-  });
 
   angular.module('pascalprecht.translate')
     .config(['$translateProvider', '$translatePartialLoaderProvider', function ($translateProvider, $translatePartialLoaderProvider) {

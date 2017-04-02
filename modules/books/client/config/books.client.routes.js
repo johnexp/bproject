@@ -11,15 +11,13 @@
     $stateProvider
       .state('bible', {
         abstract: true,
-        parent: 'home',
-        url: 'bible',
-        template: '<ui-view/>'
+        url: '/bible',
+        templateUrl: '/modules/books/client/views/bible.client.view.html'
       })
       .state('search', {
         abstract: true,
-        parent: 'home',
-        url: 'search',
-        template: '<ui-view/>'
+        url: '/search',
+        templateUrl: '/modules/books/client/views/bible.client.view.html'
       })
       .state('search.bible', {
         url: '/bible',

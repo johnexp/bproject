@@ -1,59 +1,16 @@
-<div flex layout="column" layout-fill>
-  <md-toolbar ng-controller="HeaderController as vm" class="md-whiteframe-z2">
-    <div class="md-toolbar-tools" layout="row">
-      <md-button id="menu-button" ng-click="vm.toggleLeftMenu()" aria-label="Abrir o menu" ng-show="vm.authentication.user">
-        <md-icon class="icone36" md-font-set="material-icons">menu</md-icon>
-      </md-button>
-      <div flex="10">
-        <a ui-sref="home">DataBible</a>
-      </div>
-      <md-menu-bar class="topbar">
-        <md-menu ng-repeat="menuItem in vm.menu.items" ng-if="menuItem.shouldRender(vm.authentication.user)">
-          <button ng-click="$mdMenu.open()" ui-sref-if="!vm.stateIsAbstract(menuItem.state)" ui-sref-val="{{menuItem.state}}({{menuItem.params}})">
-            {{menuItem.title}}
-          </button>
-          <md-menu-content ng-show="menuItem.items.length > 0">
-            <md-menu-item ng-repeat="subitem in menuItem.items | orderBy: 'position'" ng-if="subitem.shouldRender(vm.authentication.user)">
-              <md-button ui-sref="{{subitem.state}}({{subitem.params}})" aria-label="{{subitem.title}}" ng-bind="subitem.title">
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-      </md-menu-bar>
-      <div flex></div>
-      <md-menu-bar class="topbar">
-        <md-menu ng-hide="vm.authentication.user">
-          <button ng-click="$mdMenu.open()" ui-sref="authentication.signup">Sign Up</button>
-          <md-menu-content ng-hide="true"></md-menu-content>
-        </md-menu>
-        <md-menu ng-hide="vm.authentication.user">
-          <button ng-click="$mdMenu.open()" ui-sref="authentication.signin">Sign In</button>
-          <md-menu-content ng-hide="true"></md-menu-content>
-        </md-menu>
-        <md-menu ng-show="vm.authentication.user">
-          <button ng-click="$mdMenu.open()">
-            {{vm.authentication.user.displayName}}
-            <md-icon md-font-set="material-icons">expand_more</md-icon>
-          </button>
-          <md-menu-content class="dropdown-menu">
-            <md-menu-item ui-sref-active="active" ng-repeat="item in vm.accountMenu.items">
-              <md-button ui-sref="{{item.state}}" aria-label="{{item.title}}" ng-bind="item.title"></md-button>
-            </md-menu-item>
-            <md-menu-item>
-              <md-button href="/api/auth/signout" target="_self">Signout</md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-      </md-menu-bar>
-    </div>
-  </md-toolbar>
+<div flex layout="column" layout-fill class="presentation">
+  <ng-include src="'/modules/core/client/views/header.client.view.html'" class="toolbar-container"></ng-include>
 
   <!-- Area menu e conteúdo -->
-  <div flex layout="row">
-    <!-- Menu -->
-    <menu-app></menu-app>
-    <!--<menu-app layout="column"></menu-app>-->
-    <!-- Area de trabalho -->
-    <md-content flex id="content" ui-view></md-content>
+  <!-- Menu -->
+  <menu-app></menu-app>
+  <!-- Area de trabalho -->
+  <div class="presentation-header">
+    <div class="presentation-header-content">
+      <h1 class="md-display-4">Estude a Bíblia</h1>
+    </div>
+  </div>
+  <div class="presentation-content">
+    <h1 class="md-display-4">Estude a Bíblia</h1>
   </div>
 </div>

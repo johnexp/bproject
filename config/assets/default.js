@@ -7,11 +7,7 @@ module.exports = {
     lib: {
       css: [
         // bower:css
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
-        'public/lib/angular-material-icons/angular-material-icons.css',
         'public/lib/angular-material/angular-material.css',
-        'public/lib/angular-ui-select/dist/select.css',
-        'public/lib/angular-material-data-table/dist/md-data-table.min.css',
         'public/lib/angular-block-ui/dist/angular-block-ui.min.css',
         // endbower
       ],
@@ -23,20 +19,15 @@ module.exports = {
         'public/lib/angular-messages/angular-messages.js',
         'public/lib/angular-mocks/angular-mocks.js',
         'public/lib/angular-resource/angular-resource.js',
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/angular-translate/angular-translate.js',
         'public/lib/angular-translate-loader-partial/angular-translate-loader-partial.js',
         'public/lib/angular-ui-mask/dist/mask.js',
-        'public/lib/angular-material-icons/angular-material-icons.min.js',
-        'public/lib/angular-ui-select/dist/select.js',
         'public/lib/angular-sanitize/angular-sanitize.js',
         'public/lib/angular-material/angular-material.js',
         'public/lib/angular-aria/angular-aria.js',
-        'public/lib/angular-material-data-table/dist/md-data-table.min.js',
         'public/lib/angular-block-ui/dist/angular-block-ui.js',
-        'public/lib/moment/moment.js',
         'public/lib/clipboard/dist/clipboard.min.js',
         'public/lib/ngclipboard/dist/ngclipboard.min.js'
         // endbower

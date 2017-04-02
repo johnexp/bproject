@@ -5,9 +5,9 @@
     .module('users')
     .controller('ChangeProfilePictureController', ChangeProfilePictureController);
 
-  ChangeProfilePictureController.$inject = ['$timeout', 'Authentication', 'Upload', 'Notification'];
+  ChangeProfilePictureController.$inject = ['$timeout', 'Authentication', 'Upload', 'Toast'];
 
-  function ChangeProfilePictureController($timeout, Authentication, Upload, Notification) {
+  function ChangeProfilePictureController($timeout, Authentication, Upload, Toast) {
     var vm = this;
 
     vm.user = Authentication.user;
@@ -34,7 +34,7 @@
     // Called after the user has successfully uploaded a new picture
     function onSuccessItem(response) {
       // Show success message
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Successfully changed profile picture' });
+      Toast.success('Imagem de perfil alterada com sucesso!');
 
       // Populate user object
       vm.user = Authentication.user = response;
@@ -50,7 +50,7 @@
       vm.progress = 0;
 
       // Show error message
-      Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to change profile picture' });
+      Toast.error('Erro ao alterar a imagem de perfil!');
     }
   }
 }());

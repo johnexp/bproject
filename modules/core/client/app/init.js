@@ -11,8 +11,7 @@
     .config(bootstrapConfig)
     .config(materialDesignConfig)
     .config(customToastConfig)
-    .config(blockUIConfig)
-    .config(mdDateLocaleProvider);
+    .config(blockUIConfig);
 
   bootstrapConfig.$inject = ['$compileProvider', '$locationProvider', '$httpProvider', '$logProvider'];
 
@@ -38,27 +37,38 @@
 
   function materialDesignConfig($mdThemingProvider) {
     var customPrimary = {
-      '50': '#3a93de',
-      '100': '#2587d9',
-      '200': '#217ac3',
-      '300': '#1d6cae',
-      '400': '#1a5f98',
-      '500': '#165182',
-      '600': '#12436c',
-      '700': '#0f3656',
-      '800': '#0b2841',
-      '900': '#071b2b',
-      'A100': '#509fe1',
-      'A200': '#65abe5',
-      'A400': '#7bb7e9',
-      'A700': '#040d15',
+      // '50': '#15e4bd',
+      // '100': '#12cdaa',
+      // '200': '#10b596',
+      // '300': '#0e9e83',
+      // '400': '#0c866f',
+      // '500': '#0a6f5c',
+      // '600': '#085849',
+      // '700': '#064035',
+      // '800': '#042922',
+      // '900': '#02110e',
+      // 'A100': '#26ebc6',
+      // 'A200': '#3eeecd',
+      // 'A400': '#55f0d3',
+      // 'A700': '#000000',
+      '50': '#37c0d6',
+      '100': '#29b4cb',
+      '200': '#25a2b6',
+      '300': '#218fa0',
+      '400': '#1c7c8b',
+      '500': '#186976',
+      '600': '#145661',
+      '700': '#0f434c',
+      '800': '#0b3036',
+      '900': '#071e21',
+      'A100': '#4cc7db',
+      'A200': '#62cedf',
+      'A400': '#77d4e3',
+      'A700': '#020b0c',
       'contrastDefaultColor': 'light',
       'contrastDarkColors': ['50', '100', '200', '300', '400', 'A100'],
       'contrastLightColors': 'light'
     };
-    $mdThemingProvider
-      .definePalette('customPrimary',
-        customPrimary);
 
     var customAccent = {
       '50': '#000a08',
@@ -79,9 +89,6 @@
       'contrastDarkColors': ['50', '100', '200', '300', '400', 'A100'],
       'contrastLightColors': 'light'
     };
-    $mdThemingProvider
-      .definePalette('customAccent',
-        customAccent);
 
     var customWarn = {
       '50': '#f4b5be',
@@ -102,6 +109,15 @@
       'contrastDarkColors': ['50', '100', '200', '300', '400', 'A100'],
       'contrastLightColors': 'light'
     };
+
+    $mdThemingProvider
+      .definePalette('customPrimary',
+        customPrimary);
+
+    $mdThemingProvider
+      .definePalette('customAccent',
+        customAccent);
+
     $mdThemingProvider
       .definePalette('customWarn',
         customWarn);
@@ -171,20 +187,6 @@
         $translate.refresh();
       });
     });
-  }
-
-  mdDateLocaleProvider.$inject = ['$mdDateLocaleProvider'];
-
-  function mdDateLocaleProvider($mdDateLocaleProvider) {
-    $mdDateLocaleProvider.parseDate = function(dateString) {
-      var m = moment(dateString, 'DD/MM/YYYY', true);
-      return m.isValid() ? m.toDate() : new Date(NaN);
-    };
-
-    $mdDateLocaleProvider.formatDate = function(date) {
-      var m = moment(date);
-      return m.isValid() ? m.format('DD/MM/YYYY') : '';
-    };
   }
 
 }(ApplicationConfiguration));
