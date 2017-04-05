@@ -18,8 +18,10 @@
 
     function loadColorsLegend() {
       vm.colorsLegend = {};
-      for (var i = 0; i < vm.userCustomData.colorsLegend.length; i++) {
-        vm.colorsLegend[vm.userCustomData.colorsLegend[i].color] = vm.userCustomData.colorsLegend[i].legend;
+      if (vm.userCustomData.colorsLegend) {
+        for (var i = 0; i < vm.userCustomData.colorsLegend.length; i++) {
+          vm.colorsLegend[vm.userCustomData.colorsLegend[i].color] = vm.userCustomData.colorsLegend[i].legend;
+        }
       }
       return vm.colorsLegend;
     }

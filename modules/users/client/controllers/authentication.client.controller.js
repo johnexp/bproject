@@ -84,7 +84,7 @@
     }
 
     function onUserSigninError(response) {
-      Toast.error('Erro ao tentar logar!');
+      Toast.error('Usuário ou senha incorretos!');
     }
   }
 }());

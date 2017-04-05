@@ -7,7 +7,7 @@
   <md-card-content layout="column" layout-align="space-between">
     <h4 class="md-subhead info-text">Ou preencha seus dados de acesso</h4>
     <form name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" class="signin" novalidate autocomplete="off" layout="column">
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">face</md-icon>
         <label>Usuário ou Email</label>
         <input type="text" name="usernameOrEmail" ng-model="vm.credentials.usernameOrEmail" required>
@@ -15,7 +15,7 @@
           <div ng-message="required">Este campo é obrigatório.</div>
         </div>
       </md-input-container>
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">lock_outline</md-icon>
         <label>Senha</label>
         <input type="password" name="password" ng-model="vm.credentials.password" required>
@@ -24,8 +24,8 @@
         </div>
       </md-input-container>
       <div layout="row" layout-align="end center">
-        <md-button class="md-accent" ui-sref="password.forgot">Esqueceu sua senha?</md-button>
-        <md-button type="submit" class="md-accent md-raised">
+        <md-button ui-sref="password.forgot">Esqueceu sua senha?</md-button>
+        <md-button type="submit" class="md-primary md-raised">
           <md-icon md-font-set="material-icons">lock_open</md-icon>
           Entrar
         </md-button>

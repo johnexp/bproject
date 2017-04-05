@@ -7,7 +7,7 @@
   <md-card-content layout="column" layout-align="space-between">
     <h4 class="md-subhead info-text">Ou cadastre-se usando seu email</h4>
     <form name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" class="signin" novalidate autocomplete="off" layout="column">
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">account_box</md-icon>
         <label>Primeiro Nome</label>
         <input type="text" name="firstName" ng-model="vm.credentials.firstName" required>
@@ -15,7 +15,7 @@
           <div ng-message="required">Este campo é obrigatório.</div>
         </div>
       </md-input-container>
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">account_box</md-icon>
         <label>Sobrenome</label>
         <input type="text" name="lastName" ng-model="vm.credentials.lastName" required>
@@ -23,7 +23,7 @@
           <div ng-message="required">Este campo é obrigatório.</div>
         </div>
       </md-input-container>
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">email</md-icon>
         <label>Email</label>
         <input type="email" name="email" ng-model="vm.credentials.email" lowercase required>
@@ -32,7 +32,7 @@
           <div ng-message="email">Insira um endereço de email válido.</div>
         </div>
       </md-input-container>
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">fingerprint</md-icon>
         <label>Usuário</label>
         <input type="text" name="username" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" lowercase required>
@@ -41,7 +41,7 @@
           <div ng-message="pattern">Por favor, insira um nome de usuário válido: Mais de 3 caracteres, sem palavras restritas, caracteres "_-.", sem pontos consecutivos, não começar ou terminar com pontos, letras a-z e números 0-9.</div>
         </div>
       </md-input-container>
-      <md-input-container class="md-accent" flex>
+      <md-input-container flex>
         <md-icon md-font-set="material-icons">lock_outline</md-icon>
         <label>Senha</label>
         <input type="password" name="password" ng-model="vm.credentials.password" minlength="7" maxlength="20" password-validator required>
@@ -61,8 +61,8 @@
         <md-progress-linear ng-class="'requirement-bar-' + requirementsColor" md-mode="determinate" value="{{requirementsProgress}}"></md-progress-linear>
       </div>
       <div layout="row" layout-align="end center">
-        <md-button class="md-accent" ui-sref="authentication.signin">Já sou cadastrado</md-button>
-        <md-button type="submit" class="md-accent md-raised">
+        <md-button ui-sref="authentication.signin">Já sou cadastrado</md-button>
+        <md-button type="submit" class="md-primary md-raised">
           <md-icon md-font-set="material-icons">send</md-icon>
           Enviar
         </md-button>

@@ -202,7 +202,7 @@
     }
 
     function setVersesMark() {
-      var markers = {};
+      var markers = [];
       for (var i = 0; i < vm.userBibleData.markers.length; i++) {
         for (var j = 0; j < vm.userBibleData.markers[i].verses.length; j++) {
           markers[vm.userBibleData.markers[i].verses[j]] = vm.userBibleData.markers[i].color;
@@ -212,7 +212,7 @@
     }
 
     function setVersesNotes() {
-      var notes = {};
+      var notes = [];
       for (var i = 0; i < vm.userBibleData.notes.length; i++) {
         for (var j = 0; j < vm.userBibleData.notes[i].verses.length; j++) {
           if (!angular.isArray(notes[vm.userBibleData.notes[i].verses[j]])) {
@@ -225,7 +225,7 @@
     }
 
     function setVersesTags() {
-      var tags = {};
+      var tags = [];
       for (var i = 0; i < vm.userBibleData.tags.length; i++) {
         for (var j = 0; j < vm.userBibleData.tags[i].verses.length; j++) {
           if (!angular.isArray(tags[vm.userBibleData.tags[i].verses[j]])) {
@@ -238,7 +238,7 @@
     }
 
     function setVersesRefs() {
-      var refs = {};
+      var refs = [];
       for (var i = 0; i < vm.userBibleData.refs.length; i++) {
         if (!angular.isArray(refs[vm.userBibleData.refs[i].verse])) {
           refs[vm.userBibleData.refs[i].verse] = [];
@@ -249,7 +249,7 @@
     }
 
     function setColorsLegend() {
-      vm.colorsLegend = {};
+      vm.colorsLegend = [];
       if (vm.userCustomData.colorsLegend) {
         for (var i = 0; i < vm.userCustomData.colorsLegend.length; i++) {
           vm.colorsLegend[vm.userCustomData.colorsLegend[i].color] = vm.userCustomData.colorsLegend[i].legend;
@@ -512,7 +512,7 @@
     function isTagsInVerses(tags, verses) {
       for (var i = 0; i < verses.length; i++) {
         for (var j = 0; j < tags.length; j++) {
-          if (vm.tags[verses[i]][0].tags.indexOf(tags[j]) > -1) {
+          if (vm.tags.length > 0 && vm.tags[verses[i]][0].tags.indexOf(tags[j]) > -1) {
             return { tag: tags[j], verse: verses[i] };
           }
         }
