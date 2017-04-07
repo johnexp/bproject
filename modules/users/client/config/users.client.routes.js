@@ -13,8 +13,7 @@
     $stateProvider
       .state('settings', {
         abstract: true,
-        parent: 'home',
-        url: 'settings',
+        url: '/settings',
         templateUrl: '/modules/users/client/views/settings/settings.client.view.html',
         controller: 'SettingsController',
         controllerAs: 'vm',
@@ -28,7 +27,7 @@
         controller: 'EditProfileController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Settings'
+          pageTitle: 'Configurações'
         }
       })
       .state('settings.password', {
@@ -37,7 +36,7 @@
         controller: 'ChangePasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Settings password'
+          pageTitle: 'Alterar Senha'
         }
       })
       .state('settings.accounts', {
@@ -46,7 +45,7 @@
         controller: 'SocialAccountsController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Settings accounts'
+          pageTitle: 'Gerenciar Contas'
         }
       })
       .state('settings.picture', {
@@ -55,7 +54,7 @@
         controller: 'ChangeProfilePictureController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Settings picture'
+          pageTitle: 'Imagem da Conta'
         }
       })
       .state('authentication', {
@@ -71,7 +70,7 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signup'
+          pageTitle: 'Registro'
         }
       })
       .state('authentication.signin', {
@@ -80,7 +79,7 @@
         controller: 'AuthenticationController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Signin'
+          pageTitle: 'Entrar'
         }
       })
       .state('password', {
@@ -94,7 +93,7 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password forgot'
+          pageTitle: 'Perdi a Senha'
         }
       })
       .state('password.reset', {
@@ -107,14 +106,14 @@
         url: '/invalid',
         templateUrl: '/modules/users/client/views/password/reset-password-invalid.client.view.html',
         data: {
-          pageTitle: 'Password reset invalid'
+          pageTitle: 'Erro - Alteração de Senha'
         }
       })
       .state('password.reset.success', {
         url: '/success',
         templateUrl: '/modules/users/client/views/password/reset-password-success.client.view.html',
         data: {
-          pageTitle: 'Password reset success'
+          pageTitle: 'Alteração de Senha'
         }
       })
       .state('password.reset.form', {
@@ -123,7 +122,7 @@
         controller: 'PasswordController',
         controllerAs: 'vm',
         data: {
-          pageTitle: 'Password reset form'
+          pageTitle: 'Formulário de Alteração de Senha'
         }
       });
   }

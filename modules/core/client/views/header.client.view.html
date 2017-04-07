@@ -22,11 +22,11 @@
     <div flex></div>
     <md-menu-bar class="topbar">
       <md-menu ng-hide="vm.authentication.user">
-        <button ng-click="$mdMenu.close()" ui-sref="authentication.signup">Sign Up</button>
+        <button ng-click="$mdMenu.close()" ui-sref="authentication.signup">Registrar</button>
         <md-menu-content ng-hide="true"></md-menu-content>
       </md-menu>
       <md-menu ng-hide="vm.authentication.user">
-        <button ng-click="$mdMenu.close()" ui-sref="authentication.signin">Sign In</button>
+        <button ng-click="$mdMenu.close()" ui-sref="authentication.signin">Entrar</button>
         <md-menu-content ng-hide="true"></md-menu-content>
       </md-menu>
       <md-menu ng-show="vm.authentication.user">
@@ -39,7 +39,7 @@
             <md-button ui-sref="{{item.state}}" aria-label="{{item.title}}" ng-bind="item.title"></md-button>
           </md-menu-item>
           <md-menu-item>
-            <md-button href="/api/auth/signout" target="_self">Signout</md-button>
+            <md-button href="/api/auth/signout" target="_self">Sair</md-button>
           </md-menu-item>
         </md-menu-content>
       </md-menu>

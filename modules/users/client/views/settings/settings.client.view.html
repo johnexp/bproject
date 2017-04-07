@@ -1,26 +1,58 @@
-<section>
-  <div class="page-header">
-    <h1>Settings</h1>
+<div flex layout="column" layout-fill>
+  <ng-include src="'/modules/core/client/views/header.client.view.html'" class="toolbar-container"></ng-include>
+
+  <!-- Area menu e conteúdo -->
+  <div flex layout="row">
+    <!-- Menu -->
+    <menu-app></menu-app>
+    <!--<menu-app layout="column"></menu-app>-->
+    <!-- Area de trabalho -->
+    <md-content flex layout-padding>
+      <h3 class="md-headline">Configurações</h3>
+      <md-menu-bar>
+        <md-menu ng-click="null">
+          <button ui-sref-active="active" ui-sref="settings.profile">
+            Editar Perfil
+          </button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-click="null" aria-label="null"></md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-menu ng-click="null">
+          <button ui-sref-active="active" ui-sref="settings.picture">
+            Trocar Foto de Perfil
+          </button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-click="null" aria-label="null"></md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-menu ng-click="null">
+          <button ui-sref-active="active" ui-sref="settings.password">
+            Trocar Senha
+          </button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-click="null" aria-label="null"></md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+        <md-menu ng-click="null">
+          <button ui-sref-active="active" ui-sref="settings.accounts">
+            Administrar Redes Sociais
+          </button>
+          <md-menu-content>
+            <md-menu-item>
+              <md-button ng-click="null" aria-label="null"></md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </md-menu-bar>
+      <md-card flex ui-view></md-card>
+    </md-content>
+
   </div>
-  <div class="row">
-    <nav class="col-sm-3 col-md-3">
-      <ul class="nav nav-pills nav-stacked">
-        <li ui-sref-active="active">
-          <a ui-sref="settings.profile">Edit Profile</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="settings.picture">Change Profile Picture</a>
-        </li>
-        <li ui-sref-active="active" ng-show="vm.user.provider === 'local'">
-          <a ui-sref="settings.password">Change Password</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="settings.accounts">Manage Social Accounts</a>
-        </li>
-      </ul>
-    </nav>
-    <div class="col-sm-9 col-md-8 settings-view">
-      <div ui-view></div>
-    </div>
-  </div>
-</section>
+</div>

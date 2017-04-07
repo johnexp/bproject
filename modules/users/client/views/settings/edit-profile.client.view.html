@@ -1,40 +1,48 @@
-<section class="row">
-  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
-    <form name="vm.userForm" ng-submit="vm.updateUserProfile(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.user.firstName" placeholder="First Name" required autofocus>
-          <div ng-messages="vm.userForm.firstName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">First name is required.</p>
-          </div>
+<md-card-content layout="column" layout-align="space-between">
+  <form name="vm.userForm" ng-submit="vm.updateUserProfile(vm.userForm.$valid)" novalidate autocomplete="off" layout="column">
+    <div layout-gt-sm="row">
+      <md-input-container flex-gt-sm>
+        <md-icon md-font-set="material-icons">account_box</md-icon>
+        <label>Primeiro Nome</label>
+        <input type="text" name="firstName" ng-model="vm.user.firstName" required>
+        <div ng-messages="vm.userForm.firstName.$error" ng-if="vm.userForm.firstName.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" class="form-control" ng-model="vm.user.lastName" placeholder="Last Name" required>
-          <div ng-messages="vm.userForm.lastName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Last name is required.</p>
-          </div>
+      </md-input-container>
+      <md-input-container flex-gt-sm>
+        <md-icon md-font-set="material-icons">account_box</md-icon>
+        <label>Sobrenome</label>
+        <input type="text" name="lastName" ng-model="vm.user.lastName" required>
+        <div ng-messages="vm.userForm.lastName.$error" ng-if="vm.userForm.lastName.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="form-control" ng-model="vm.user.email" placeholder="Email" lowercase required>
-          <div ng-messages="vm.userForm.email.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Email address is required.</p>
-            <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
-          </div>
+      </md-input-container>
+    </div>
+    <div layout-gt-sm="row">
+      <md-input-container flex-gt-sm>
+        <md-icon md-font-set="material-icons">email</md-icon>
+        <label>Email</label>
+        <input type="email" name="email" ng-model="vm.user.email" lowercase required>
+        <div ng-messages="vm.userForm.email.$error" ng-if="vm.userForm.email.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
+          <div ng-message="email">Insira um endereço de email válido.</div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" class="form-control" ng-model="vm.user.username" placeholder="Username" lowercase required>
-          <div ng-messages="vm.userForm.username.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Username is required.</p>
-          </div>
+      </md-input-container>
+      <md-input-container flex-gt-sm>
+        <md-icon md-font-set="material-icons">fingerprint</md-icon>
+        <label>Usuário</label>
+        <input type="text" name="username" ng-model="vm.user.username" ng-pattern="vm.usernameRegex" lowercase required>
+        <div ng-messages="vm.userForm.username.$error" ng-if="vm.userForm.username.$touched">
+          <div ng-message="required">Este campo é obrigatório.</div>
+          <div ng-message="pattern">Por favor, insira um nome de usuário válido: Mais de 3 caracteres, sem palavras restritas, caracteres "_-.", sem pontos consecutivos, não começar ou terminar com pontos, letras a-z e números 0-9.</div>
         </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Save Profile</button>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-</section>
+      </md-input-container>
+    </div>
+    <div layout="row" layout-align="end center">
+      <md-button type="submit" class="md-primary md-raised">
+        <md-icon md-font-set="material-icons">save</md-icon>
+        Salvar
+      </md-button>
+    </div>
+  </form>
+</md-card-content>
